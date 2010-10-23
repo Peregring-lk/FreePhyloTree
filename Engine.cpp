@@ -14,7 +14,8 @@ Engine::Engine(CladeViewer *cladeViewer)
 
   _ogre->initialise(false);
 
-  _window = _ogre->createRenderWindow("FreePhyloTree", 400, 400, false);
+  _window = _ogre->createRenderWindow("FreePhyloTree", 400, 400,
+				      false);
 
   _loadResources();
 

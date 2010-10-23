@@ -23,14 +23,13 @@ StandardCladeViewer::StandardCladeViewer(Clade *clade)
 
   _vp = _engine->getWindow()->addViewport(_camera);
 
-  _createSphereMesh("meshNodeClade", 10);
-  _makeTreeClade(_clade, _scene->getRootSceneNode(), "meshNodeClade");
+  _makeTreeClade(_clade, _scene->getRootSceneNode());
 }
 
 StandardCladeViewer::~StandardCladeViewer()
 {
-  delete _engine;
   delete _eventMgr;
+  delete _engine;
 }
 
 void StandardCladeViewer::initSignal()
@@ -54,12 +53,11 @@ void StandardCladeViewer::moveCamera(float dx, float dy, float dz)
 }
 
 void StandardCladeViewer::_makeTreeClade(Clade *clade, SceneNode *sceneNode,
-				 string mesh, float dx, float dy)
+					 float dx, float dy)
 {
   SceneNode *nodeScene = sceneNode->createChildSceneNode();
-  Entity *nodeTree = _scene->createEntity(clade->getName(), mesh);
 
-  nodeScene->attachObject(nodeTree);
+  nodeScene->attachObject(_createSphereMesh(10));
   nodeScene->translate(dx, dy, 0);
 
   const std::vector<Clade*>& subclades = clade->getSubclades();
@@ -67,20 +65,22 @@ void StandardCladeViewer::_makeTreeClade(Clade *clade, SceneNode *sceneNode,
   for (std::vector<Clade*>::const_iterator i = subclades.begin();
        i != subclades.end(); ++i)
     {
-      _makeTreeClade(*i, nodeScene, mesh, dx + 30, dy + l);
+      _makeTreeClade(*i, nodeScene, dx + 30, dy + l);
       l -= 30;
     }
 }
 
-void StandardCladeViewer::_createSphereMesh(string strName, float r,
-					   int nRings, int nSegments)
+ManualObject* StandardCladeViewer::_createSphereMesh(float r,
+						     int nRings,
+						     int nSegments)
 {
-  ManualObject * manual = _scene->createManualObject(strName);
-  manual->begin("BaseWhiteNoLighting", RenderOperation::OT_TRIANGLE_LIST);
+  ManualObject *manual = _scene->createManualObject();
+  manual->begin("BaseWhiteNoLighting",
+		RenderOperation::OT_TRIANGLE_LIST);
 
   float fDeltaRingAngle = (Math::PI / nRings);
   float fDeltaSegAngle = (2 * Math::PI / nSegments);
-  unsigned short wVerticeIndex = 0 ;
+  unsigned short wVerticeIndex = 0;
 
   // Generate the group of rings for the sphere
   for(int ring = 0; ring <= nRings; ring++)
@@ -95,10 +95,10 @@ void StandardCladeViewer::_createSphereMesh(string strName, float r,
 	  float z0 = r0 * cosf(seg * fDeltaSegAngle);
 
 	  // Add one vertex to the strip which makes up the sphere
-	  manual->position( x0, y0, z0);
-	  manual->normal(Ogre::Vector3(x0, y0, z0).normalisedCopy());
-	  manual->textureCoord((float) seg / (float) nSegments,
-			       (float) ring / (float) nRings);
+	  manual->position(x0, y0, z0);
+	  //	  manual->normal(Ogre::Vector3(x0, y0, z0));
+	  //manual->textureCoord((float)seg / (float)nSegments,
+	  //		       (float)ring / (float)nRings);
 
 	  if (ring != nRings)
 	    {
@@ -109,20 +109,11 @@ void StandardCladeViewer::_createSphereMesh(string strName, float r,
 	      manual->index(wVerticeIndex + nSegments + 1);
 	      manual->index(wVerticeIndex + 1);
 	      manual->index(wVerticeIndex);
-	      wVerticeIndex ++;
+	      wVerticeIndex++;
 	    }
 	}; // end for seg
     } // end for ring
    manual->end();
 
-   MeshPtr mesh = manual->convertToMesh(strName);
-   mesh->_setBounds(AxisAlignedBox(Ogre::Vector3(-r, -r, -r),
-				   Ogre::Vector3(r, r, r)),
-		    false);
-
-   mesh->_setBoundingSphereRadius(r);
-
-   unsigned short src, dest;
-   if (!mesh->suggestTangentVectorBuildParams(VES_TANGENT, src, dest))
-     mesh->buildTangentVectors(VES_TANGENT, src, dest);
+   return (manual);
 }
