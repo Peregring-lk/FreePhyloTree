@@ -1,0 +1,15 @@
+# Lo ignoramos todo
+*
+
+# Salvo lo que nos hace falta:
+#  ficheros de compilación
+!*.[ch]pp
+
+#  ficheros de configuracion de Ogre
+!*.cfg
+
+# Fichero de cmake
+!CMakeLists.txt
+
+# Este mismo fichero
+!.gitignore
