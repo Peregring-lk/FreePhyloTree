@@ -12,8 +12,9 @@ Engine::Engine(CladeViewer *cladeViewer)
   if (!_ogre->restoreConfig())
     _ogre->showConfigDialog();
 
-  _window = _ogre->initialise(true, "FreePhyloTree");
-  _window->resize(400, 400);
+  _ogre->initialise(false);
+
+  _window = _ogre->createRenderWindow("FreePhyloTree", 400, 400, false);
 
   _loadResources();
 
