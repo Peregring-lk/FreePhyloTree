@@ -57,7 +57,7 @@ void StandardCladeViewer::_makeTreeClade(Clade *clade, SceneNode *sceneNode,
 {
   SceneNode *nodeScene = sceneNode->createChildSceneNode();
 
-  nodeScene->attachObject(_createSphereMesh(10));
+  nodeScene->attachObject(_createSphere(10));
   nodeScene->translate(dx, dy, 0);
 
   const std::vector<Clade*>& subclades = clade->getSubclades();
@@ -70,9 +70,8 @@ void StandardCladeViewer::_makeTreeClade(Clade *clade, SceneNode *sceneNode,
     }
 }
 
-ManualObject* StandardCladeViewer::_createSphereMesh(float r,
-						     int nRings,
-						     int nSegments)
+ManualObject* StandardCladeViewer::_createSphere(float r, int nRings,
+						 int nSegments)
 {
   ManualObject *manual = _scene->createManualObject();
   manual->begin("BaseWhiteNoLighting",

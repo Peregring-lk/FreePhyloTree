@@ -32,9 +32,8 @@ namespace FreePhyloTree
     void _makeTreeClade(Clade *_clade, Ogre::SceneNode *sceneNode,
 			float dx = 0, float dy = 0);
 
-    Ogre::ManualObject* _createSphereMesh(const float r,
-					  int nRings = 16,
-					  int nSegments = 16);
+    Ogre::ManualObject* _createSphere(float r, int nRings = 16,
+				      int nSegments = 16);
   };
 }
 
