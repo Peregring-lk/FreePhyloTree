@@ -2,10 +2,11 @@
 #define _FPT_ENGINE_
 
 #include <OGRE/Ogre.h>
-#include "CladeViewer.hpp"
 
 namespace FreePhyloTree
 {
+  class CladeViewer;
+
   class Engine : public Ogre::FrameListener
   {
   public:

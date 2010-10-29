@@ -1,4 +1,4 @@
-#include "StandardCladeViewer.hpp"
+#include "CladeViewer.hpp"
 
 using namespace FreePhyloTree;
 
@@ -16,7 +16,7 @@ Clade* createClade()
 
 int main()
 {
-  StandardCladeViewer cladeViewer(createClade());
+  CladeViewer cladeViewer(createClade(), SPHERE);
 
   cladeViewer.initSignal();
 }

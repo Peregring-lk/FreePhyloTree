@@ -1,26 +1,40 @@
 #ifndef _CLADE_VIEWER_
 #define _CLADE_VIEWER_
 
+#include "Engine.hpp"
+#include "EventManager.hpp"
 #include "Clade.hpp"
+#include "StrategyMakeTree.hpp"
 
 namespace FreePhyloTree
 {
+  enum BuildStrategy { SPHERE, LIGHT };
+
   class CladeViewer
   {
   public:
-    CladeViewer(Clade *clade)
-      : _clade(clade) {}
+    CladeViewer(Clade *clade, BuildStrategy strategy);
+    ~CladeViewer();
 
-    virtual ~CladeViewer() {}
+    void initSignal();
+    void flowStage();
+    void killSignal();
 
-    virtual void initSignal() = 0;
-    virtual void flowStage() = 0;
-    virtual void killSignal() = 0;
+    void moveCamera(float dx, float dy, float dz);
 
-    virtual void moveCamera(float dx, float dy, float dz) = 0;
-
-  protected:
+  private:
     Clade *_clade;
+
+    Engine *_engine;
+    EventManager *_eventMgr;
+
+    StrategyMakeTree *_strategy;
+
+    Ogre::SceneManager *_scene;
+    Ogre::Camera *_camera;
+    Ogre::Viewport *_vp;
+
+    bool _continue;
   };
 }
 

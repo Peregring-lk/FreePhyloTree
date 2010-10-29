@@ -1,4 +1,5 @@
 #include "EventManager.hpp"
+#include "CladeViewer.hpp"
 #include <sstream>
 
 using namespace OIS;

@@ -2,10 +2,11 @@
 #define _FPT_EVENT_MANAGER_
 
 #include <OIS/OIS.h>
-#include "CladeViewer.hpp"
 
 namespace FreePhyloTree
 {
+  class CladeViewer;
+
   class EventManager : public OIS::KeyListener,
 		       public OIS::MouseListener
   {

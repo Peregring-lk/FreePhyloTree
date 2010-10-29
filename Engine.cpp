@@ -1,5 +1,6 @@
 #include <SDL/SDL.h>
 #include "Engine.hpp"
+#include "CladeViewer.hpp"
 
 using namespace Ogre;
 using namespace FreePhyloTree;
