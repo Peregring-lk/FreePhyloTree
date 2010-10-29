@@ -26,6 +26,8 @@ CladeViewer::CladeViewer(Clade *clade, BuildStrategy strategy)
 
   if (strategy == SPHERE)
     _strategy = new SphereMakeTree(_scene);
+  // else if (strategy == LIGHT)
+  //  _strategy = new LightMakeTree(_scene);
 
   _strategy->makeTreeClade(_clade, _scene->getRootSceneNode());
 }
