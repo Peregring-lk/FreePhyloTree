@@ -1,14 +1,15 @@
-#ifndef _SPHERE_MAKE_TREE_
-#define _SPHERE_MAKE_TREE_
+#ifndef _GOURCEIAN_MAKE_TREE_
+#define _GOURCEIAN_MAKE_TREE_
 
+#include <OGRE/Ogre.h>
 #include "StrategyMakeTree.hpp"
 
 namespace FreePhyloTree
 {
-  class SphereMakeTree : public StrategyMakeTree
+  class GourceianMakeTree : public StrategyMakeTree
   {
   public:
-    SphereMakeTree(Ogre::SceneManager *scene);
+    GourceianMakeTree(Ogre::SceneManager *scene);
 
     void makeTreeClade(Clade *clade, Ogre::SceneNode *sceneNode);
 
@@ -16,8 +17,7 @@ namespace FreePhyloTree
     void _makeTreeClade(Clade *clade, Ogre::SceneNode *sceneNode,
 			float dx, float dy);
 
-    Ogre::ManualObject* _createSphere(float r, int nRings = 16,
-				      int nSegments = 16);
+    Ogre::Entity* _createNode(float side, Ogre::String);
   };
 }
 

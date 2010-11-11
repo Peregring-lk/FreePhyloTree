@@ -2,6 +2,8 @@
 #include <sstream>
 #include "CladeViewer.hpp"
 #include "SphereMakeTree.hpp"
+#include "ColloidMakeTree.hpp"
+#include "GourceianMakeTree.hpp"
 
 using namespace std;
 using namespace Ogre;
@@ -18,7 +20,7 @@ CladeViewer::CladeViewer(Clade *clade, BuildStrategy strategy)
 						  "CladesWorld");
 
   _camera = _scene->createCamera("Camera");
-  _camera->setPosition(Ogre::Vector3(0,0,400));
+  _camera->setPosition(Ogre::Vector3(0, 0, 100));
   _camera->setNearClipDistance(5);
   _camera->setFarClipDistance(1000);
 
@@ -26,8 +28,10 @@ CladeViewer::CladeViewer(Clade *clade, BuildStrategy strategy)
 
   if (strategy == SPHERE)
     _strategy = new SphereMakeTree(_scene);
-  // else if (strategy == LIGHT)
-  //  _strategy = new LightMakeTree(_scene);
+  else if (strategy == COLLOID)
+    _strategy = new ColloidMakeTree(_scene);
+  else if (strategy == GOURCEIAN)
+    _strategy = new GourceianMakeTree(_scene);
 
   _strategy->makeTreeClade(_clade, _scene->getRootSceneNode());
 }

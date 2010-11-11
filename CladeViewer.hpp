@@ -8,7 +8,7 @@
 
 namespace FreePhyloTree
 {
-  enum BuildStrategy { SPHERE, LIGHT };
+  enum BuildStrategy { SPHERE, COLLOID, GOURCEIAN };
 
   class CladeViewer
   {

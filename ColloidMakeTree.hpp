@@ -1,14 +1,14 @@
-#ifndef _SPHERE_MAKE_TREE_
-#define _SPHERE_MAKE_TREE_
+#ifndef _LIGHT_MAKE_TREE_
+#define _LIGHT_MAKE_TREE_
 
 #include "StrategyMakeTree.hpp"
 
 namespace FreePhyloTree
 {
-  class SphereMakeTree : public StrategyMakeTree
+  class ColloidMakeTree : public StrategyMakeTree
   {
   public:
-    SphereMakeTree(Ogre::SceneManager *scene);
+    ColloidMakeTree(Ogre::SceneManager *scene);
 
     void makeTreeClade(Clade *clade, Ogre::SceneNode *sceneNode);
 
@@ -16,8 +16,7 @@ namespace FreePhyloTree
     void _makeTreeClade(Clade *clade, Ogre::SceneNode *sceneNode,
 			float dx, float dy);
 
-    Ogre::ManualObject* _createSphere(float r, int nRings = 16,
-				      int nSegments = 16);
+    Ogre::ManualObject* _makeColloid(float r, float density);
   };
 }
 

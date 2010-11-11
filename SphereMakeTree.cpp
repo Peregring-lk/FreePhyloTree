@@ -10,6 +10,7 @@ SphereMakeTree::SphereMakeTree(SceneManager *scene)
 void SphereMakeTree::makeTreeClade(Clade *clade,
 				   Ogre::SceneNode *sceneNode)
 {
+  _scene->setAmbientLight(ColourValue::Red);
   _makeTreeClade(clade, sceneNode, 0, 0);
 }
 
@@ -35,8 +36,7 @@ ManualObject*
 SphereMakeTree::_createSphere(float r, int nRings, int nSegments)
 {
   ManualObject *manual = _scene->createManualObject();
-  manual->begin("BaseWhiteNoLighting",
-		RenderOperation::OT_TRIANGLE_LIST);
+  manual->begin("BaseWhite", RenderOperation::OT_TRIANGLE_LIST);
 
   float fDeltaRingAngle = (Math::PI / nRings);
   float fDeltaSegAngle = (2 * Math::PI / nSegments);

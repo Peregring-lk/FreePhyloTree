@@ -16,7 +16,7 @@ Clade* createClade()
 
 int main()
 {
-  CladeViewer cladeViewer(createClade(), SPHERE);
+  CladeViewer cladeViewer(createClade(), GOURCEIAN);
 
   cladeViewer.initSignal();
 }

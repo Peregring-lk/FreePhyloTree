@@ -15,7 +15,7 @@ Engine::Engine(CladeViewer *cladeViewer)
 
   _ogre->initialise(false);
 
-  _window = _ogre->createRenderWindow("FreePhyloTree", 400, 400,
+  _window = _ogre->createRenderWindow("FreePhyloTree", 560, 420,
 				      false);
 
   _loadResources();
@@ -76,29 +76,7 @@ bool Engine::frameEnded(const FrameEvent &evt)
 
 void Engine::_loadResources()
 {
-  // Load resource paths from config file
-  ConfigFile cf;
-  cf.load("resources.cfg");
-
-  // Go through all sections & settings in the file
-  ConfigFile::SectionIterator seci = cf.getSectionIterator();
-  String secName, typeName, archName;
-
-  while(seci.hasMoreElements())
-    {
-      secName = seci.peekNextKey();
-
-      ConfigFile::SettingsMultiMap *settings = seci.getNext();
-      ConfigFile::SettingsMultiMap::iterator i;
-
-      for (i = settings->begin(); i != settings->end(); ++i)
-	{
-	  typeName = i->first;
-	  archName = i->second;
-
-	  _ogre->addResourceLocation(archName, typeName, secName);
-	}
-    }
+  _ogre->addResourceLocation("./Resources", "FileSystem", "General");
 
   ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 }
