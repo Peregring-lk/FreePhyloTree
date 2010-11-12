@@ -8,7 +8,7 @@
 
 namespace FreePhyloTree
 {
-  enum BuildStrategy { SPHERE, COLLOID, GOURCEIAN };
+  enum BuildStrategy { GOURCEIAN };
 
   class CladeViewer
   {
@@ -16,11 +16,8 @@ namespace FreePhyloTree
     CladeViewer(Clade *clade, BuildStrategy strategy);
     ~CladeViewer();
 
-    void initSignal();
-    void flowStage();
-    void killSignal();
-
-    void moveCamera(float dx, float dy, float dz);
+    void init(int argc, char **argv);
+    void kill();
 
   private:
     Clade *_clade;
@@ -29,12 +26,6 @@ namespace FreePhyloTree
     EventManager *_eventMgr;
 
     StrategyMakeTree *_strategy;
-
-    Ogre::SceneManager *_scene;
-    Ogre::Camera *_camera;
-    Ogre::Viewport *_vp;
-
-    bool _continue;
   };
 }
 

@@ -1,7 +1,8 @@
 #ifndef _STRATEGY_MAKE_TREE_
 #define _STRATEGY_MAKE_TREE_
 
-#include <OGRE/Ogre.h>
+#include <GL/glut.h>
+
 #include "Clade.hpp"
 
 namespace FreePhyloTree
@@ -9,13 +10,12 @@ namespace FreePhyloTree
   class StrategyMakeTree
   {
   public:
-    StrategyMakeTree(Ogre::SceneManager *scene) : _scene(scene) {};
+    void init()
+    {
+      glutDisplayFunc(makeTreeClade);
+    }
 
-    virtual void
-    makeTreeClade(Clade *clade, Ogre::SceneNode *sceneNode) = 0;
-
-  protected:
-    Ogre::SceneManager *_scene;
+    virtual void makeTreeClade() = 0;
   };
 }
 

@@ -14,9 +14,9 @@ Clade* createClade()
   return (life);
 }
 
-int main()
+int main(int argc, char **argv)
 {
   CladeViewer cladeViewer(createClade(), GOURCEIAN);
 
-  cladeViewer.initSignal();
+  cladeViewer.init(argc, argv);
 }

@@ -1,37 +1,16 @@
 #ifndef _FPT_EVENT_MANAGER_
 #define _FPT_EVENT_MANAGER_
 
-#include <OIS/OIS.h>
+#include <GL/glut.h>
 
 namespace FreePhyloTree
 {
-  class CladeViewer;
-
-  class EventManager : public OIS::KeyListener,
-		       public OIS::MouseListener
+  class EventManager
   {
   public:
-    EventManager(CladeViewer* _cladeViewer, size_t idWindow);
-    ~EventManager();
+    void init();
 
-    bool keyPressed(const OIS::KeyEvent &arg);
-    bool keyReleased(const OIS::KeyEvent &arg);
-
-    bool mouseMoved(const OIS::MouseEvent &arg);
-    bool mousePressed(const OIS::MouseEvent &arg,
-		      OIS::MouseButtonID id);
-    bool mouseReleased(const OIS::MouseEvent &arg,
-		       OIS::MouseButtonID id);
-
-    void refresh();
-
-  private:
-    OIS::InputManager *_inputMgr;
-    OIS::Keyboard *_keyboard;
-    OIS::Mouse *_mouse;
-    CladeViewer *_cladeViewer;
-
-    OIS::MouseState _mouseState;
+    void mouse(int button, int state, int x, int y);
   };
 }
 

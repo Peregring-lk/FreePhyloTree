@@ -1,39 +1,18 @@
-#include <SDL/SDL.h>
-#include <sstream>
+#include <GL/glut.h>
+
 #include "CladeViewer.hpp"
-#include "SphereMakeTree.hpp"
-#include "ColloidMakeTree.hpp"
 #include "GourceianMakeTree.hpp"
 
-using namespace std;
-using namespace Ogre;
 using namespace FreePhyloTree;
-using namespace OIS;
 
 CladeViewer::CladeViewer(Clade *clade, BuildStrategy strategy)
-  : _clade(clade), _continue(true)
+  : _clade(clade)
 {
   _engine = new Engine(this);
-  _eventMgr = new EventManager(this, _engine->getIDWindow());
+  _eventMgr = new EventManager(this);
 
-  _scene = _engine->getOgre()->createSceneManager(ST_GENERIC,
-						  "CladesWorld");
-
-  _camera = _scene->createCamera("Camera");
-  _camera->setPosition(Ogre::Vector3(0, 0, 100));
-  _camera->setNearClipDistance(5);
-  _camera->setFarClipDistance(1000);
-
-  _vp = _engine->getWindow()->addViewport(_camera);
-
-  if (strategy == SPHERE)
-    _strategy = new SphereMakeTree(_scene);
-  else if (strategy == COLLOID)
-    _strategy = new ColloidMakeTree(_scene);
-  else if (strategy == GOURCEIAN)
-    _strategy = new GourceianMakeTree(_scene);
-
-  _strategy->makeTreeClade(_clade, _scene->getRootSceneNode());
+  if (strategy == GOURCEIAN)
+    _strategy = new GourceianMakeTree();
 }
 
 CladeViewer::~CladeViewer()
@@ -43,22 +22,16 @@ CladeViewer::~CladeViewer()
   delete _strategy;
 }
 
-void CladeViewer::initSignal()
+void CladeViewer::init(int argc, char **argv)
 {
-  _engine->initEngine();
+  _engine->init(argc, argv);
+  _strategy->init();
+  _eventMgr->init();
+
+  glutMainLoop();
 }
 
-void CladeViewer::flowStage()
+void CladeViewer::kill()
 {
-  _eventMgr->refresh();
-}
-
-void CladeViewer::killSignal()
-{
-  _engine->killEngine();
-}
-
-void CladeViewer::moveCamera(float dx, float dy, float dz)
-{
-  _camera->move(Ogre::Vector3(dx, dy, dx));
+  _engine->kill();
 }
