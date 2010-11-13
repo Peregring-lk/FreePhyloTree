@@ -5,11 +5,12 @@
 #  ficheros de compilación
 !*.[ch]pp
 
-#  ficheros de configuracion de Ogre
-!*.cfg
-
 # Fichero de cmake
 !CMakeLists.txt
 
 # Este mismo fichero
 !.gitignore
+
+# Imágenes
+!*.tga
+!*.png
