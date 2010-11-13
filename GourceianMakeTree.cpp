@@ -1,77 +1,61 @@
+#include <GL/gl.h>
+#include <iostream>
+
 #include "GourceianMakeTree.hpp"
 
 using namespace FreePhyloTree;
-using namespace Ogre;
+using namespace std;
 
-GourceianMakeTree::GourceianMakeTree(SceneManager *scene)
-  : StrategyMakeTree(scene)
-{}
+typedef vector<Clade*>::const_iterator I;
 
-void
-GourceianMakeTree::makeTreeClade(Clade *clade, SceneNode *sceneNode)
+void GourceianMakeTree::initSignal()
 {
-  _scene->setAmbientLight(ColourValue::Red);
-  _makeTreeClade(clade, sceneNode, 0, 0);
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+
+  glOrtho(0.0f, 400, 400, 0.0f, -1.0f, 1.0f);
+
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+}
+
+void GourceianMakeTree::draw(Clade *clade)
+{
+  glClear(GL_COLOR_BUFFER_BIT);
+
+  glPushMatrix();
+  _drawTreeClade(clade, 20, 20);
+  glPopMatrix();
 }
 
 void
-GourceianMakeTree::_makeTreeClade(Clade *clade, SceneNode *sceneNode,
-				  float dx, float dy)
+GourceianMakeTree::_drawTreeClade(Clade *clade, float dx, float dy)
 {
-  SceneNode *nodeScene = sceneNode->createChildSceneNode();
+  _drawNode(20, dx, dy);
 
-  nodeScene->attachObject(_createNode(10, clade->getName()));
-  nodeScene->translate(dx, dy, 0);
-
-  const std::vector<Clade*>& subclades = clade->getSubclades();
+  const vector<Clade*>& subclades = clade->getSubclades();
   float l = 0;
-  for (std::vector<Clade*>::const_iterator i = subclades.begin();
-       i != subclades.end(); ++i)
-    {
-      _makeTreeClade(*i, nodeScene, dx + 20, dy + l);
-      l -= 20;
-    }
+
+  for (I i = subclades.begin(); i != subclades.end(); ++i, l += 50) {
+    float ddx = dx + 50;
+    float ddy = dy + l;
+
+    _drawEdge(dx, dy, ddx, ddy);
+    _drawTreeClade(*i, ddx, ddy);
+  }
 }
 
-Entity*
-GourceianMakeTree::_createNode(float side, String name)
+void GourceianMakeTree::_drawNode(float side, float x, float y)
 {
-  String namePlane = name + "Plane";
+  side /= 2;
+  glRectf(x - side, y - side, x + side, y + side);
+}
 
-  MeshManager::getSingleton().createPlane(name + "Plane",
-					  ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-					  Plane(0, 0, 1, 0),
-					  side, side);//, 1, 1, true, 1,
-  //					  1.0f, 1.0f, Vector3(0, 0, 1));
-
-  Entity* node = _scene->createEntity(name, namePlane);
-  node->setMaterialName("FreePhyloTree/matNode");
-  node->setCastShadows(false);
-
-  return (node);
-  /*
-
-  ManualObject *manual = _scene->createManualObject();
-
-  manual->setCastShadows(false);
-  manual->begin("FreePhyloTree/matNode", RenderOperation::OT_TRIANGLE_LIST);
-
-  manual->position(0, 0, 0);
-  manual->textureCoord(0, 0);
-
-  manual->position(5, 0, 0);
-  manual->textureCoord(1, 0);
-
-  manual->position(5, 5, 0);
-  manual->textureCoord(1, 1);
-
-  manual->position(0, 5, 0);
-  manual->textureCoord(0, 1);
-
-  manual->triangle(0, 1, 2);
-  manual->triangle(0, 2, 3);
-
-  manual->end();
-
-  return (manual);*/
+void
+GourceianMakeTree::_drawEdge(float xO, float yO, float xD, float yD)
+{
+  glBegin(GL_LINES);
+  glVertex2f(xO, yO);
+  glVertex2f(xD, yD);
+  glEnd();
 }

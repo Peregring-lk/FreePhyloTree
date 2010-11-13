@@ -1,15 +1,12 @@
-#include <GL/glut.h>
-
 #include "CladeViewer.hpp"
 #include "GourceianMakeTree.hpp"
 
 using namespace FreePhyloTree;
 
-CladeViewer::CladeViewer(Clade *clade, BuildStrategy strategy)
-  : _clade(clade)
+CladeViewer::CladeViewer(Clade *clade, DrawStrategy strategy)
+  : _clade(clade), _continue(true)
 {
   _engine = new Engine(this);
-  _eventMgr = new EventManager(this);
 
   if (strategy == GOURCEIAN)
     _strategy = new GourceianMakeTree();
@@ -17,21 +14,27 @@ CladeViewer::CladeViewer(Clade *clade, BuildStrategy strategy)
 
 CladeViewer::~CladeViewer()
 {
-  delete _eventMgr;
   delete _engine;
   delete _strategy;
 }
 
-void CladeViewer::init(int argc, char **argv)
+void CladeViewer::run()
 {
-  _engine->init(argc, argv);
-  _strategy->init();
-  _eventMgr->init();
+  _engine->initSignal();
+  _strategy->initSignal();
 
-  glutMainLoop();
+  while(_continue)
+    _engine->flowStage();
+
+  _engine->killSignal();
 }
 
-void CladeViewer::kill()
+void CladeViewer::draw()
 {
-  _engine->kill();
+  _strategy->draw(_clade);
+}
+
+void CladeViewer::killSignal()
+{
+  _continue = false;
 }

@@ -2,30 +2,32 @@
 #define _CLADE_VIEWER_
 
 #include "Engine.hpp"
-#include "EventManager.hpp"
 #include "Clade.hpp"
 #include "StrategyMakeTree.hpp"
 
 namespace FreePhyloTree
 {
-  enum BuildStrategy { GOURCEIAN };
+  enum DrawStrategy { GOURCEIAN };
 
   class CladeViewer
   {
   public:
-    CladeViewer(Clade *clade, BuildStrategy strategy);
+    CladeViewer(Clade *clade, DrawStrategy strategy);
     ~CladeViewer();
 
-    void init(int argc, char **argv);
-    void kill();
+    void run();
+
+    void draw();
+
+    void killSignal();
 
   private:
     Clade *_clade;
 
     Engine *_engine;
-    EventManager *_eventMgr;
-
     StrategyMakeTree *_strategy;
+
+    bool _continue;
   };
 }
 

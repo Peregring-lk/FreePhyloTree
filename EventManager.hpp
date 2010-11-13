@@ -1,16 +1,20 @@
 #ifndef _FPT_EVENT_MANAGER_
 #define _FPT_EVENT_MANAGER_
 
-#include <GL/glut.h>
-
 namespace FreePhyloTree
 {
+  class CladeViewer;
+
   class EventManager
   {
   public:
-    void init();
+    EventManager(CladeViewer *viewer);
 
-    void mouse(int button, int state, int x, int y);
+    void readInput();
+
+  private:
+    CladeViewer *_viewer;
+
   };
 }
 

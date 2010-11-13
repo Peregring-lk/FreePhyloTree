@@ -1,7 +1,6 @@
 #ifndef _GOURCEIAN_MAKE_TREE_
 #define _GOURCEIAN_MAKE_TREE_
 
-#include <OGRE/Ogre.h>
 #include "StrategyMakeTree.hpp"
 
 namespace FreePhyloTree
@@ -9,15 +8,16 @@ namespace FreePhyloTree
   class GourceianMakeTree : public StrategyMakeTree
   {
   public:
-    GourceianMakeTree(Ogre::SceneManager *scene);
+    void initSignal();
 
-    void makeTreeClade(Clade *clade, Ogre::SceneNode *sceneNode);
+    void draw(Clade *clade);
 
   private:
-    void _makeTreeClade(Clade *clade, Ogre::SceneNode *sceneNode,
-			float dx, float dy);
+    void _drawTreeClade(Clade *clade, float dx, float dy);
 
-    Ogre::Entity* _createNode(float side, Ogre::String);
+    void _drawNode(float side, float x, float y);
+    void _drawEdge(float xO, float yO, float xD, float yD);
+
   };
 }
 

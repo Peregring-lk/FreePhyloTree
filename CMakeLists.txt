@@ -7,4 +7,4 @@ SET(SRC Clade Engine EventManager ${STRGY} CladeViewer program)
 
 ADD_EXECUTABLE(FreePhyloTree ${SRC})
 
-TARGET_LINK_LIBRARIES(FreePhyloTree m glut)
+TARGET_LINK_LIBRARIES(FreePhyloTree SDL GL)
