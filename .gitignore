@@ -1,16 +1,17 @@
-# Lo ignoramos todo
-*
+# Temporales
+*~
+*#
 
-# Salvo lo que nos hace falta:
-#  ficheros de compilación
-!*.[ch]pp
+# Código objeto
+*.o
 
-# Fichero de cmake
-!CMakeLists.txt
+# Compilacion de cmake
+CMakeFiles
+CMakeCache.txt
+*.cmake
 
-# Este mismo fichero
-!.gitignore
+# Makefile
+Makefile
 
-# Imágenes
-!*.tga
-!*.png
+# Ejecutable
+FreePhyloTree

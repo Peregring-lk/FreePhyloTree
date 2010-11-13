@@ -109,7 +109,7 @@ void GourceianMakeTree::_drawNode(float side, float x, float y)
 
 void GourceianMakeTree::_loadTextureNode()
 {
-  SDL_Surface *textureBloom = IMG_Load("Resources/bloom_alpha.tga");
+  SDL_Surface *textureBloom = IMG_Load("Resources/bloom.tga");
   SDL_Surface *textureNode = IMG_Load("Resources/file.png");
 
   glGenTextures(3, textureid);
