@@ -14,7 +14,6 @@ namespace FreePhyloTree
 
   private:
     CladeViewer *_viewer;
-
   };
 }
 

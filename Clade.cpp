@@ -12,7 +12,7 @@ string Clade::getName() const
   return (_name);
 }
 
-const vector<Clade*>& Clade::getSubclades() const
+const Subclades& Clade::getSubclades() const
 {
   return (_subclades);
 }

@@ -6,6 +6,9 @@
 
 namespace FreePhyloTree
 {
+  class Clade;
+  typedef std::vector<Clade*> Subclades;
+
   class Clade
   {
   public:
@@ -13,7 +16,7 @@ namespace FreePhyloTree
 
     std::string getName() const;
 
-    const std::vector<Clade*>& getSubclades() const;
+    const Subclades& getSubclades() const;
     Clade* getSuperclade() const;
 
     void attachClade(Clade *clade);
@@ -21,7 +24,7 @@ namespace FreePhyloTree
   private:
     std::string _name;
 
-    std::vector<Clade*> _subclades;
+    Subclades _subclades;
     Clade* _superclade;
 
     void setSuperclade(Clade *clade);

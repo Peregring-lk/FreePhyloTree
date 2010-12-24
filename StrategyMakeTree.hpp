@@ -1,7 +1,7 @@
 #ifndef _STRATEGY_MAKE_TREE_
 #define _STRATEGY_MAKE_TREE_
 
-#include "Clade.hpp"
+#include "Node.hpp"
 
 namespace FreePhyloTree
 {
@@ -10,7 +10,7 @@ namespace FreePhyloTree
   public:
     virtual void initSignal() = 0;
 
-    virtual void draw(Clade *clade) = 0;
+    virtual void draw(Node *node) = 0;
   };
 }
 

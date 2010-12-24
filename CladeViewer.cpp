@@ -4,8 +4,11 @@
 using namespace FreePhyloTree;
 
 CladeViewer::CladeViewer(Clade *clade, DrawStrategy strategy)
-  : _clade(clade), _continue(true)
+  : _continue(true)
 {
+  _strategyColor = new StrategyColor(R, false, B, G);
+
+  _tree = new Node(clade, NULL, _strategyColor);
   _engine = new Engine(this);
 
   if (strategy == GOURCEIAN)
@@ -14,6 +17,7 @@ CladeViewer::CladeViewer(Clade *clade, DrawStrategy strategy)
 
 CladeViewer::~CladeViewer()
 {
+  delete _strategyColor;
   delete _engine;
   delete _strategy;
 }
@@ -31,7 +35,7 @@ void CladeViewer::run()
 
 void CladeViewer::draw()
 {
-  _strategy->draw(_clade);
+  _strategy->draw(_tree);
 }
 
 void CladeViewer::killSignal()

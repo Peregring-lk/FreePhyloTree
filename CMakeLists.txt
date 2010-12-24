@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 2.6)
 
 PROJECT(FreePhyloTree CXX)
 
-SET(STRGY GourceianMakeTree)
-SET(SRC Clade Engine EventManager ${STRGY} CladeViewer program)
+SET(STRGY GourceianMakeTree StrategyColor)
+SET(SRC Clade Node Engine EventManager ${STRGY} CladeViewer program)
 
 ADD_EXECUTABLE(FreePhyloTree ${SRC})
 

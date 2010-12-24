@@ -7,15 +7,13 @@
 using namespace FreePhyloTree;
 using namespace std;
 
-typedef vector<Clade*>::const_iterator I;
-
 void GourceianMakeTree::initSignal()
 {
   _loadTextureNode();
 
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_BLEND);
-  glBlendFunc(GL_ONE, GL_ONE);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
@@ -26,51 +24,67 @@ void GourceianMakeTree::initSignal()
   glLoadIdentity();
 }
 
-void GourceianMakeTree::draw(Clade *clade)
+void GourceianMakeTree::draw(Node *node)
 {
   glClear(GL_COLOR_BUFFER_BIT);
 
   glPushMatrix();
-  _drawTreeClade(clade, 20, 20);
+  _drawTreeClade(node, 20, 20);
   glPopMatrix();
 }
 
 void
-GourceianMakeTree::_drawTreeClade(Clade *clade, float dx, float dy)
+GourceianMakeTree::_drawTreeClade(Node *node, float dx, float dy)
 {
-  const vector<Clade*>& subclades = clade->getSubclades();
+  const Children& children = node->getChildren();
   float l = 0;
 
-  for (I i = subclades.begin(); i != subclades.end(); ++i, l += 50) {
+  for (int i = 0; i < children.size(); ++i, l += 50) {
     float ddx = dx + 50;
     float ddy = dy + l;
 
-    _drawEdge(dx, dy, ddx, ddy);
-    _drawTreeClade(*i, ddx, ddy);
+    _drawEdge(node, children[i], dx, dy, ddx, ddy, 2);
+    _drawTreeClade(children[i], ddx, ddy);
   }
 
-  _drawBloom(60, dx, dy);
-  _drawNode(10, dx, dy);
+  _drawBloom(node, 60, dx, dy);
+  _drawNode(node, 10, dx, dy);
 }
 
 void
-GourceianMakeTree::_drawEdge(float xO, float yO, float xD, float yD)
+GourceianMakeTree::_drawEdge(Node *begin, Node *end, float xO,
+			     float yO, float xD, float yD,
+			     float thick) 
 {
-  glDisable(GL_TEXTURE_2D);
+  thick /= 2;
 
-  glBegin(GL_LINES);
-  glVertex2f(xO, yO);
-  glVertex2f(xD, yD);
+  glBindTexture(GL_TEXTURE_2D, textureid[1]);
+
+  glColor3f(1, 1, 1);
+
+  glBegin(GL_QUADS);
+
+  glTexCoord2f(1, 0);
+  glVertex2f(xO, yO - thick);
+  glTexCoord2f(0, 0);
+  glVertex2f(xO, yO + thick);
+  glTexCoord2f(0, 0);
+  glVertex2f(xD, yD + thick);
+  glTexCoord2f(1, 0);
+  glVertex2f(xD, yD - thick);
+
   glEnd();
-
-  glEnable(GL_TEXTURE_2D);
 }
 
-void GourceianMakeTree::_drawBloom(float side, float x, float y)
+void GourceianMakeTree::_drawBloom(Node *node, float side,
+				   float x, float y)
 {
   side /= 2;
 
   glBindTexture(GL_TEXTURE_2D, textureid[0]);
+
+  Color color = node->getColor();
+  glColor3f(color._color[0], color._color[1], color._color[2]);
 
   glBegin(GL_QUADS);
 
@@ -86,11 +100,15 @@ void GourceianMakeTree::_drawBloom(float side, float x, float y)
   glEnd();
 }
 
-void GourceianMakeTree::_drawNode(float side, float x, float y)
+void GourceianMakeTree::_drawNode(Node *node, float side,
+				  float x, float y)
 {
   side /= 2;
 
-  glBindTexture(GL_TEXTURE_2D, textureid[1]);
+  glBindTexture(GL_TEXTURE_2D, textureid[2]);
+
+  Color color = node->getColor();
+  glColor3f(color._color[0], color._color[1], color._color[2]);
 
   glBegin(GL_QUADS);
 
@@ -110,6 +128,7 @@ void GourceianMakeTree::_drawNode(float side, float x, float y)
 void GourceianMakeTree::_loadTextureNode()
 {
   SDL_Surface *textureBloom = IMG_Load("Resources/bloom.tga");
+  SDL_Surface *textureBeam = IMG_Load("Resources/beam.png");
   SDL_Surface *textureNode = IMG_Load("Resources/file.png");
 
   glGenTextures(3, textureid);
@@ -123,10 +142,16 @@ void GourceianMakeTree::_loadTextureNode()
 
   glBindTexture(GL_TEXTURE_2D, textureid[1]);
   gluBuild2DMipmaps(GL_TEXTURE_2D, 4,
+		    textureBeam->w, textureBeam->h,
+		    GL_RGBA, GL_UNSIGNED_BYTE,
+		    (unsigned int*)textureBeam->pixels);
+
+  glBindTexture(GL_TEXTURE_2D, textureid[2]);
+  gluBuild2DMipmaps(GL_TEXTURE_2D, 4,
 		    textureNode->w, textureNode->h,
 		    GL_RGBA, GL_UNSIGNED_BYTE,
 		    (unsigned int*)textureNode->pixels);
 
   SDL_FreeSurface(textureBloom);
-  SDL_FreeSurface(textureNode);
+  SDL_FreeSurface(textureBeam);
 }

@@ -22,10 +22,11 @@ namespace FreePhyloTree
     void killSignal();
 
   private:
-    Clade *_clade;
+    Node *_tree;
 
     Engine *_engine;
     StrategyMakeTree *_strategy;
+    StrategyColor *_strategyColor;
 
     bool _continue;
   };

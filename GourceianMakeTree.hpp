@@ -12,18 +12,19 @@ namespace FreePhyloTree
   public:
     void initSignal();
 
-    void draw(Clade *clade);
+    void draw(Node *node);
 
   private:
     GLuint textureid[3];
 
     void _loadTextureNode();
 
-    void _drawTreeClade(Clade *clade, float dx, float dy);
+    void _drawTreeClade(Node *node, float dx, float dy);
 
-    void _drawEdge(float xO, float yO, float xD, float yD);
-    void _drawBloom(float side, float x, float y);
-    void _drawNode(float side, float x, float y);
+    void _drawEdge(Node *begin, Node *end, float xO, float yO,
+		   float xD, float yD, float _thick);
+    void _drawBloom(Node *node, float side, float x, float y);
+    void _drawNode(Node *node, float side, float x, float y);
 
   };
 }
