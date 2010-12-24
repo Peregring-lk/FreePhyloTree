@@ -46,14 +46,17 @@ Color Interval::center() const
 
 void Interval::step(TypeColor type, int windows, float dir)
 {
-  _i._color[type] = _s._color[type] += dir / windows;
+  float move = dir / windows;
+
+  _i._color[type] += move;
+  _s._color[type] += move;
 }
 
 void Interval::cutUp(TypeColor type, int pieces, int n)
 {
   float step = (_s._color[type] - _i._color[type]) / pieces;
 
-  _i._color[type] = _i._color[type] + n * step;
+  _i._color[type] += n * step;
   _s._color[type] = _i._color[type] + step;
 }
 
@@ -67,7 +70,8 @@ StrategyColor::StrategyColor(TypeColor f, bool pos, TypeColor s,
     _dir = -1;
 }
 
-Interval StrategyColor::getInterval(int depth, int brothers, int n,
+Interval StrategyColor::getInterval(int windows, int depth,
+				    int brothers, int n,
 				    const Interval *father) 
 {
   if (father == NULL)
@@ -75,10 +79,10 @@ Interval StrategyColor::getInterval(int depth, int brothers, int n,
   else {
     Interval interval = *father;
 
-    interval.step(_f, depth, _dir);
+    interval.step(_f, windows, _dir);
 
     // Si es impar
-    if (n % 2)
+    if (depth % 2)
       interval.cutUp(_s, brothers, n);
     else
       interval.cutUp(_t, brothers, n);

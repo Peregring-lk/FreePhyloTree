@@ -17,9 +17,9 @@ namespace FreePhyloTree
   private:
     GLuint textureid[3];
 
-    void _loadTextureNode();
+    void _loadTextures();
 
-    void _drawTreeClade(Node *node, float dx, float dy);
+    void _drawTree(Node *node, float dx, float dy);
 
     void _drawEdge(Node *begin, Node *end, float xO, float yO,
 		   float xD, float yD, float _thick);

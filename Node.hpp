@@ -22,7 +22,7 @@ namespace FreePhyloTree
     int getDegree() const;
 
     const Children& getChildren() const;
-    void calcColor(int depth, int brothers, int n,
+    void calcColor(int windows, int brothers, int n,
 		   const Interval *father);
 
   private:

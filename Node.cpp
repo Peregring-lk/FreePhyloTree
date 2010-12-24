@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Node.hpp"
 
 using namespace std;
@@ -14,7 +15,9 @@ Node::Node(Clade *clade, Node *father, StrategyColor *strategyColor)
     _children.push_back(new Node(subclades[i], this, _strategyColor));
 
   _calcHeight();
-  calcColor(_height, 0, 0, NULL);
+
+  if (father == NULL)
+    calcColor(_height, 0, 0, NULL);
 }
 
 Color Node::getColor() const
@@ -42,16 +45,17 @@ const Children& Node::getChildren() const
   return (_children);
 }
 
-void Node::calcColor(int depth, int brothers, int n,
+void Node::calcColor(int windows, int brothers, int n,
 		     const Interval *father)
 {
-  Interval interval = _strategyColor->getInterval(depth, brothers,
-						  n, father);
+  Interval interval = _strategyColor->getInterval(windows, _depth,
+						  brothers, n,
+						  father);
 
   int nChild = _children.size();
 
   for (int i = 0; i < nChild; ++i)
-    _children[i]->calcColor(depth, nChild, i, &interval);
+    _children[i]->calcColor(windows, nChild, i, &interval);
 
   _color = _strategyColor->getColor(interval);
 }
@@ -66,16 +70,18 @@ void Node::_calcDepth()
 
 void Node::_calcHeight()
 {
-  int _height = 0;
   int nChild = _children.size();
+  _height = 0;
 
-  for (int i = 0; i < nChild; ++i) {
-    int childHeight = _children[i]->getHeight();
+  if (nChild) {
+    for (int i = 0; i < nChild; ++i) {
+      int childHeight = _children[i]->getHeight();
 
-    if (_height < childHeight)
-      _height = childHeight;
+      if (_height < childHeight)
+	_height = childHeight;
+    }
+
+    if (nChild)
+      ++_height;
   }
-
-  if (nChild)
-    ++_height;
 }

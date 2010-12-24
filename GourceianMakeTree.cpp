@@ -9,7 +9,7 @@ using namespace std;
 
 void GourceianMakeTree::initSignal()
 {
-  _loadTextureNode();
+  _loadTextures();
 
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_BLEND);
@@ -29,12 +29,12 @@ void GourceianMakeTree::draw(Node *node)
   glClear(GL_COLOR_BUFFER_BIT);
 
   glPushMatrix();
-  _drawTreeClade(node, 20, 20);
+  _drawTree(node, 20, 20);
   glPopMatrix();
 }
 
 void
-GourceianMakeTree::_drawTreeClade(Node *node, float dx, float dy)
+GourceianMakeTree::_drawTree(Node *node, float dx, float dy)
 {
   const Children& children = node->getChildren();
   float l = 0;
@@ -44,7 +44,7 @@ GourceianMakeTree::_drawTreeClade(Node *node, float dx, float dy)
     float ddy = dy + l;
 
     _drawEdge(node, children[i], dx, dy, ddx, ddy, 2);
-    _drawTreeClade(children[i], ddx, ddy);
+    _drawTree(children[i], ddx, ddy);
   }
 
   _drawBloom(node, 60, dx, dy);
@@ -125,7 +125,7 @@ void GourceianMakeTree::_drawNode(Node *node, float side,
 }
 
 
-void GourceianMakeTree::_loadTextureNode()
+void GourceianMakeTree::_loadTextures()
 {
   SDL_Surface *textureBloom = IMG_Load("Resources/bloom.tga");
   SDL_Surface *textureBeam = IMG_Load("Resources/beam.png");

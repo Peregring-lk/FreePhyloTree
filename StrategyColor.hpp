@@ -34,7 +34,7 @@ namespace FreePhyloTree
   public:
     StrategyColor(TypeColor f, bool pos, TypeColor s, TypeColor t);
 
-    Interval getInterval(int depth, int brothers, int n,
+    Interval getInterval(int windows, int depth, int brothers, int n,
 			 const Interval *father = NULL);
 
     Color getColor(const Interval& interval);

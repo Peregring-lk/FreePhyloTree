@@ -6,7 +6,7 @@ using namespace FreePhyloTree;
 CladeViewer::CladeViewer(Clade *clade, DrawStrategy strategy)
   : _continue(true)
 {
-  _strategyColor = new StrategyColor(R, false, B, G);
+  _strategyColor = new StrategyColor(G, false, R, B);
 
   _tree = new Node(clade, NULL, _strategyColor);
   _engine = new Engine(this);
