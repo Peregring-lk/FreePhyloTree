@@ -1,13 +1,21 @@
 #include <GL/glu.h>
 #include <SDL/SDL_image.h>
-#include <iostream>
 
-#include "GourceianMakeTree.hpp"
+#include "PhyloTree.hpp"
 
 using namespace FreePhyloTree;
-using namespace std;
 
-void GourceianMakeTree::initSignal()
+PhyloTree::PhyloTree(Name name) : Tree(name)
+{
+  _alloc = new SpringAlloc(2, 25, 70, 2);
+}
+
+PhyloTree::~PhyloTree()
+{
+  delete _alloc;
+}
+
+void PhyloTree::initSignal()
 {
   _loadTextures();
 
@@ -18,43 +26,40 @@ void GourceianMakeTree::initSignal()
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
-  glOrtho(0.0f, 400, 400, 0.0f, -1.0f, 1.0f);
+  glOrtho(-150, 150, 150, -150, 1, -1);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 }
 
-void GourceianMakeTree::draw(Node *node)
+void PhyloTree::draw()
 {
   glClear(GL_COLOR_BUFFER_BIT);
 
   glPushMatrix();
-  _drawTree(node, 20, 20);
+  _drawTree(_root);
   glPopMatrix();
+
+  _alloc->reAlloc(this);
 }
 
-void
-GourceianMakeTree::_drawTree(Node *node, float dx, float dy)
+void PhyloTree::_drawTree(Node *node)
 {
-  const Children& children = node->getChildren();
   float l = 0;
 
-  for (int i = 0; i < children.size(); ++i, l += 50) {
-    float ddx = dx + 50;
-    float ddy = dy + l;
+  const Nodes& nodes = node->children(); 
 
-    _drawEdge(node, children[i], dx, dy, ddx, ddy, 2);
-    _drawTree(children[i], ddx, ddy);
+  for (int i = 0; i < nodes.size(); ++i) {
+    Node *child = nodes[i];
+
+    _drawEdge(node, child, 5);
+    _drawTree(child);
   }
 
-  _drawBloom(node, 60, dx, dy);
-  _drawNode(node, 10, dx, dy);
+  _drawNode(node, 80, 10);
 }
 
-void
-GourceianMakeTree::_drawEdge(Node *begin, Node *end, float xO,
-			     float yO, float xD, float yD,
-			     float thick) 
+void PhyloTree::_drawEdge(Node *source, Node *target, float thick) 
 {
   thick /= 2;
 
@@ -62,29 +67,46 @@ GourceianMakeTree::_drawEdge(Node *begin, Node *end, float xO,
 
   glColor3f(1, 1, 1);
 
+  float xs = source->x();
+  float ys = source->y();
+  float xt = target->x();
+  float yt = target->y();
+
+
   glBegin(GL_QUADS);
 
   glTexCoord2f(1, 0);
-  glVertex2f(xO, yO - thick);
+  glVertex2f(xs, ys - thick);
   glTexCoord2f(0, 0);
-  glVertex2f(xO, yO + thick);
+  glVertex2f(xs, ys + thick);
   glTexCoord2f(0, 0);
-  glVertex2f(xD, yD + thick);
+  glVertex2f(xt, yt + thick);
   glTexCoord2f(1, 0);
-  glVertex2f(xD, yD - thick);
+  glVertex2f(xt, yt - thick);
 
   glEnd();
 }
 
-void GourceianMakeTree::_drawBloom(Node *node, float side,
-				   float x, float y)
+void PhyloTree::_drawNode(Node *node, float bloom, float side)
+{
+  _selectColor(node);
+  _drawSquare(node, bloom, textureid[0]);
+  _drawSquare(node, side, textureid[2]);
+}
+
+void PhyloTree::_selectColor(Node *node)
+{
+  glColor3f(node->r(), node->g(), node->b());
+}
+
+void PhyloTree::_drawSquare(Node *node, float side, GLuint tex)
 {
   side /= 2;
 
-  glBindTexture(GL_TEXTURE_2D, textureid[0]);
+  glBindTexture(GL_TEXTURE_2D, tex);
 
-  Color color = node->getColor();
-  glColor3f(color._color[0], color._color[1], color._color[2]);
+  float x = node->x();
+  float y = node->y();
 
   glBegin(GL_QUADS);
 
@@ -100,32 +122,7 @@ void GourceianMakeTree::_drawBloom(Node *node, float side,
   glEnd();
 }
 
-void GourceianMakeTree::_drawNode(Node *node, float side,
-				  float x, float y)
-{
-  side /= 2;
-
-  glBindTexture(GL_TEXTURE_2D, textureid[2]);
-
-  Color color = node->getColor();
-  glColor3f(color._color[0], color._color[1], color._color[2]);
-
-  glBegin(GL_QUADS);
-
-  glTexCoord2f(1, 1);
-  glVertex2f(x + side, y + side);
-  glTexCoord2f(1, 0);
-  glVertex2f(x + side, y - side);
-  glTexCoord2f(0, 0);
-  glVertex2f(x - side, y - side);
-  glTexCoord2f(0, 1);
-  glVertex2f(x - side, y + side);
-
-  glEnd();
-}
-
-
-void GourceianMakeTree::_loadTextures()
+void PhyloTree::_loadTextures()
 {
   SDL_Surface *textureBloom = IMG_Load("Resources/bloom.tga");
   SDL_Surface *textureBeam = IMG_Load("Resources/beam.png");
@@ -154,4 +151,5 @@ void GourceianMakeTree::_loadTextures()
 
   SDL_FreeSurface(textureBloom);
   SDL_FreeSurface(textureBeam);
+  SDL_FreeSurface(textureNode);
 }

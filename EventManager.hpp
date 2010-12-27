@@ -3,17 +3,17 @@
 
 namespace FreePhyloTree
 {
-  class CladeViewer;
+  class Viewer;
 
   class EventManager
   {
   public:
-    EventManager(CladeViewer *viewer);
+    EventManager(Viewer *viewer);
 
     void readInput();
 
   private:
-    CladeViewer *_viewer;
+    Viewer *_viewer;
   };
 }
 

@@ -1,11 +1,11 @@
 #include <SDL/SDL.h>
 
 #include "EventManager.hpp"
-#include "CladeViewer.hpp"
+#include "Viewer.hpp"
 
 using namespace FreePhyloTree;
 
-EventManager::EventManager(CladeViewer *viewer) : _viewer(viewer)
+EventManager::EventManager(Viewer *viewer) : _viewer(viewer)
 {}
 
 void EventManager::readInput()
@@ -14,24 +14,24 @@ void EventManager::readInput()
 
   bool bcontinue = true;
 
-  while(bcontinue) {
+  // while(bcontinue) {
 
-    // Sin eventos, dormimos.
-    if (!SDL_PollEvent(&event))
-      SDL_WaitEvent(&event);
+  //   // Sin eventos, dormimos.
+  //   if (!SDL_PollEvent(&event))
+  //     SDL_WaitEvent(&event);
 
-    do {
+  do {
 
-      if (event.type == SDL_KEYDOWN) {
-	SDLKey key = event.key.keysym.sym;
+    if (event.type == SDL_KEYDOWN) {
+      SDLKey key = event.key.keysym.sym;
 
-	if (key == SDLK_ESCAPE) {
-	  _viewer->killSignal();
-	  bcontinue = false;
-	}
+      if (key == SDLK_ESCAPE) {
+	_viewer->killSignal();
+	//	bcontinue = false;
       }
+    }
 
-    } while(bcontinue && SDL_PollEvent(&event));
-  }
+  } while(SDL_PollEvent(&event));
+  //}
 }
 

@@ -1,44 +1,48 @@
-#include "CladeViewer.hpp"
+#include <iostream>
+#include "Viewer.hpp"
 
 using namespace std;
 using namespace FreePhyloTree;
 
-Clade* createClade()
+PhyloTree* createClade()
 {
-  Clade *hominina = new Clade("Hominina");
+  PhyloTree *tree = new PhyloTree("Hominina");
 
-  Clade *australopithecus = new Clade("Australopithecus");
-  Clade *paranthropus = new Clade("Paranthropus");
-  Clade *homo = new Clade("Homo");
+  Node *hominina = new Node("Hominina");
 
-  Clade *habilis = new Clade("Habilis");
-  Clade *ergaster = new Clade("Ergaster");
-  Clade *georgicus = new Clade("Georgicus");
-  Clade *antecessor = new Clade("Antecessor");
-  Clade *erectus = new Clade("Erectus");
-  Clade *neanderthalensis = new Clade("Neanderthalensis");
-  Clade *sapiens = new Clade("Sapiens");
-  Clade *stupidus = new Clade("Stupidus");
+  Node *australopithecus = new Node("Australopithecus");
+  Node *paranthropus = new Node("Paranthropus");
+  Node *homo = new Node("Homo");
+  Node *ardipithecus = new Node("Ardipithecus");
 
-  hominina->attachClade(australopithecus);
-  hominina->attachClade(paranthropus);
-  hominina->attachClade(homo);
+  tree->setRoot(hominina);
+  tree->setChild(hominina, australopithecus);
+  tree->setChild(hominina, paranthropus);
+  tree->setChild(hominina, homo);
+  tree->setChild(hominina, ardipithecus);
 
-  homo->attachClade(habilis);
-  habilis->attachClade(georgicus);
-  habilis->attachClade(ergaster);
-  ergaster->attachClade(sapiens);
-  georgicus->attachClade(stupidus);
-  stupidus->attachClade(erectus);
-  stupidus->attachClade(antecessor);
-  antecessor->attachClade(neanderthalensis);
+  Node *garhi = new Node("Garhi");
+  Node *africanus = new Node("Africanus");
+  Node *robustus = new Node("Robustus");
 
-  return (hominina);
+  tree->setChild(australopithecus, garhi);
+  tree->setChild(australopithecus, africanus);
+  tree->setChild(australopithecus, robustus);
+
+  Node *habilis = new Node("Habilis");
+  Node *ergaster = new Node("Ergaster");
+  Node *sapiens = new Node("Sapiens");
+
+  tree->setChild(homo, habilis);
+  tree->setChild(homo, ergaster);
+  tree->setChild(homo, sapiens);
+
+  return (tree);
 }
 
 int main(int argc, char **argv)
 {
-  CladeViewer cladeViewer(createClade(), GOURCEIAN);
+  Viewer viewer(createClade());
 
-  cladeViewer.run();
+  viewer.run();
 }

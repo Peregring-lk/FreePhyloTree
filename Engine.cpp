@@ -1,12 +1,12 @@
 #include <iostream>
 
 #include "Engine.hpp"
-#include "CladeViewer.hpp"
+#include "Viewer.hpp"
 
 using namespace FreePhyloTree;
 using namespace std;
 
-Engine::Engine(CladeViewer *viewer) : _screen(NULL), _viewer(viewer)
+Engine::Engine(Viewer *viewer) : _screen(NULL), _viewer(viewer)
 {
   _eventMgr = new EventManager(_viewer);
 }
@@ -39,6 +39,7 @@ void Engine::flowStage()
 
   _eventMgr->readInput();
 
+    SDL_Delay(40);
   //TODO: Reimprimir cuando la aplicación no esté en primer plano.
   //TODO: Framerate
 }

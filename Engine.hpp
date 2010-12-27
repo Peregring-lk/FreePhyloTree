@@ -7,12 +7,12 @@
 
 namespace FreePhyloTree
 {
-  class CladeViewer;
+  class Viewer;
 
   class Engine
   {
   public:
-    Engine(CladeViewer *viewer);
+    Engine(Viewer *viewer);
     ~Engine();
 
     void initSignal();
@@ -27,7 +27,7 @@ namespace FreePhyloTree
 
     EventManager *_eventMgr;
 
-    CladeViewer *_viewer;
+    Viewer *_viewer;
 
     // Private functions
     void _bestScreen();
