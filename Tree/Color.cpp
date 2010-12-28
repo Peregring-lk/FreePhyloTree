@@ -36,9 +36,19 @@ GLfloat Color::b() const
   return _color[B];
 }
 
+GLfloat Color::color(TypeColor t) const
+{
+  return _color[t];
+}
+
 void Color::setColor(GLfloat r, GLfloat g, GLfloat b)
 {
   _color[R] = r;
   _color[G] = g;
   _color[B] = b;
+}
+
+void Color::setColor(TypeColor t, GLfloat value)
+{
+  _color[t] = value;
 }

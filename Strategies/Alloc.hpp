@@ -1,5 +1,5 @@
-#ifndef _TREE_ALLOC_
-#define _TREE_ALLOC_
+#ifndef _ALLOC_
+#define _ALLOC_
 
 #include "../Tree/Tree.hpp"
 

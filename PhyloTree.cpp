@@ -8,16 +8,19 @@ using namespace FreePhyloTree;
 PhyloTree::PhyloTree(Name name) : Tree(name)
 {
   _alloc = new SpringAlloc(2, 25, 70, 2);
+  _coloring = new Coloring();
 }
 
 PhyloTree::~PhyloTree()
 {
   delete _alloc;
+  delete _coloring;
 }
 
 void PhyloTree::initSignal()
 {
   _loadTextures();
+  _coloring->coloring(_root);
 
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_BLEND);

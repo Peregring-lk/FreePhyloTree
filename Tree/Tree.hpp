@@ -16,6 +16,7 @@ namespace FreePhyloTree
     const Edges& edges() const;
     const Edges& noAdjs() const;
 
+    Node *root() const;
     Node* node(Label label) const;
 
     unsigned height() const;

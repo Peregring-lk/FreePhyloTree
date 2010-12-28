@@ -3,6 +3,7 @@
 
 #include "Tree/Tree.hpp"
 #include "Strategies/Alloc.hpp"
+#include "Strategies/Coloring.hpp"
 
 namespace FreePhyloTree
 {
@@ -18,7 +19,9 @@ namespace FreePhyloTree
 
   private:
     GLuint textureid[3];
+
     SpringAlloc *_alloc;
+    Coloring *_coloring;
 
     void _loadTextures();
 

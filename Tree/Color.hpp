@@ -18,7 +18,10 @@ namespace FreePhyloTree
     GLfloat g() const;
     GLfloat b() const;
 
+    GLfloat color(TypeColor t) const;
+
     void setColor(GLfloat r, GLfloat g, GLfloat b);
+    void setColor(TypeColor t, GLfloat value);
 
   private:
     GLfloat _color[3];

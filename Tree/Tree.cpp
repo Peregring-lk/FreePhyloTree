@@ -31,6 +31,11 @@ const Edges& Tree::noAdjs() const
   return _noAdjs;
 }
 
+Node* Tree::root() const
+{
+  return _root;
+}
+
 Node* Tree::node(Label label) const
 {
   return _nodes[label];
