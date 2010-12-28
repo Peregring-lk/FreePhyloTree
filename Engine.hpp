@@ -3,11 +3,11 @@
 
 #include <SDL/SDL.h>
 
-#include "EventManager.hpp"
+#include "Viewer.hpp"
 
 namespace FreePhyloTree
 {
-  class Viewer;
+  class EventManager;
 
   class Engine
   {
@@ -15,19 +15,23 @@ namespace FreePhyloTree
     Engine(Viewer *viewer);
     ~Engine();
 
+    int width() const;
+    int height() const;
+
+    Viewer* viewer() const;
+
     void initSignal();
     void flowStage();
     void killSignal();
 
-    int screenW();
-    int screenH();
-
   private:
     SDL_Surface *_screen;
 
+    Viewer *_viewer;
     EventManager *_eventMgr;
 
-    Viewer *_viewer;
+    int _width;
+    int _height;
 
     // Private functions
     void _bestScreen();

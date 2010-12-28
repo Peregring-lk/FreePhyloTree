@@ -1,19 +1,22 @@
 #ifndef _FPT_EVENT_MANAGER_
 #define _FPT_EVENT_MANAGER_
 
+#include "Engine.hpp"
+
 namespace FreePhyloTree
 {
-  class Viewer;
-
   class EventManager
   {
   public:
-    EventManager(Viewer *viewer);
+    EventManager(Engine *engine);
 
     void readInput();
 
   private:
+    Engine *_engine;
     Viewer *_viewer;
+
+    Vec2f _screen2pic(PhyloTree *tree, int x, int y);
   };
 }
 

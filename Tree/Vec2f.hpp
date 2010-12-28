@@ -22,6 +22,8 @@ namespace FreePhyloTree
     Vec2f operator* (GLfloat k) const;
     Vec2f operator/ (GLfloat k) const;
 
+    bool inRadius(Vec2f vec, GLfloat radius) const;
+
     void setAlloc(GLfloat x, GLfloat y);
     void setX(GLfloat x);
     void setY(GLfloat y);

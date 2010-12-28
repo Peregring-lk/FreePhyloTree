@@ -54,6 +54,11 @@ Vec2f Vec2f::operator/ (GLfloat k) const
   return Vec2f(*this) /= k;
 }
 
+bool Vec2f::inRadius(Vec2f vec, GLfloat radius) const
+{
+  return (*this - vec).norm() < radius;
+}
+
 void Vec2f::setAlloc(GLfloat x, GLfloat y)
 {
   _x = x;

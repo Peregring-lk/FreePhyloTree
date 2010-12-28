@@ -1,12 +1,15 @@
+#include <iostream>
 #include <SDL/SDL.h>
 
 #include "EventManager.hpp"
-#include "Viewer.hpp"
 
+using namespace std;
 using namespace FreePhyloTree;
 
-EventManager::EventManager(Viewer *viewer) : _viewer(viewer)
-{}
+EventManager::EventManager(Engine *engine) : _engine(engine)
+{
+  _viewer = _engine->viewer();
+}
 
 void EventManager::readInput()
 {
@@ -30,8 +33,26 @@ void EventManager::readInput()
 	//	bcontinue = false;
       }
     }
+    else if (event.type == SDL_MOUSEMOTION) {
+      PhyloTree *tree = _viewer->tree();
+
+      Vec2f alloc = _screen2pic(tree, event.button.x, event.button.y);
+      tree->allocMouse(alloc);
+    }
 
   } while(SDL_PollEvent(&event));
   //}
+}
+
+Vec2f EventManager::_screen2pic(PhyloTree *tree, int x, int y)
+{
+  Vec2f inf = tree->infPic();
+  Vec2f sup = tree->supPic();
+
+  float desplX = ((float)x / _engine->width()) * (sup.x() - inf.x());
+  float desplY = (1 - (float)y / _engine->height()) * (sup.y() - inf.y());
+
+  return Vec2f(inf.x() + desplX,
+	       inf.y() + desplY);
 }
 

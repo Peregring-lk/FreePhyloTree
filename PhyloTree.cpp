@@ -1,14 +1,25 @@
+#include <iostream>
 #include <GL/glu.h>
 #include <SDL/SDL_image.h>
 
 #include "PhyloTree.hpp"
 
+using namespace std;
 using namespace FreePhyloTree;
 
-PhyloTree::PhyloTree(Name name) : Tree(name)
+PhyloTree::PhyloTree(Name name) : Tree(name), _sidePic(150)
 {
   _alloc = new SpringAlloc(3, 25, 80, 1);
   _coloring = new Coloring();
+
+  _radiusNode = 5;
+  _radiusBloom = 40;
+  _radiusBeam = 2;
+
+  _nodeMouse = NULL;
+
+  _font = new FTGLTextureFont("Resources/FreeSans.ttf");
+  _font->FaceSize(12);
 }
 
 PhyloTree::~PhyloTree()
@@ -17,22 +28,63 @@ PhyloTree::~PhyloTree()
   delete _coloring;
 }
 
+Vec2f PhyloTree::infPic() const
+{
+  return (Vec2f(_centerPic.x() - _sidePic,
+		_centerPic.y() + _sidePic));
+}
+
+Vec2f PhyloTree::supPic() const
+{
+  return (Vec2f(_centerPic.x() + _sidePic,
+		_centerPic.y() - _sidePic));
+}
+
+const Vec2f& PhyloTree::centerPic() const
+{
+  return _centerPic;
+}
+
+float PhyloTree::sidePic() const
+{
+  return _sidePic;
+}
+
 void PhyloTree::initSignal()
 {
   _loadTextures();
   _coloring->coloring(_root);
 
   glEnable(GL_TEXTURE_2D);
+
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
-  glOrtho(-150, 150, 150, -150, 1, -1);
+  Vec2f inf = infPic();
+  Vec2f sup = supPic();
+
+  glOrtho(inf.x(), inf.y(), sup.x(), sup.y(), 1, -1);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
+}
+
+void PhyloTree::allocMouse(const Vec2f& alloc)
+{
+  _allocMouse = alloc;
+  _nodeMouse = NULL;
+
+  for (int i = 0; i < _nodes.size(); ++i) {
+    Node *target = _nodes[i];
+
+    if (target->alloc().inRadius(_allocMouse, _radiusNode)) {
+      _nodeMouse = target;
+      return;
+    }
+  }
 }
 
 void PhyloTree::draw()
@@ -41,6 +93,7 @@ void PhyloTree::draw()
 
   glPushMatrix();
   _drawTree(_root);
+  _drawText();
   glPopMatrix();
 
   _alloc->reAlloc(this);
@@ -55,17 +108,15 @@ void PhyloTree::_drawTree(Node *node)
   for (int i = 0; i < nodes.size(); ++i) {
     Node *child = nodes[i];
 
-    _drawEdge(node, child, 5);
+    _drawEdge(node, child);
     _drawTree(child);
   }
 
-  _drawNode(node, 80, 10);
+  _drawNode(node);
 }
 
-void PhyloTree::_drawEdge(Node *source, Node *target, float thick) 
+void PhyloTree::_drawEdge(Node *source, Node *target) 
 {
-  thick /= 2;
-
   glBindTexture(GL_TEXTURE_2D, textureid[1]);
 
   glColor3f(1, 1, 1);
@@ -75,37 +126,34 @@ void PhyloTree::_drawEdge(Node *source, Node *target, float thick)
   float xt = target->x();
   float yt = target->y();
 
-
   glBegin(GL_QUADS);
 
   glTexCoord2f(1, 0);
-  glVertex2f(xs, ys - thick);
+  glVertex2f(xs, ys - _radiusBeam);
   glTexCoord2f(0, 0);
-  glVertex2f(xs, ys + thick);
+  glVertex2f(xs, ys + _radiusBeam);
   glTexCoord2f(0, 0);
-  glVertex2f(xt, yt + thick);
+  glVertex2f(xt, yt + _radiusBeam);
   glTexCoord2f(1, 0);
-  glVertex2f(xt, yt - thick);
+  glVertex2f(xt, yt - _radiusBeam);
 
   glEnd();
 }
 
-void PhyloTree::_drawNode(Node *node, float bloom, float side)
+void PhyloTree::_drawNode(Node *node)
 {
-  _selectColor(node);
-  _drawSquare(node, bloom, textureid[0]);
-  _drawSquare(node, side, textureid[2]);
+  _setColor(node);
+  _drawSquare(node, _radiusBloom, textureid[0]);
+  _drawSquare(node, _radiusNode, textureid[2]);
 }
 
-void PhyloTree::_selectColor(Node *node)
+void PhyloTree::_setColor(Node *node)
 {
   glColor3f(node->r(), node->g(), node->b());
 }
 
 void PhyloTree::_drawSquare(Node *node, float side, GLuint tex)
 {
-  side /= 2;
-
   glBindTexture(GL_TEXTURE_2D, tex);
 
   float x = node->x();
@@ -123,6 +171,27 @@ void PhyloTree::_drawSquare(Node *node, float side, GLuint tex)
   glVertex2f(x - side, y + side);
 
   glEnd();
+}
+
+void PhyloTree::_drawText()
+{
+  if (_nodeMouse != NULL) {
+    //    FTBBox box = _font->BBox(_nodeMouse->name().c_str());
+
+    GLfloat dx = _nodeMouse->x() + 5;
+    GLfloat dy = _nodeMouse->y() - 5;
+
+    glColor3f(1, 1, 0);
+    //_setColor(_nodeMouse);
+    
+    glTranslatef(dx, dy, 0);
+    glScalef(1, -1, 1);
+
+    _font->Render(_nodeMouse->name().c_str());
+
+    glScalef(1, -1, 1);
+    glTranslatef(-dx, -dy, 0);
+  }
 }
 
 void PhyloTree::_loadTextures()

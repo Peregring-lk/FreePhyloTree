@@ -18,7 +18,7 @@ namespace FreePhyloTree
   typedef std::pair<Node*, Node*> Edge;
   typedef std::vector<Edge> Edges;
 
-  class Tree;
+  //class Tree;
 
   class Node
   {

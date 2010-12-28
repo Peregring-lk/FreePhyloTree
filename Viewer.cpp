@@ -1,5 +1,7 @@
 #include "Viewer.hpp"
 
+#include "Engine.hpp"
+
 using namespace FreePhyloTree;
 
 Viewer::Viewer(PhyloTree *tree) : _tree(tree), _continue(true)
@@ -13,10 +15,16 @@ Viewer::~Viewer()
   delete _tree;
 }
 
+PhyloTree* Viewer::tree() const
+{
+  return _tree;
+}
+
 void Viewer::run()
 {
   _engine->initSignal();
   _tree->initSignal();
+  SDL_Delay(2000);
 
   while(_continue)
     _engine->flowStage();
