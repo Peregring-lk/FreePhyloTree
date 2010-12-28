@@ -16,6 +16,8 @@ namespace FreePhyloTree
     Engine *_engine;
     Viewer *_viewer;
 
+    bool _click;
+
     Vec2f _screen2pic(PhyloTree *tree, int x, int y);
   };
 }

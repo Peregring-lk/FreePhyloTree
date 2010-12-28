@@ -9,6 +9,7 @@ using namespace FreePhyloTree;
 EventManager::EventManager(Engine *engine) : _engine(engine)
 {
   _viewer = _engine->viewer();
+  _click = false;
 }
 
 void EventManager::readInput()
@@ -36,9 +37,18 @@ void EventManager::readInput()
     else if (event.type == SDL_MOUSEMOTION) {
       PhyloTree *tree = _viewer->tree();
 
-      Vec2f alloc = _screen2pic(tree, event.button.x, event.button.y);
-      tree->allocMouse(alloc);
-    }
+      if (_click)
+	tree->lookAt(Vec2f(event.motion.xrel,
+			   event.motion.yrel));
+      else {
+	Vec2f alloc = _screen2pic(tree, event.button.x, event.button.y);
+	tree->allocMouse(alloc);
+      }
+    }      
+    else if (event.type == SDL_MOUSEBUTTONDOWN)
+      _click = true;
+    else if (event.type == SDL_MOUSEBUTTONUP)
+      _click = false;
 
   } while(SDL_PollEvent(&event));
   //}

@@ -60,16 +60,23 @@ void PhyloTree::initSignal()
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-
   Vec2f inf = infPic();
   Vec2f sup = supPic();
+
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
 
   glOrtho(inf.x(), inf.y(), sup.x(), sup.y(), 1, -1);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
+}
+
+void PhyloTree::lookAt(const Vec2f& rel)
+{
+  _centerPic += rel;
+
+  glTranslatef(-rel.x(), -rel.y(), 0);
 }
 
 void PhyloTree::allocMouse(const Vec2f& alloc)
