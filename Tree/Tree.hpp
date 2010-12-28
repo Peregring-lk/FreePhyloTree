@@ -33,11 +33,11 @@ namespace FreePhyloTree
     Edges _edges;
     Edges _noAdjs;
 
-    void _newNode(Node *node);
+    void _newNode(Node *node, Node *father);
     void _moveEdge(Node *source, Node *target);
     bool _isNew(Node *node);
 
-    float _rand();
+    Vec2f _rand(Node *father);
   };
 }
 

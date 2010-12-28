@@ -54,7 +54,7 @@ unsigned Tree::order() const
 void Tree::setRoot(Node *root)
 {
   if (_nodes.size() == 0) {
-    _newNode(root);
+    _newNode(root, NULL);
     _root = root;
   }
 }
@@ -62,7 +62,7 @@ void Tree::setRoot(Node *root)
 void Tree::setChild(Node *father, Node *child)
 {
   if (father != NULL && child != NULL) {
-    _newNode(child);
+    _newNode(child, father);
 
     child->_father = father;
     child->_level = father->_level + 1;
@@ -74,7 +74,7 @@ void Tree::setChild(Node *father, Node *child)
   }
 }
 
-void Tree::_newNode(Node *node)
+void Tree::_newNode(Node *node, Node *father)
 {
   if (_isNew(node)) {
 
@@ -89,7 +89,7 @@ void Tree::_newNode(Node *node)
     node->_label = l;
     _nodes.push_back(node);
 
-    node->_alloc.setAlloc(_rand(), _rand());
+    node->_alloc = _rand(father);
   }
 }
 
@@ -111,9 +111,18 @@ bool Tree::_isNew(Node *node)
   return node != NULL && node->_father == NULL && node != _root;
 }
 
-float Tree::_rand()
+Vec2f Tree::_rand(Node *father)
 {
-  float n = rand();
+  GLfloat nx = rand() / (GLfloat)RAND_MAX;
+  GLfloat ny = rand() / (GLfloat)RAND_MAX;
 
-  return 30 * (1 - 2 * n / (float)RAND_MAX);
+  nx = 30 * (1 - 2 * nx);
+  ny = 30 * (1 - 2 * ny);
+
+  if (father != NULL) {
+    nx = father->x() + nx;
+    ny = father->y() + ny;
+  }
+
+  return Vec2f(nx, ny);
 }

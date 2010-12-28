@@ -7,7 +7,7 @@ using namespace FreePhyloTree;
 
 PhyloTree::PhyloTree(Name name) : Tree(name)
 {
-  _alloc = new SpringAlloc(2, 25, 70, 2);
+  _alloc = new SpringAlloc(3, 25, 80, 1);
   _coloring = new Coloring();
 }
 
