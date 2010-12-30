@@ -13,8 +13,10 @@ PhyloTree::PhyloTree(Name name) : Tree(name), _sidePic(150), _smoothCamera(0.08)
   _coloring = new Coloring();
 
   _radiusNode = 5;
-  _radiusBloom = 40;
   _radiusBeam = 2;
+
+  _radiusBloom = 40;
+  _smoothBloom = 0.05;
 
   _nodeMouse = NULL;
 
@@ -70,6 +72,9 @@ void PhyloTree::initSignal()
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
+
+  _rebootChildren(_root);
+  _initBloom(_radiusBloom);
   lookAt(_root->alloc());
 }
 
@@ -97,8 +102,16 @@ void PhyloTree::cribNode(const Vec2f& alloc)
 {
   Node *node = _searchNode(alloc);
 
-  if (node != NULL)
-    node->setCrib(!node->crib());
+  if (node != NULL) {
+    bool crib = node->crib();
+
+    if (crib) {
+      node->setBloom(_radiusBloom * node->degree());
+      _rebootChildren(node);
+    }
+
+    node->setCrib(!crib);
+  }
 }
 
 void PhyloTree::draw()
@@ -115,6 +128,7 @@ void PhyloTree::draw()
   _alloc->reAlloc(this);
   lookAt(_root->alloc() - allocRoot);
   _reloadCamera();
+  _reloadBloom(_radiusBloom, _smoothBloom);
 }
 
 void PhyloTree::_drawTree(Node *node)
@@ -162,7 +176,7 @@ void PhyloTree::_drawEdge(Node *source, Node *target)
 void PhyloTree::_drawNode(Node *node)
 {
   _setColor(node);
-  _drawSquare(node, _radiusBloom, textureid[0]);
+  _drawSquare(node, node->bloom(), textureid[0]);
   _drawSquare(node, _radiusNode, textureid[2]);
 }
 

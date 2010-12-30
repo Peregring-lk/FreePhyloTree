@@ -40,6 +40,10 @@ namespace FreePhyloTree
     bool _isNew(Node *node);
 
     Vec2f _rand(Node *father);
+    void _rebootChildren(Node *father);
+
+    void _initBloom(float bloom);
+    void _reloadBloom(float bloom, float smooth);
   };
 }
 

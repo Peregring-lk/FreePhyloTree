@@ -90,8 +90,6 @@ void Tree::_newNode(Node *node, Node *father)
 
     node->_label = l;
     _nodes.push_back(node);
-
-    node->_alloc = _rand(father);
   }
 }
 
@@ -123,8 +121,40 @@ Vec2f Tree::_rand(Node *father)
 
   Vec2f alloc(nx, ny);
 
-  if (father != NULL)
+  if (father != NULL) {
+    alloc *= _root->height() / (father->level() + 1); 
     alloc += father->alloc();
+  }
 
   return alloc;
+}
+
+void Tree::_rebootChildren(Node *father)
+{
+  const Nodes& children = father->children();
+
+  for (int i = 0; i < children.size(); ++i) {
+    Node *node = children[i];
+
+    node->_alloc = _rand(father);
+
+    if (!node->crib())
+      _rebootChildren(node);
+  }
+}
+
+void Tree::_initBloom(float bloom)
+{
+  for (int i = 0; i < _nodes.size(); ++i)
+    _nodes[i]->setBloom(bloom);
+}
+
+void Tree::_reloadBloom(float bloom, float smooth)
+{
+  for (int i = 0; i < _nodes.size(); ++i) {
+    float nodeBloom = _nodes[i]->bloom();
+    float difBloom = nodeBloom - bloom;
+
+    _nodes[i]->setBloom(nodeBloom - difBloom * smooth);
+  }
 }

@@ -55,6 +55,11 @@ bool Node::hide() const
     return _father->hide();
 }
 
+float Node::bloom() const
+{
+  return _bloom;
+}
+
 GLfloat Node::r() const
 {
   return _color.r();
@@ -131,6 +136,11 @@ void Node::setColor(const Color& color)
 void Node::setAlloc(const Vec2f& alloc)
 {
   _alloc = alloc;
+}
+
+void Node::setBloom(float bloom)
+{
+  _bloom = bloom;
 }
 
 void Node::move(const Vec2f& desp)
