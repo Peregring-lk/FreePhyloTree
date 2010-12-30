@@ -16,7 +16,7 @@ PhyloTree::PhyloTree(Name name) : Tree(name), _sidePic(150), _smoothCamera(0.08)
   _radiusBeam = 2;
 
   _radiusBloom = 40;
-  _smoothBloom = 0.05;
+  _smoothBloom = 0.1;
 
   _nodeMouse = NULL;
 
@@ -73,8 +73,9 @@ void PhyloTree::initSignal()
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
-  _rebootChildren(_root);
   _initBloom(_radiusBloom);
+  _cribNode(_root);
+
   lookAt(_root->alloc());
 }
 
@@ -102,16 +103,7 @@ void PhyloTree::cribNode(const Vec2f& alloc)
 {
   Node *node = _searchNode(alloc);
 
-  if (node != NULL) {
-    bool crib = node->crib();
-
-    if (crib) {
-      node->setBloom(_radiusBloom * node->degree());
-      _rebootChildren(node);
-    }
-
-    node->setCrib(!crib);
-  }
+  _cribNode(node);
 }
 
 void PhyloTree::draw()
@@ -248,6 +240,20 @@ Node* PhyloTree::_searchNode(const Vec2f& alloc)
   }
 
   return NULL;
+}
+
+void PhyloTree::_cribNode(Node *node)
+{
+  if (node != NULL) {
+    bool crib = node->crib();
+
+    if (crib) {
+      node->setBloom(_radiusBloom * node->degree());
+      _rebootChildren(node);
+    }
+
+    node->setCrib(!crib);
+  }
 }
 
 void PhyloTree::_loadTextures()

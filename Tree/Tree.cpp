@@ -58,6 +58,7 @@ void Tree::setRoot(Node *root)
   if (_nodes.size() == 0) {
     _newNode(root, NULL);
     _root = root;
+    _root->setCrib(true);
   }
 }
 

@@ -63,6 +63,7 @@ namespace FreePhyloTree
     void _reloadCamera();
 
     Node* _searchNode(const Vec2f& alloc);
+    void _cribNode(Node *node);
 
     void _drawText();
   };
