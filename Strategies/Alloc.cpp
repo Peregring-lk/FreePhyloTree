@@ -20,25 +20,25 @@ void SpringAlloc::reAlloc(Tree *tree)
   for (int i = 0; i < edges.size(); ++i) {
     Edge edge = edges[i];
 
-    _fa(edge.first, edge.second);
-    _fa(edge.second, edge.first);
+    _fa(edge.source(), edge.target(), edge.weight());
+    _fa(edge.target(), edge.source(), edge.weight());
   }
 
   for (int i = 0; i < noAdjs.size(); ++i) {
     Edge edge = noAdjs[i];
 
-    _fr(edge.first, edge.second);
-    _fr(edge.second, edge.first);
+    _fr(edge.source(), edge.target());
+    _fr(edge.target(), edge.source());
   }
 
   for (int i = 0; i < _moves.size(); ++i)
     tree->node(i)->move(_moves[i]);
 }
 
-void SpringAlloc::_fa(Node *source, Node *target)
+void SpringAlloc::_fa(Node *source, Node *target, int weight)
 {
   Vec2f vu = source->alloc() - target->alloc();
-  Vec2f fa = vu.unit() * _c1 * log(vu.norm() / _c2);
+  Vec2f fa = vu.unit() * _c1 * log(vu.norm() / weight);
 
   _moves[target->label()] += fa * _c4;
 }

@@ -2,6 +2,25 @@
 
 using namespace FreePhyloTree;
 
+Edge::Edge(Node *source, Node *target, int weight)
+  : _source(source), _target(target), _weight(weight)
+{}
+
+Node* Edge::source() const
+{
+  return _source;
+}
+
+Node* Edge::target() const
+{
+  return _target;
+}
+
+int Edge::weight() const
+{
+  return _weight;
+}
+
 Node::Node(const Name& name) : _name(name)
 {
   _father = NULL;

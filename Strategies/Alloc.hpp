@@ -21,7 +21,7 @@ namespace FreePhyloTree
     typedef std::vector<Vec2f> _Moves;
     _Moves _moves;
 
-    void _fa(Node *source, Node *target);
+    void _fa(Node *source, Node *target, int _weight);
     void _fr(Node *source, Node *target);
   };
 }

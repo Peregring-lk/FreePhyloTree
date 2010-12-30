@@ -24,7 +24,7 @@ void Viewer::run()
 {
   _engine->initSignal();
   _tree->initSignal();
-  SDL_Delay(200);
+  SDL_Delay(2000);
 
   while(_continue)
     _engine->flowStage();

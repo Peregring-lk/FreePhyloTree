@@ -9,6 +9,8 @@ Tree::Tree(const Name& name) : _name(name)
   _root = NULL;
 
   srand(time(NULL));
+
+  _weight = 25;
 }
 
 Name Tree::name() const
@@ -83,7 +85,7 @@ void Tree::_newNode(Node *node, Node *father)
     for (int i = 0; i < l; ++i) {
       Node *source = _nodes[i];
 
-      _noAdjs.push_back(make_pair(source, node));
+      _noAdjs.push_back(Edge(source, node, _weight));
     }
 
     node->_label = l;
@@ -98,7 +100,7 @@ void Tree::_moveEdge(Node *source, Node *target)
   for (Edges::iterator i = _noAdjs.begin(); i != _noAdjs.end(); ++i) {
     Edge edge = *i;
 
-    if (edge.first == source && edge.second == target) {
+    if (edge.source() == source && edge.target() == target) {
       _noAdjs.erase(i);
       _edges.push_back(edge);
       return;

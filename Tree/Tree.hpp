@@ -33,6 +33,8 @@ namespace FreePhyloTree
     Edges _edges;
     Edges _noAdjs;
 
+    int _weight;
+
     void _newNode(Node *node, Node *father);
     void _moveEdge(Node *source, Node *target);
     bool _isNew(Node *node);

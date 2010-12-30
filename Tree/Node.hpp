@@ -15,7 +15,24 @@ namespace FreePhyloTree
 
   typedef int Label;
   typedef std::vector<Node*> Nodes;
-  typedef std::pair<Node*, Node*> Edge;
+
+  class Edge
+  {
+  public:
+    Edge(Node *source, Node *target, int weight);
+
+    Node* source() const;
+    Node *target() const;
+    int weight() const;
+
+  private:
+    Node *_source;
+    Node *_target;
+
+    int _weight;
+  };
+
+  //  typedef std::pair<Node*, Node*> Edge;
   typedef std::vector<Edge> Edges;
 
   //class Tree;

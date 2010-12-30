@@ -70,6 +70,7 @@ void PhyloTree::initSignal()
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
+  lookAt(_root->alloc());
 }
 
 void PhyloTree::lookAt(const Vec2f& rel)
@@ -103,7 +104,10 @@ void PhyloTree::draw()
   _drawText();
   glPopMatrix();
 
+  Vec2f allocRoot = _root->alloc();
+
   _alloc->reAlloc(this);
+  lookAt(_root->alloc() - allocRoot);
 }
 
 void PhyloTree::_drawTree(Node *node)
