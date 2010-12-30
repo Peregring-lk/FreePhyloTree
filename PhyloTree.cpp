@@ -7,7 +7,7 @@
 using namespace std;
 using namespace FreePhyloTree;
 
-PhyloTree::PhyloTree(Name name) : Tree(name), _sidePic(150), _smoothCamera(0.05)
+PhyloTree::PhyloTree(Name name) : Tree(name), _sidePic(150), _smoothCamera(0.08)
 {
   _alloc = new SpringAlloc(3, 25, 80, 1);
   _coloring = new Coloring();
@@ -71,6 +71,13 @@ void PhyloTree::initSignal()
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   lookAt(_root->alloc());
+}
+
+void PhyloTree::gotoRoot()
+{
+  _relCamera = _root->alloc() - _centerPic;
+
+  _restSmoothCamera = _smoothCamera;
 }
 
 void PhyloTree::lookAt(const Vec2f& rel)

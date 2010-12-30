@@ -18,6 +18,8 @@ void EventManager::readInput()
 
   bool bcontinue = true;
 
+  PhyloTree *tree = _viewer->tree();
+
   // while(bcontinue) {
 
   //   // Sin eventos, dormimos.
@@ -33,9 +35,10 @@ void EventManager::readInput()
 	_viewer->killSignal();
 	//	bcontinue = false;
       }
+      else if (key == SDLK_SPACE)
+	tree->gotoRoot();
     }
     else if (event.type == SDL_MOUSEMOTION) {
-      PhyloTree *tree = _viewer->tree();
 
       if (_click)
 	tree->lookAt(Vec2f(event.motion.xrel,
