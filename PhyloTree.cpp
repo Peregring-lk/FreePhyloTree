@@ -7,7 +7,7 @@
 using namespace std;
 using namespace FreePhyloTree;
 
-PhyloTree::PhyloTree(Name name) : Tree(name), _sidePic(150)
+PhyloTree::PhyloTree(Name name) : Tree(name), _sidePic(150), _smoothCamera(0.05)
 {
   _alloc = new SpringAlloc(3, 25, 80, 1);
   _coloring = new Coloring();
@@ -75,9 +75,9 @@ void PhyloTree::initSignal()
 
 void PhyloTree::lookAt(const Vec2f& rel)
 {
-  _centerPic += rel;
+  _restSmoothCamera = _smoothCamera;
 
-  glTranslatef(-rel.x(), -rel.y(), 0);
+  _relCamera += rel;
 }
 
 void PhyloTree::allocMouse(const Vec2f& alloc)
@@ -108,6 +108,7 @@ void PhyloTree::draw()
 
   _alloc->reAlloc(this);
   lookAt(_root->alloc() - allocRoot);
+  _reloadCamera();
 }
 
 void PhyloTree::_drawTree(Node *node)
@@ -203,6 +204,17 @@ void PhyloTree::_drawText()
     glScalef(1, -1, 1);
     glTranslatef(-dx, -dy, 0);
   }
+}
+
+void PhyloTree::_reloadCamera()
+{
+  Vec2f rel = _relCamera * _restSmoothCamera;
+  _restSmoothCamera /= 2;
+
+  _centerPic += rel;
+  _relCamera -= rel;
+
+  glTranslatef(-rel.x(), -rel.y(), 0);
 }
 
 void PhyloTree::_loadTextures()

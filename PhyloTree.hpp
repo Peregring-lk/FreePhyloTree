@@ -38,6 +38,10 @@ namespace FreePhyloTree
     float _radiusBeam;
     float _radiusBloom;
 
+    Vec2f _relCamera;
+    float _restSmoothCamera;
+    const float _smoothCamera;
+
     Vec2f _allocMouse;
     Node *_nodeMouse;
 
@@ -52,6 +56,7 @@ namespace FreePhyloTree
     void _drawNode(Node *node);
     void _setColor(Node *node);
     void _drawSquare(Node *node, float side, GLuint tex);
+    void _reloadCamera();
 
     void _drawText();
   };
