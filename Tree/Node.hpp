@@ -40,10 +40,11 @@ namespace FreePhyloTree
   class Node
   {
   public:
-    Node(const Name& name);
+    Node(const Name& name, bool hide = false);
 
     Name name() const;
     Label label() const;
+    bool hide() const;
 
     GLfloat r() const;
     GLfloat g() const;
@@ -68,6 +69,8 @@ namespace FreePhyloTree
     void setAlloc(const Vec2f& alloc);
     void move(const Vec2f& delta);
 
+    void setHide(bool hide);
+
     friend class Tree;
 
   private:
@@ -75,6 +78,7 @@ namespace FreePhyloTree
     Color _color;
     Vec2f _alloc;
     Label _label;
+    bool _hide;
 
     Node *_father;
     Nodes _children;

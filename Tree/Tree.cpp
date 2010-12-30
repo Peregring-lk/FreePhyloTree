@@ -121,10 +121,10 @@ Vec2f Tree::_rand(Node *father)
   nx = 30 * (1 - 2 * nx);
   ny = 30 * (1 - 2 * ny);
 
-  if (father != NULL) {
-    nx = father->x() + nx;
-    ny = father->y() + ny;
-  }
+  Vec2f alloc(nx, ny);
 
-  return Vec2f(nx, ny);
+  if (father != NULL)
+    alloc += father->alloc();
+
+  return alloc;
 }
