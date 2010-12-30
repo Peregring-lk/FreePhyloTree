@@ -10,6 +10,7 @@ EventManager::EventManager(Engine *engine) : _engine(engine)
 {
   _viewer = _engine->viewer();
   _click = false;
+  _move = false;
 }
 
 void EventManager::readInput()
@@ -41,6 +42,9 @@ void EventManager::readInput()
     else if (event.type == SDL_MOUSEMOTION) {
 
       if (_click)
+	_move = true;
+
+      if (_click)
 	tree->lookAt(Vec2f(event.motion.xrel,
 			   event.motion.yrel));
       else {
@@ -50,8 +54,14 @@ void EventManager::readInput()
     }      
     else if (event.type == SDL_MOUSEBUTTONDOWN)
       _click = true;
-    else if (event.type == SDL_MOUSEBUTTONUP)
+    else if (event.type == SDL_MOUSEBUTTONUP) {
       _click = false;
+
+      if (!_move)
+	tree->hideNode(_screen2pic(tree, event.button.x, event.button.y));
+      else
+	_move = false;
+    }
 
   } while(SDL_PollEvent(&event));
   //}

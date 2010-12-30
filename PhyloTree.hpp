@@ -23,7 +23,8 @@ namespace FreePhyloTree
 
     void gotoRoot();
     void lookAt(const Vec2f& rel);
-    void allocMouse(const Vec2f& allocMouse);
+    void allocMouse(const Vec2f& alloc);
+    void hideNode(const Vec2f& alloc);
     
     void draw();
 
@@ -57,7 +58,9 @@ namespace FreePhyloTree
     void _drawNode(Node *node);
     void _setColor(Node *node);
     void _drawSquare(Node *node, float side, GLuint tex);
+
     void _reloadCamera();
+    Node* _searchNode(const Vec2f& alloc);
 
     void _drawText();
   };

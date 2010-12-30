@@ -90,16 +90,15 @@ void PhyloTree::lookAt(const Vec2f& rel)
 void PhyloTree::allocMouse(const Vec2f& alloc)
 {
   _allocMouse = alloc;
-  _nodeMouse = NULL;
+  _nodeMouse = _searchNode(alloc);
+}
 
-  for (int i = 0; i < _nodes.size(); ++i) {
-    Node *target = _nodes[i];
+void PhyloTree::hideNode(const Vec2f& alloc)
+{
+  Node *node = _searchNode(alloc);
 
-    if (target->alloc().inRadius(_allocMouse, _radiusNode)) {
-      _nodeMouse = target;
-      return;
-    }
-  }
+  if (node != NULL)
+    node->setHide(!node->hide());
 }
 
 void PhyloTree::draw()
@@ -124,12 +123,13 @@ void PhyloTree::_drawTree(Node *node)
 
   const Nodes& nodes = node->children(); 
 
-  for (int i = 0; i < nodes.size(); ++i) {
-    Node *child = nodes[i];
+  if (!node->hide())
+    for (int i = 0; i < nodes.size(); ++i) {
+      Node *child = nodes[i];
 
-    _drawEdge(node, child);
-    _drawTree(child);
-  }
+      _drawEdge(node, child);
+      _drawTree(child);
+    }
 
   _drawNode(node);
 }
@@ -222,6 +222,18 @@ void PhyloTree::_reloadCamera()
   _relCamera -= rel;
 
   glTranslatef(-rel.x(), -rel.y(), 0);
+}
+
+Node* PhyloTree::_searchNode(const Vec2f& alloc)
+{
+  for (int i = 0; i < _nodes.size(); ++i) {
+    Node *target = _nodes[i];
+
+    if (target->alloc().inRadius(alloc, _radiusNode))
+      return target;
+  }
+
+  return NULL;
 }
 
 void PhyloTree::_loadTextures()
