@@ -93,12 +93,12 @@ void PhyloTree::allocMouse(const Vec2f& alloc)
   _nodeMouse = _searchNode(alloc);
 }
 
-void PhyloTree::hideNode(const Vec2f& alloc)
+void PhyloTree::cribNode(const Vec2f& alloc)
 {
   Node *node = _searchNode(alloc);
 
   if (node != NULL)
-    node->setHide(!node->hide());
+    node->setCrib(!node->crib());
 }
 
 void PhyloTree::draw()
@@ -123,7 +123,7 @@ void PhyloTree::_drawTree(Node *node)
 
   const Nodes& nodes = node->children(); 
 
-  if (!node->hide())
+  if (!node->crib())
     for (int i = 0; i < nodes.size(); ++i) {
       Node *child = nodes[i];
 

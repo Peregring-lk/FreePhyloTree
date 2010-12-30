@@ -58,7 +58,7 @@ void EventManager::readInput()
       _click = false;
 
       if (!_move)
-	tree->hideNode(_screen2pic(tree, event.button.x, event.button.y));
+	tree->cribNode(_screen2pic(tree, event.button.x, event.button.y));
       else
 	_move = false;
     }

@@ -44,6 +44,7 @@ namespace FreePhyloTree
 
     Name name() const;
     Label label() const;
+    bool crib() const;
     bool hide() const;
 
     GLfloat r() const;
@@ -69,7 +70,7 @@ namespace FreePhyloTree
     void setAlloc(const Vec2f& alloc);
     void move(const Vec2f& delta);
 
-    void setHide(bool hide);
+    void setCrib(bool crib);
 
     friend class Tree;
 
@@ -78,7 +79,7 @@ namespace FreePhyloTree
     Color _color;
     Vec2f _alloc;
     Label _label;
-    bool _hide;
+    bool _crib;
 
     Node *_father;
     Nodes _children;

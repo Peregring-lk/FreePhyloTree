@@ -24,7 +24,7 @@ namespace FreePhyloTree
     void gotoRoot();
     void lookAt(const Vec2f& rel);
     void allocMouse(const Vec2f& alloc);
-    void hideNode(const Vec2f& alloc);
+    void cribNode(const Vec2f& alloc);
     
     void draw();
 

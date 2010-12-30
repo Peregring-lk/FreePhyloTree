@@ -19,16 +19,24 @@ void SpringAlloc::reAlloc(Tree *tree)
 
   for (int i = 0; i < edges.size(); ++i) {
     Edge edge = edges[i];
+    Node *source = edge.source();
+    Node *target = edge.target();
 
-    _fa(edge.source(), edge.target(), edge.weight());
-    _fa(edge.target(), edge.source(), edge.weight());
+    if (!target->hide()) {
+      _fa(source, target, edge.weight());
+      _fa(target, source, edge.weight());
+    }
   }
 
   for (int i = 0; i < noAdjs.size(); ++i) {
     Edge edge = noAdjs[i];
+    Node *source = edge.source();
+    Node *target = edge.target();
 
-    _fr(edge.source(), edge.target());
-    _fr(edge.target(), edge.source());
+    if (!source->hide() && !target->hide()) {
+      _fr(source, target);
+      _fr(target, source); 
+    }
   }
 
   for (int i = 0; i < _moves.size(); ++i)

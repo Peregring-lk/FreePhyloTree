@@ -21,12 +21,13 @@ int Edge::weight() const
   return _weight;
 }
 
-Node::Node(const Name& name, bool hide) : _name(name), _hide(hide)
+Node::Node(const Name& name, bool hide) : _name(name)
 {
   _father = NULL;
 
   _level = 0;
   _height = 0;
+  _crib = false;
 }
 
 Name Node::name() const
@@ -39,9 +40,19 @@ Label Node::label() const
   return _label;
 }
 
+bool Node::crib() const
+{
+  return _crib;
+}
+
 bool Node::hide() const
 {
-  return _hide;
+  if (_father == NULL)
+    return false;
+  else if (_father->crib())
+    return true;
+  else
+    return _father->hide();
 }
 
 GLfloat Node::r() const
@@ -127,9 +138,9 @@ void Node::move(const Vec2f& desp)
   _alloc += desp;
 }
 
-void Node::setHide(bool hide)
+void Node::setCrib(bool crib)
 {
-  _hide = hide;
+  _crib = crib;
 }
 
 void Node::_uploadHeight(Node *n)
