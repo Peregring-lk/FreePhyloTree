@@ -83,6 +83,7 @@ namespace FreePhyloTree
     unsigned degree() const;
     unsigned level() const;
     unsigned height() const;
+    unsigned nodes() const;
 
     Node* root();
 
