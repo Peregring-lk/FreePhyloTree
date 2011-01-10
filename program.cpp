@@ -18,7 +18,7 @@
 */
 
 #include <iostream>
-#include "Viewer.hpp"
+#include "FreePhyloTree.hpp"
 
 using namespace std;
 using namespace FreePhyloTree;
@@ -107,7 +107,9 @@ PhyloTree* createClade()
 
 int main(int argc, char **argv)
 {
-  Viewer viewer(createClade());
+  QFreePhyloTree fpt(createClade(), argc, argv);
 
-  viewer.run();
+  fpt.run();
+
+  return fpt.exec();
 }

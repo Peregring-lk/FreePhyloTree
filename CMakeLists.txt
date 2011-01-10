@@ -1,15 +1,21 @@
 cmake_minimum_required(VERSION 2.6)
 
-PROJECT(FreePhyloTree CXX)
+PROJECT(FreePhyloTree)
+
+FIND_PACKAGE(Qt4 REQUIRED)
 
 INCLUDE_DIRECTORIES(/usr/include/freetype2/)
 
 AUX_SOURCE_DIRECTORY(Tree TREE)
 AUX_SOURCE_DIRECTORY(Strategies STRGY)
 
+SET(QT_USE_QTOPENGL TRUE)
+INCLUDE(${QT_USE_FILE})
+ADD_DEFINITIONS(${QT_DEFINITIONS})
+
 SET(TREES PhyloTree ${TREE} ${STRGY})
-SET(SRC Viewer Engine EventManager ${TREES} program)
+SET(SRC FreePhyloTree GLEngine ${TREES} program)
 
 ADD_EXECUTABLE(FreePhyloTree ${SRC})
 
-TARGET_LINK_LIBRARIES(FreePhyloTree SDL SDL_image GL GLU ftgl m)
+TARGET_LINK_LIBRARIES(FreePhyloTree SDL SDL_image GL GLU ftgl m ${QT_LIBRARIES})
