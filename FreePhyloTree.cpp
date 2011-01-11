@@ -22,10 +22,13 @@
 using namespace FreePhyloTree;
 
 QFreePhyloTree::QFreePhyloTree(PhyloTree *tree, int argc, char **argv)
-  : QApplication(argc, argv), _glEngine(tree)
+  : QApplication(argc, argv), _glEngine(tree), _qTimer(this)
 {}
 
 void QFreePhyloTree::run()
 {
+  connect(&_qTimer, SIGNAL(timeout()), &_glEngine, SLOT(animate()));
+  _qTimer.start(40);
+
   _glEngine.show();
 }

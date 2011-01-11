@@ -26,7 +26,7 @@
 using namespace std;
 using namespace FreePhyloTree;
 
-PhyloTree::PhyloTree(Name name) : Tree(name), _sidePic(200), _smoothCamera(0.08)
+PhyloTree::PhyloTree(Name name) : Tree(name), _sidePic(150), _smoothCamera(0.08)
 {
   _alloc = new SpringAlloc(3, 25, 80, 1);
   _coloring = new Coloring();

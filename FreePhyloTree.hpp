@@ -21,6 +21,8 @@
 #define _FREE_PHYLO_TREE_
 
 #include <QApplication>
+#include <QTimer>
+
 #include "GLEngine.hpp"
 
 namespace FreePhyloTree
@@ -34,6 +36,7 @@ namespace FreePhyloTree
     
   private:
     GLEngine _glEngine;
+    QTimer _qTimer;
   };
 }
 

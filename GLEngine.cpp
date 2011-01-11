@@ -17,7 +17,7 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "GLEngine.hpp"
+#include "GLEngine.moc"
 
 using namespace FreePhyloTree;
 
@@ -27,6 +27,11 @@ GLEngine::GLEngine(PhyloTree *tree) : _tree(tree)
 GLEngine::~GLEngine()
 {
   delete _tree;
+}
+
+void GLEngine::animate()
+{
+  repaint();
 }
 
 void GLEngine::initializeGL()

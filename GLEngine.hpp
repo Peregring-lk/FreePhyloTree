@@ -17,6 +17,7 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
 #ifndef _GL_ENGINE_
 #define _GL_ENGINE_
 
@@ -27,9 +28,14 @@ namespace FreePhyloTree
 {
   class GLEngine : public QGLWidget
   {
+    Q_OBJECT
+
   public:
     GLEngine(PhyloTree *tree);
     ~GLEngine();
+
+  public slots:
+    void animate();
 
   private:
     PhyloTree *_tree;
