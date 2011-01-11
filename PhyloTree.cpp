@@ -26,7 +26,7 @@
 using namespace std;
 using namespace FreePhyloTree;
 
-PhyloTree::PhyloTree(Name name) : Tree(name), _sidePic(150), _smoothCamera(0.08)
+PhyloTree::PhyloTree(Name name) : Tree(name), _sidePic(200), _smoothCamera(0.08)
 {
   _alloc = new SpringAlloc(3, 25, 80, 1);
   _coloring = new Coloring();
@@ -52,13 +52,13 @@ PhyloTree::~PhyloTree()
 Vec2f PhyloTree::infPic() const
 {
   return (Vec2f(_centerPic.x() - _sidePic,
-		_centerPic.y() + _sidePic));
+		_centerPic.y() - _sidePic));
 }
 
 Vec2f PhyloTree::supPic() const
 {
   return (Vec2f(_centerPic.x() + _sidePic,
-		_centerPic.y() - _sidePic));
+		_centerPic.y() + _sidePic));
 }
 
 const Vec2f& PhyloTree::centerPic() const
@@ -87,7 +87,7 @@ void PhyloTree::initSignal()
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
-  glOrtho(inf.x(), inf.y(), sup.x(), sup.y(), 1, -1);
+  glOrtho(inf.x(), sup.x(), inf.y(), sup.y(), 1, -1);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
