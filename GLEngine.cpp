@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2010 Aarón Bueno Villares <abv150ci@gmail.com>
+  Copyright (C) 2011 Aarón Bueno Villares <abv150ci@gmail.com>
 
   This file is part of FreePhyloTree.
 

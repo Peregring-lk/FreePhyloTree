@@ -285,5 +285,5 @@ void PhyloTree::_loadTextures(GLEngine *glEngine)
   textureid[1] = glEngine->bindTexture(textureBeam, GL_TEXTURE_2D,
 				       QGLContext::MipmapBindOption);
   textureid[2] = glEngine->bindTexture(textureNode, GL_TEXTURE_2D,
-				       QGLContext::MipmapBindOption);
+  				       QGLContext::MipmapBindOption);
 }
