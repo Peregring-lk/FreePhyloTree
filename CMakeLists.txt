@@ -20,4 +20,4 @@ SET(SRC FreePhyloTree GLEngine ${TREES} program)
 
 ADD_EXECUTABLE(FreePhyloTree ${SRC})
 
-TARGET_LINK_LIBRARIES(FreePhyloTree SDL SDL_image GL GLU ftgl m ${QT_LIBRARIES})
+TARGET_LINK_LIBRARIES(FreePhyloTree ftgl m ${QT_LIBRARIES})

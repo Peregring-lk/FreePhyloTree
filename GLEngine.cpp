@@ -36,7 +36,7 @@ void GLEngine::animate()
 
 void GLEngine::initializeGL()
 {
-  _tree->initSignal();
+  _tree->initSignal(this);
 }
 
 void GLEngine::paintGL()

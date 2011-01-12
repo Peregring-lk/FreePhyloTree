@@ -19,8 +19,8 @@
 
 #include <iostream>
 #include <GL/glu.h>
-#include <SDL/SDL_image.h>
 
+#include "GLEngine.hpp"
 #include "PhyloTree.hpp"
 
 using namespace std;
@@ -71,13 +71,12 @@ float PhyloTree::sidePic() const
   return _sidePic;
 }
 
-void PhyloTree::initSignal()
+void PhyloTree::initSignal(GLEngine *glEngine)
 {
-  _loadTextures();
+  _loadTextures(glEngine);
   _coloring->coloring(_root);
 
   glEnable(GL_TEXTURE_2D);
-
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -275,34 +274,16 @@ void PhyloTree::_cribNode(Node *node)
   }
 }
 
-void PhyloTree::_loadTextures()
+void PhyloTree::_loadTextures(GLEngine *glEngine)
 {
-  SDL_Surface *textureBloom = IMG_Load("Resources/bloom.tga");
-  SDL_Surface *textureBeam = IMG_Load("Resources/beam.png");
-  SDL_Surface *textureNode = IMG_Load("Resources/file.png");
+  QImage textureBloom("Resources/bloom.png");
+  QImage textureBeam("Resources/beam.png");
+  QImage textureNode("Resources/file.png");
 
-  glGenTextures(3, textureid);
-
-
-  glBindTexture(GL_TEXTURE_2D, textureid[0]);
-  gluBuild2DMipmaps(GL_TEXTURE_2D, 4,
-		    textureBloom->w, textureBloom->h,
-		    GL_RGBA, GL_UNSIGNED_BYTE,
-		    (unsigned int*)textureBloom->pixels);
-
-  glBindTexture(GL_TEXTURE_2D, textureid[1]);
-  gluBuild2DMipmaps(GL_TEXTURE_2D, 4,
-		    textureBeam->w, textureBeam->h,
-		    GL_RGBA, GL_UNSIGNED_BYTE,
-		    (unsigned int*)textureBeam->pixels);
-
-  glBindTexture(GL_TEXTURE_2D, textureid[2]);
-  gluBuild2DMipmaps(GL_TEXTURE_2D, 4,
-		    textureNode->w, textureNode->h,
-		    GL_RGBA, GL_UNSIGNED_BYTE,
-		    (unsigned int*)textureNode->pixels);
-
-  SDL_FreeSurface(textureBloom);
-  SDL_FreeSurface(textureBeam);
-  SDL_FreeSurface(textureNode);
+  textureid[0] = glEngine->bindTexture(textureBloom, GL_TEXTURE_2D,
+				       QGLContext::MipmapBindOption);
+  textureid[1] = glEngine->bindTexture(textureBeam, GL_TEXTURE_2D,
+				       QGLContext::MipmapBindOption);
+  textureid[2] = glEngine->bindTexture(textureNode, GL_TEXTURE_2D,
+				       QGLContext::MipmapBindOption);
 }

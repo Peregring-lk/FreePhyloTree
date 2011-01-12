@@ -27,6 +27,8 @@
 
 namespace FreePhyloTree
 {
+  class GLEngine;
+
   class PhyloTree : public Tree
   {
   public:
@@ -38,7 +40,7 @@ namespace FreePhyloTree
     Vec2f supPic() const;
     float sidePic() const;
 
-    void initSignal();
+    void initSignal(GLEngine *glEngine);
 
     void gotoRoot();
     void lookAt(const Vec2f& rel);
@@ -70,7 +72,7 @@ namespace FreePhyloTree
     float _sidePic;
     Vec2f _centerPic;
 
-    void _loadTextures();
+    void _loadTextures(GLEngine *glEngine);
 
     void _drawTree(Node *node);
 
