@@ -36,6 +36,7 @@ PhyloTree::PhyloTree(Name name) : Tree(name), _sidePic(200), _smoothCamera(0.08)
 
   _radiusBloom = 40;
   _smoothBloom = 0.1;
+  _impulseCamera = 2;
 
   _nodeMouse = NULL;
 
@@ -108,7 +109,7 @@ void PhyloTree::lookAt(const Vec2f& rel)
 {
   _restSmoothCamera = _smoothCamera;
 
-  _relCamera += rel;
+  _relCamera += rel * _impulseCamera;
 }
 
 void PhyloTree::allocMouse(const Vec2f& alloc)
@@ -219,10 +220,12 @@ void PhyloTree::_drawSquare(Node *node, float side, GLuint tex)
 void PhyloTree::_drawText()
 {
   if (_nodeMouse != NULL) {
-    //    FTBBox box = _font->BBox(_nodeMouse->name().c_str());
+    FTBBox box = _font->BBox(_nodeMouse->name().c_str());
 
-    GLfloat dx = _nodeMouse->x() + 5;
-    GLfloat dy = _nodeMouse->y() - 5;
+    float heightBox = box.Upper().Y() - box.Lower().Y();
+
+    GLfloat dx = _nodeMouse->x() + 7;
+    GLfloat dy = _nodeMouse->y() - heightBox / 2;
 
     glColor3f(1, 1, 0);
     //_setColor(_nodeMouse);

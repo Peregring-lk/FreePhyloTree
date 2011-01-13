@@ -40,6 +40,7 @@ namespace FreePhyloTree
 
   private:
     PhyloTree *_tree;
+    QPointF _lastMouseEvent;
 
     void initializeGL();
     void paintGL();

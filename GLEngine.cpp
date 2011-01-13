@@ -50,8 +50,20 @@ void GLEngine::paintGL()
 
 void GLEngine::mouseMoveEvent(QMouseEvent *event)
 {
-  Vec2f alloc = _screen2pic(event->x(), event->y());
-  _tree->allocMouse(alloc);
+  QPointF pos = event->posF();
+
+  if (event->buttons() == Qt::LeftButton) {
+    Vec2f vec = Vec2f(pos.x() - _lastMouseEvent.x(),
+		      _lastMouseEvent.y() - pos.y());
+
+    _tree->lookAt(vec);
+  }
+  else {
+    Vec2f alloc = _screen2pic(event->x(), event->y());
+    _tree->allocMouse(alloc);
+  }
+
+  _lastMouseEvent = pos;
 }
 
 Vec2f GLEngine::_screen2pic(int x, int y)
