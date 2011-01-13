@@ -48,6 +48,12 @@ void GLEngine::paintGL()
   _tree->draw();
 }
 
+void GLEngine::keyPressEvent(QKeyEvent *event)
+{
+  if (event->key() == Qt::Key_Space)
+    _tree->gotoRoot();
+}
+
 void GLEngine::mouseMoveEvent(QMouseEvent *event)
 {
   QPointF pos = event->posF();
