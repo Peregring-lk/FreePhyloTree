@@ -18,6 +18,7 @@
 */
 
 #include <iostream>
+#include <QApplication>
 #include "GLEngine.moc"
 
 using namespace std;
@@ -52,6 +53,8 @@ void GLEngine::keyPressEvent(QKeyEvent *event)
 {
   if (event->key() == Qt::Key_Space)
     _tree->gotoRoot();
+  else if (event->key() == Qt::Key_Escape)
+    QApplication::quit();
 }
 
 void GLEngine::mouseMoveEvent(QMouseEvent *event)
