@@ -17,12 +17,16 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
 #include "GLEngine.moc"
 
+using namespace std;
 using namespace FreePhyloTree;
 
 GLEngine::GLEngine(PhyloTree *tree) : _tree(tree)
-{}
+{
+  setMouseTracking(true);
+}
 
 GLEngine::~GLEngine()
 {
@@ -42,4 +46,22 @@ void GLEngine::initializeGL()
 void GLEngine::paintGL()
 {
   _tree->draw();
+}
+
+void GLEngine::mouseMoveEvent(QMouseEvent *event)
+{
+  Vec2f alloc = _screen2pic(event->x(), event->y());
+  _tree->allocMouse(alloc);
+}
+
+Vec2f GLEngine::_screen2pic(int x, int y)
+{
+  Vec2f inf = _tree->infPic();
+  Vec2f sup = _tree->supPic();
+
+  float desplX = ((float)x / width()) * (sup.x() - inf.x());
+  float desplY = (1 - (float)y / height()) * (sup.y() - inf.y());
+
+  return Vec2f(inf.x() + desplX,
+	       inf.y() + desplY);
 }

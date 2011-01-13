@@ -228,11 +228,9 @@ void PhyloTree::_drawText()
     //_setColor(_nodeMouse);
     
     glTranslatef(dx, dy, 0);
-    glScalef(1, -1, 1);
 
     _font->Render(_nodeMouse->name().c_str());
 
-    glScalef(1, -1, 1);
     glTranslatef(-dx, -dy, 0);
   }
 }

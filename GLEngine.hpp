@@ -22,6 +22,7 @@
 #define _GL_ENGINE_
 
 #include <QGLWidget>
+#include <QMouseEvent>
 #include "PhyloTree.hpp"
 
 namespace FreePhyloTree
@@ -42,6 +43,9 @@ namespace FreePhyloTree
 
     void initializeGL();
     void paintGL();
+    void mouseMoveEvent(QMouseEvent *event);
+
+    Vec2f _screen2pic(int x, int y);
   };
 }
 
