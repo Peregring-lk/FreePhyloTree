@@ -1,0 +1,12 @@
+<map id="G" name="G">
+<area shape="rect" href="$d1/d14/program_8cpp.html#a8b8a61882a1067d08a22ab92b79b2eef" title="createClade" alt="" coords="175,112,265,141"/>
+<area shape="rect" href="$d9/dbc/classFreePhyloTree_1_1QFreePhyloTree.html#a7bb47f3c5a7f39dc2f73f4ba59f8b6f2" title="FreePhyloTree::QFreePhyloTree::run" alt="" coords="104,165,336,195"/>
+<area shape="rect" href="$d3/d70/classFreePhyloTree_1_1Tree.html#a91dc7c92313b6e679b921e336e9dd193" title="FreePhyloTree::Tree::setChild" alt="" coords="384,85,576,115"/>
+<area shape="rect" href="$d3/d70/classFreePhyloTree_1_1Tree.html#af44541769bac84d55aec9016c0fccb4a" title="FreePhyloTree::Tree::setRoot" alt="" coords="385,139,575,168"/>
+<area shape="rect" href="$d3/d70/classFreePhyloTree_1_1Tree.html#ad04557c83b5c35df4274534b034f4b85" title="FreePhyloTree::Tree::_moveEdge" alt="" coords="625,59,839,88"/>
+<area shape="rect" href="$d3/d70/classFreePhyloTree_1_1Tree.html#ad33314e5a499a45d1982fee1033d14a0" title="FreePhyloTree::Tree::_newNode" alt="" coords="629,112,835,141"/>
+<area shape="rect" href="$d6/d37/classFreePhyloTree_1_1Edge.html#a4d414e93d1f2be12a9fb98c0c04edba6" title="FreePhyloTree::Edge::source" alt="" coords="888,5,1077,35"/>
+<area shape="rect" href="$d6/d37/classFreePhyloTree_1_1Edge.html#acda89353534f0484002cc65fd6a6d8bb" title="FreePhyloTree::Edge::target" alt="" coords="891,59,1075,88"/>
+<area shape="rect" href="$d3/d70/classFreePhyloTree_1_1Tree.html#ae07b1280157f15452036707ffbd2e525" title="FreePhyloTree::Tree::_isNew" alt="" coords="889,112,1076,141"/>
+<area shape="rect" href="$d5/d81/classFreePhyloTree_1_1Node.html#a054338d0e675b63d58007ac2ad5b9e02" title="FreePhyloTree::Node::setCrib" alt="" coords="636,165,828,195"/>
+</map>
