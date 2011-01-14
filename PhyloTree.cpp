@@ -24,7 +24,7 @@
 
 using namespace FreePhyloTree;
 
-PhyloTree::PhyloTree(Name name) : Tree(name), _sidePic(200), _smoothCamera(0.08)
+PhyloTree::PhyloTree(Name name) : Tree(name)
 {
   _alloc = new SpringAlloc(3, 25, 80, 1);
   _coloring = new Coloring();
@@ -34,6 +34,9 @@ PhyloTree::PhyloTree(Name name) : Tree(name), _sidePic(200), _smoothCamera(0.08)
 
   _radiusBloom = 40;
   _smoothBloom = 0.05;
+
+  _sidePic = 200;
+  _smoothCamera = 0.08;
 
   _nodeMouse = NULL;
 
@@ -242,8 +245,15 @@ void PhyloTree::_reloadCamera()
   _centerPic += rel;
   _relCamera -= rel;
 
-  // Muy feo, se debería mover la cámara «de verdad».
-  glTranslatef(-rel.x(), -rel.y(), 0);
+  Vec2f inf = infPic();
+  Vec2f sup = supPic();
+
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+
+  glOrtho(inf.x(), sup.x(), inf.y(), sup.y(), 1, -1);
+
+  glMatrixMode(GL_MODELVIEW);
 }
 
 Node* PhyloTree::_searchNode(const Vec2f& alloc)
