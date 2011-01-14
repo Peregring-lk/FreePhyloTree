@@ -17,11 +17,9 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
 #include <QApplication>
 #include "GLEngine.moc"
 
-using namespace std;
 using namespace FreePhyloTree;
 
 GLEngine::GLEngine(PhyloTree *tree) : _tree(tree)

@@ -65,7 +65,6 @@ namespace FreePhyloTree
     Vec2f _relCamera;
     float _restSmoothCamera;
     const float _smoothCamera;
-    float _impulseCamera;
 
     Vec2f _allocMouse;
     Node *_nodeMouse;

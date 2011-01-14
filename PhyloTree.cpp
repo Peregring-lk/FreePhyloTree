@@ -17,13 +17,11 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <iostream>
 #include <GL/glu.h>
 
 #include "GLEngine.hpp"
 #include "PhyloTree.hpp"
 
-using namespace std;
 using namespace FreePhyloTree;
 
 PhyloTree::PhyloTree(Name name) : Tree(name), _sidePic(200), _smoothCamera(0.08)
@@ -36,7 +34,6 @@ PhyloTree::PhyloTree(Name name) : Tree(name), _sidePic(200), _smoothCamera(0.08)
 
   _radiusBloom = 40;
   _smoothBloom = 0.05;
-  _impulseCamera = 2;
 
   _nodeMouse = NULL;
 
@@ -108,8 +105,7 @@ void PhyloTree::gotoRoot()
 void PhyloTree::lookAt(const Vec2f& rel)
 {
   _restSmoothCamera = _smoothCamera;
-
-  _relCamera += rel * _impulseCamera;
+  _relCamera += rel;
 }
 
 void PhyloTree::allocMouse(const Vec2f& alloc)
@@ -246,6 +242,7 @@ void PhyloTree::_reloadCamera()
   _centerPic += rel;
   _relCamera -= rel;
 
+  // Muy feo, se debería mover la cámara «de verdad».
   glTranslatef(-rel.x(), -rel.y(), 0);
 }
 
