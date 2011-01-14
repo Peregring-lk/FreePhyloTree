@@ -39,6 +39,7 @@ namespace FreePhyloTree
     Vec2f infPic() const;
     Vec2f supPic() const;
     float sidePic() const;
+    Node* actualNode() const;
 
     void initSignal(GLEngine *glEngine);
 

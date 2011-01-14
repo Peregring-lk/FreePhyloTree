@@ -20,16 +20,34 @@
 #include <QApplication>
 #include "GLEngine.moc"
 
+using namespace std;
 using namespace FreePhyloTree;
 
-GLEngine::GLEngine(PhyloTree *tree) : _tree(tree)
+GLEngine::GLEngine(PhyloTree *tree)
+  : _tree(tree), _webView(this),
+    _nameWeb("http://es.wikipedia.org/wiki/")
 {
   setMouseTracking(true);
+  _webView.hide();
+  _webView.resize(600, 300);
+  _webView.move((width() - _webView.width()) / 2,
+		(height() - _webView.height()) / 2);
 }
 
 GLEngine::~GLEngine()
 {
   delete _tree;
+}
+
+void GLEngine::viewPage(Node *node)
+{
+  if (node != NULL) {
+    string dir = _nameWeb + node->name();
+    _webView.load(QUrl(dir.c_str()));
+    _webView.show();
+  }
+  else
+    _webView.hide();
 }
 
 void GLEngine::animate()
@@ -51,14 +69,20 @@ void GLEngine::keyPressEvent(QKeyEvent *event)
 {
   if (event->key() == Qt::Key_Space)
     _tree->gotoRoot();
-  else if (event->key() == Qt::Key_Escape)
-    QApplication::quit();
+  else if (event->key() == Qt::Key_Escape) {
+    if (_webView.isVisible())
+      viewPage(NULL);
+    else
+      QApplication::quit();
+  }
 }
 
 void GLEngine::mouseDoubleClickEvent(QMouseEvent *event)
 {
   if (event->button() == Qt::LeftButton)
     _tree->cribNode(_screen2pic(event->x(), event->y()));
+  else if (event->button() == Qt::RightButton)
+    viewPage(_tree->actualNode());
 }
 
 void GLEngine::mouseMoveEvent(QMouseEvent *event)

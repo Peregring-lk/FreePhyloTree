@@ -72,6 +72,11 @@ float PhyloTree::sidePic() const
   return _sidePic;
 }
 
+Node* PhyloTree::actualNode() const
+{
+  return _nodeMouse;
+}
+
 void PhyloTree::initSignal(GLEngine *glEngine)
 {
   _loadTextures(glEngine);
