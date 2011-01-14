@@ -58,18 +58,18 @@ PhyloTree* createClade()
   tree->setChild(hominina, orrorin);
   tree->setChild(hominina, kenyanthropus);
 
-  Node *ramidus = new Node("Ramidus");
-  Node *kadabba = new Node("Kadabba");
+  Node *ramidus = new Node("Ardipithecus ramidus");
+  Node *kadabba = new Node("Ardipithecus kadabba");
 
   tree->setChild(ardipithecus, ramidus);
   tree->setChild(ardipithecus, kadabba);
 
-  Node *garhi = new Node("Garhi");
-  Node *africanus = new Node("Africanus");
-  Node *bahrelghazali = new Node("Bahrelghazali");
-  Node *sediba = new Node("Sediba");
-  Node *anamensis = new Node("Anamensis");
-  Node *afarensis = new Node("Afarensis");
+  Node *garhi = new Node("Australopithecus garhi");
+  Node *africanus = new Node("Australopithecus africanus");
+  Node *bahrelghazali = new Node("Australopithecus bahrelghazali");
+  Node *sediba = new Node("Australopithecus sediba");
+  Node *anamensis = new Node("Australopithecus anamensis");
+  Node *afarensis = new Node("Australopithecus afarensis");
 
   tree->setChild(australopithecus, garhi);
   tree->setChild(australopithecus, africanus);
@@ -78,27 +78,27 @@ PhyloTree* createClade()
   tree->setChild(australopithecus, sediba);
   tree->setChild(australopithecus, afarensis);
 
-  Node *boisei = new Node("Boisei");
-  Node *robustus = new Node("Robustus");
-  Node *aethiopicus = new Node("Aethiopicus");
+  Node *boisei = new Node("Paranthropus boisei");
+  Node *robustus = new Node("Paranthropus robustus");
+  Node *aethiopicus = new Node("Paranthropus aethiopicus");
 
   tree->setChild(paranthropus, aethiopicus);
   tree->setChild(paranthropus, boisei);
   tree->setChild(paranthropus, robustus);
 
-  Node *habilis = new Node("Habilis");
-  Node *ergaster = new Node("Ergaster");
-  Node *sapiens = new Node("Sapiens");
-  Node *erectus = new Node("Erectus");
-  Node *antecessor = new Node("Antecessor");
-  Node *neanderthalensis = new Node("Neanderthalensis");
-  Node *heidelbergensis = new Node("Heidelbergensis");
-  Node *georgicus = new Node("Georgicus");
-  Node *rhodesiensis = new Node("Rhodesiensis");
-  Node *rudolfensis = new Node("Rudolfensis");
-  Node *cepranensis = new Node("Cepranensis");
-  Node *floresiensis = new Node("Floresiensis");
-  Node *gautengensis = new Node("Gautengensis");
+  Node *habilis = new Node("Homo habilis");
+  Node *ergaster = new Node("Homo ergaster");
+  Node *sapiens = new Node("Homo sapiens");
+  Node *erectus = new Node("Homo erectus");
+  Node *antecessor = new Node("Homo antecessor");
+  Node *neanderthalensis = new Node("Homo neanderthalensis");
+  Node *heidelbergensis = new Node("Homo heidelbergensis");
+  Node *georgicus = new Node("Homo georgicus");
+  Node *rhodesiensis = new Node("Homo rhodesiensis");
+  Node *rudolfensis = new Node("Homo rudolfensis");
+  Node *cepranensis = new Node("Homo cepranensis");
+  Node *floresiensis = new Node("Homo floresiensis");
+  Node *gautengensis = new Node("Homo gautengensis");
 
   tree->setChild(homo, habilis);
   tree->setChild(homo, ergaster);

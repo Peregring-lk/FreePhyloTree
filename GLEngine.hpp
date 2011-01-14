@@ -24,6 +24,9 @@
 #include <QGLWidget>
 #include <QMouseEvent>
 #include <QKeyEvent>
+#include <QWebView>
+
+#include <string>
 
 #include "PhyloTree.hpp"
 
@@ -37,12 +40,17 @@ namespace FreePhyloTree
     GLEngine(PhyloTree *tree);
     ~GLEngine();
 
+    void viewPage(Node *node);
+
   public slots:
     void animate();
 
   private:
     PhyloTree *_tree;
     QPointF _lastMouseEvent;
+
+    QWebView _webView;
+    const std::string _nameWeb;
 
     void initializeGL();
     void paintGL();

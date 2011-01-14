@@ -64,6 +64,7 @@ namespace FreePhyloTree
      * @return Width of the tree.
      */	    
     float sidePic() const;
+    Node* actualNode() const;
 
     /** Call to prepare the render of the scene.
      * @param glEngine Main graphic engine.
@@ -115,7 +116,7 @@ namespace FreePhyloTree
 	/// Relative position of the root node to the camera
     Vec2f _relCamera;
     float _restSmoothCamera;
-    const float _smoothCamera;
+    float _smoothCamera;
 
     Vec2f _allocMouse;
     Node *_nodeMouse;
