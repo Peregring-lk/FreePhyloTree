@@ -35,7 +35,7 @@ PhyloTree::PhyloTree(Name name) : Tree(name)
   _radiusBloom = 40;
   _smoothBloom = 0.05;
 
-  _sidePic = 200;
+  _semisidePic = 200;
   _smoothCamera = 0.08;
 
   _nodeMouse = NULL;
@@ -52,14 +52,14 @@ PhyloTree::~PhyloTree()
 
 Vec2f PhyloTree::infPic() const
 {
-  return (Vec2f(_centerPic.x() - _sidePic,
-		_centerPic.y() - _sidePic));
+  return (Vec2f(_centerPic.x() - _semisidePic,
+		_centerPic.y() - _semisidePic));
 }
 
 Vec2f PhyloTree::supPic() const
 {
-  return (Vec2f(_centerPic.x() + _sidePic,
-		_centerPic.y() + _sidePic));
+  return (Vec2f(_centerPic.x() + _semisidePic,
+		_centerPic.y() + _semisidePic));
 }
 
 const Vec2f& PhyloTree::centerPic() const
@@ -69,7 +69,7 @@ const Vec2f& PhyloTree::centerPic() const
 
 float PhyloTree::sidePic() const
 {
-  return _sidePic;
+  return _semisidePic * 2;
 }
 
 Node* PhyloTree::actualNode() const

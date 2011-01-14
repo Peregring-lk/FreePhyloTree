@@ -31,7 +31,7 @@ namespace FreePhyloTree
 {
   class GLEngine;
 
-  /** @class PhyloTree PhyloTree.h PhyloTree.h
+  /** @class PhyloTree PhyloTree.hpp PhyloTree.hpp
 	* @brief Class of any phylogenetic tree.
 	* @note Hierarched of Tree class, don't forgive
 	* look for Tree class documentation to learn more
@@ -94,26 +94,26 @@ namespace FreePhyloTree
     void draw();
 
   private:
-	/// Texture to use
+    /// Texture to use
     GLuint textureid[3];
 
-	/// Springs union positions vector
+    /// Springs union positions vector
     SpringAlloc *_alloc;
-	/// Colours vector
+    /// Colours vector
     Coloring *_coloring;
-	/// Active font
+    /// Active font
     FTFont *_font;
 
-	/// Main radius of any node
+    /// Main radius of any node
     float _radiusNode;
-	/// Width of the nodes
+    /// Width of the edges
     float _radiusBeam;
-	/// 1st bloom effect radius
+    /// 1st bloom effect radius
     float _radiusBloom;
-	/// Smoothing the bloom factor
+    /// Smoothing the bloom factor
     float _smoothBloom;
 
-	/// Relative position of the root node to the camera
+    /// Relative position of the root node to the camera
     Vec2f _relCamera;
     float _restSmoothCamera;
     float _smoothCamera;
@@ -121,7 +121,7 @@ namespace FreePhyloTree
     Vec2f _allocMouse;
     Node *_nodeMouse;
 
-    float _sidePic;
+    float _semisidePic;
     Vec2f _centerPic;
 
     /** Load textures.
@@ -149,30 +149,30 @@ namespace FreePhyloTree
     void _setColor(Node *node);
     /** Draws an squared plane.
      * @param node Node where the plane must be drawed.
-	 * @param side Width of plane.
-	 * @param tex Texture to use.
+     * @param side Width of plane.
+     * @param tex Texture to use.
      */
     void _drawSquare(Node *node, float side, GLuint tex);
 
     /** Reallocates the camera.
-	 * @note This method uses information provided
-	 * by lookat method.
+     * @note This method uses information provided
+     * by lookat method.
      */
     void _reloadCamera();
 
     /** Lookfor the node into the provided viewspace coordinates.
-	 * @param Viewspace coordinates where lookfor the node.
-	 * @return Node reached, NULL (0) if anyone.
+     * @param Viewspace coordinates where lookfor the node.
+     * @return Node reached, NULL (0) if anyone.
      */
     Node* _searchNode(const Vec2f& alloc);
     /** Crib a node.
-	 * @param node Node to crib.
+     * @param node Node to crib.
      */
     void _cribNode(Node *node);
 
     /** Draw the text if needed.
-	 * @note This method uses the info
-	 * returned by _searchNode method.
+     * @note This method uses the info
+     * returned by _searchNode method.
      */
     void _drawText();
   };

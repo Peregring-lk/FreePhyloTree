@@ -17,6 +17,7 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
 #include <QApplication>
 #include "GLEngine.moc"
 
@@ -32,6 +33,11 @@ GLEngine::GLEngine(PhyloTree *tree)
   _webView.resize(600, 300);
   _webView.move((width() - _webView.width()) / 2,
 		(height() - _webView.height()) / 2);
+
+  _smoothResizeViewport = 0.1;
+
+  _actualWidth = width();
+  _actualHeight = height();
 }
 
 GLEngine::~GLEngine()
@@ -53,6 +59,7 @@ void GLEngine::viewPage(Node *node)
 void GLEngine::animate()
 {
   repaint();
+  _reloadViewport();
 }
 
 void GLEngine::initializeGL()
@@ -113,4 +120,24 @@ Vec2f GLEngine::_screen2pic(int x, int y)
 
   return Vec2f(inf.x() + desplX,
 	       inf.y() + desplY);
+}
+
+void GLEngine::_reloadViewport()
+{
+  bool change = false;
+
+  if ((int)_actualWidth != width()) {
+    float difWidth = _actualWidth - width();
+    _actualWidth -= difWidth * _smoothResizeViewport;
+    change = true;
+  }
+
+  if ((int)_actualHeight != height()) {
+    float difHeight = _actualHeight - height();
+    _actualHeight -= difHeight * _smoothResizeViewport;
+    change = true;
+  }
+
+  if (change)
+    glViewport(0, 0, _actualWidth, _actualHeight);
 }

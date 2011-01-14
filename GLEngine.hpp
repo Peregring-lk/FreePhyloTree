@@ -52,6 +52,10 @@ namespace FreePhyloTree
     QWebView _webView;
     const std::string _nameWeb;
 
+    float _actualWidth;
+    float _actualHeight;
+    float _smoothResizeViewport;
+
     void initializeGL();
     void paintGL();
 
@@ -60,6 +64,7 @@ namespace FreePhyloTree
     void mouseMoveEvent(QMouseEvent *event);
 
     Vec2f _screen2pic(int x, int y);
+    void _reloadViewport();
   };
 }
 
