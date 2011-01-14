@@ -141,13 +141,13 @@ unsigned Node::height() const
 
 unsigned Node::nodes() const
 {
-  if(hide())
+  if (hide())
     return 0;
   else {
     unsigned nodes = 1;
 
     for (int i = 0; i < _children.size(); ++i)
-      nodes += 1 + _children[i]->nodes();
+      nodes += _children[i]->nodes();
 
     return nodes;
   }

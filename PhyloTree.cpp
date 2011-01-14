@@ -35,7 +35,7 @@ PhyloTree::PhyloTree(Name name) : Tree(name), _sidePic(200), _smoothCamera(0.08)
   _radiusBeam = 2;
 
   _radiusBloom = 40;
-  _smoothBloom = 0.1;
+  _smoothBloom = 0.05;
   _impulseCamera = 2;
 
   _nodeMouse = NULL;
@@ -266,12 +266,12 @@ void PhyloTree::_cribNode(Node *node)
   if (node != NULL) {
     bool crib = node->crib();
 
+    node->setCrib(!crib);
+
     if (crib) {
-      node->setBloom(_radiusBloom * node->degree());
+      node->setBloom(_radiusBloom * node->nodes());
       _rebootChildren(node);
     }
-
-    node->setCrib(!crib);
   }
 }
 

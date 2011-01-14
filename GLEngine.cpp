@@ -57,6 +57,12 @@ void GLEngine::keyPressEvent(QKeyEvent *event)
     QApplication::quit();
 }
 
+void GLEngine::mouseDoubleClickEvent(QMouseEvent *event)
+{
+  if (event->button() == Qt::LeftButton)
+    _tree->cribNode(_screen2pic(event->x(), event->y()));
+}
+
 void GLEngine::mouseMoveEvent(QMouseEvent *event)
 {
   QPointF pos = event->posF();

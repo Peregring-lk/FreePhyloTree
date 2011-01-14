@@ -48,6 +48,7 @@ namespace FreePhyloTree
     void paintGL();
 
     void keyPressEvent(QKeyEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
 
     Vec2f _screen2pic(int x, int y);
