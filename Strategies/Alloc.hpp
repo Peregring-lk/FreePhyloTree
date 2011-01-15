@@ -37,7 +37,7 @@ namespace FreePhyloTree
     float _c3;
     float _c4;
 
-    typedef std::vector<Vec2f> _Moves;
+    typedef std::vector<Vec3f> _Moves;
     _Moves _moves;
 
     void _fa(Node *source, Node *target, int _weight);

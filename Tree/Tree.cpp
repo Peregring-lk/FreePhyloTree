@@ -131,7 +131,7 @@ bool Tree::_isNew(Node *node)
   return node != NULL && node->_father == NULL && node != _root;
 }
 
-Vec2f Tree::_rand(Node *father)
+Vec3f Tree::_rand(Node *father)
 {
   GLfloat nx = rand() / (GLfloat)RAND_MAX;
   GLfloat ny = rand() / (GLfloat)RAND_MAX;
@@ -139,7 +139,7 @@ Vec2f Tree::_rand(Node *father)
   nx = 30 * (1 - 2 * nx);
   ny = 30 * (1 - 2 * ny);
 
-  Vec2f alloc(nx, ny);
+  Vec3f alloc(nx, ny);
 
   if (father != NULL) {
     alloc *= _root->height() / (father->level() + 1); 

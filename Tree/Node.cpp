@@ -109,7 +109,7 @@ const Color& Node::color() const
   return _color;
 }
 
-const Vec2f& Node::alloc() const
+const Vec3f& Node::alloc() const
 {
   return _alloc;
 }
@@ -166,7 +166,7 @@ void Node::setColor(const Color& color)
   _color = color;
 }
 
-void Node::setAlloc(const Vec2f& alloc)
+void Node::setAlloc(const Vec3f& alloc)
 {
   _alloc = alloc;
 }
@@ -176,7 +176,7 @@ void Node::setBloom(float bloom)
   _bloom = bloom;
 }
 
-void Node::move(const Vec2f& desp)
+void Node::move(const Vec3f& desp)
 {
   _alloc += desp;
 }

@@ -18,7 +18,7 @@
 */
 
 #include <cmath>
-#include "Vec2f.hpp"
+#include "Vec.hpp"
 
 using namespace FreePhyloTree;
 
@@ -132,4 +132,127 @@ Vec2f Vec2f::operator/= (GLfloat k)
 void Vec2f::_calcNorm()
 {
   _norm = sqrt(pow(_x, 2) + pow(_y, 2));
+}
+
+Vec3f::Vec3f()
+{
+  _x = _y = _z = 0;
+  _norm = 0;
+}
+
+Vec3f::Vec3f(GLfloat x, GLfloat y, GLfloat z)
+  : _x(x), _y(y), _z(z)
+{
+  _calcNorm();
+}
+
+GLfloat Vec3f::x() const
+{
+  return _x;
+}
+
+GLfloat Vec3f::y() const
+{
+  return _y;
+}
+
+GLfloat Vec3f::y() const
+{
+  return _z;
+}
+
+GLfloat Vec2f::norm() const
+{
+  return _norm;
+}
+
+Vec2f Vec2f::unit() const
+{
+  return Vec3f(_x / _norm, _y / _norm, _z / _norm);
+}
+
+Vec3f Vec3f::operator+ (const Vec3f& vec) const
+{
+  return Vec3f(*this) += vec;
+}
+
+Vec3f Vec3f::operator- (const Vec3f& vec) const
+{
+  return Vec3f(*this) -= vec;
+}
+
+Vec3f Vec3f::operator* (GLfloat k) const
+{
+  return Vec3f(*this) *= k;
+}
+
+Vec3f Vec3f::operator/ (GLfloat k) const
+{
+  return Vec3f(*this) /= k;
+}
+
+bool Vec3f::inRadius(Vec3f vec, GLfloat radius) const
+{
+  return (*this - vec).norm() < radius;
+}
+
+void Vec3f::setAlloc(GLfloat x, GLfloat y)
+{
+  _x = x;
+  _y = y;
+  _z = z;
+
+  _calcNorm();
+}
+
+Vec3f Vec3f::operator+= (const Vec3f& vec)
+{
+  _x += vec.x();
+  _y += vec.y();
+  _z += vec.z();
+
+  _calcNorm();
+
+  return *this;
+}
+
+Vec3f Vec3f::operator-= (const Vec3f& vec)
+{
+  _x -= vec.x();
+  _y -= vec.y();
+  _z -= vec.z();
+
+  _calcNorm();
+
+  return *this;
+}
+
+Vec3f Vec3f::operator*= (GLfloat k)
+{
+  _x *= k;
+  _y *= k;
+  _z *= k;
+
+  if (k != 0)
+    _norm *= k;
+  else
+    _norm = 0;
+
+  return *this;
+}
+
+Vec3f Vec3f::operator/= (GLfloat k)
+{
+  _x /= k;
+  _y /= k;
+  _z /= k;
+
+  _norm /= k;
+
+  return *this;
+}
+
+void Vec2f::_calcNorm()
+{
+  _norm = sqrt(pow(_x, 2) + pow(_y, 2) + pow(_z, 2));
 }

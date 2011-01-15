@@ -60,6 +60,47 @@ namespace FreePhyloTree
 
     void _calcNorm();
   };
+
+  class Vec2f
+  {
+  public:
+    Vec3f();
+    Vec3f(GLfloat x, GLfloat y, GLfloat z);
+
+    GLfloat x() const;
+    GLfloat y() const;
+    GLfloat z() const;
+
+    GLfloat norm() const;
+    Vec2f unit() const;
+
+    Vec3f operator+ (const Vec3f& vec) const;
+    Vec3f operator- (const Vec3f& vec) const;
+    Vec3f operator* (GLfloat k) const;
+    Vec3f operator/ (GLfloat k) const;
+
+    bool inRadius(Vec3f vec, GLfloat radius) const;
+
+    void setAlloc(GLfloat x, GLfloat y, GLfloat z);
+    void setX(GLfloat x);
+    void setY(GLfloat y);
+    void setZ(GLfloat z);
+
+    Vec3f operator+= (const Vec3f& vec);
+    Vec3f operator-= (const Vec3f& vec);
+    Vec3f operator*= (GLfloat k);
+    Vec3f operator/= (GLfloat k);
+
+  private:
+    GLfloat _x;
+    GLfloat _y;
+    GLfloat _z;
+
+    GLfloat _norm;
+
+    void _calcNorm();
+  };
+
 }
 
 #endif

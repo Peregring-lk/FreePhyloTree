@@ -58,7 +58,7 @@ namespace FreePhyloTree
     void _moveEdge(Node *source, Node *target);
     bool _isNew(Node *node);
 
-    Vec2f _rand(Node *father);
+    Vec3f _rand(Node *father);
     void _rebootChildren(Node *father);
 
     void _initBloom(float bloom);

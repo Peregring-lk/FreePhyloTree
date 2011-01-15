@@ -64,16 +64,16 @@ void SpringAlloc::reAlloc(Tree *tree)
 
 void SpringAlloc::_fa(Node *source, Node *target, int weight)
 {
-  Vec2f vu = source->alloc() - target->alloc();
-  Vec2f fa = vu.unit() * _c1 * log(vu.norm() / weight);
+  Vec3f vu = source->alloc() - target->alloc();
+  Vec3f fa = vu.unit() * _c1 * log(vu.norm() / weight);
 
   _moves[target->label()] += fa * _c4;
 }
 
 void SpringAlloc::_fr(Node *source, Node *target)
 {
-  Vec2f uv = target->alloc() - source->alloc();
-  Vec2f fr = uv.unit() * (_c3 / pow(uv.norm(), 2));
+  Vec3f uv = target->alloc() - source->alloc();
+  Vec3f fr = uv.unit() * (_c3 / pow(uv.norm(), 2));
 
   _moves[target->label()] += fr * _c4;
 }

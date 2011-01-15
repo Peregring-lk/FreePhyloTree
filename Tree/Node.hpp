@@ -24,7 +24,7 @@
 #include <vector>
 
 #include "Color.hpp"
-#include "Vec2f.hpp"
+#include "Vec.hpp"
 
 namespace FreePhyloTree
 {
@@ -75,7 +75,7 @@ namespace FreePhyloTree
     GLfloat y() const;
 
     const Color& color() const;
-    const Vec2f& alloc() const;
+    const Vec3f& alloc() const;
 
     Node* father() const;
     const Nodes& children() const;
@@ -88,18 +88,18 @@ namespace FreePhyloTree
     Node* root();
 
     void setColor(const Color& color);
-    void setAlloc(const Vec2f& alloc);
+    void setAlloc(const Vec3f& alloc);
     void setBloom(float bloom);
     void setCrib(bool crib);
 
-    void move(const Vec2f& delta);
+    void move(const Vec3f& delta);
 
     friend class Tree;
 
   private:
     Name _name;
     Color _color;
-    Vec2f _alloc;
+    Vec3f _alloc;
     Label _label;
     bool _crib;
 
