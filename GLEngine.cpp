@@ -17,6 +17,7 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
 #include <QApplication>
 #include "GLEngine.moc"
 
@@ -28,10 +29,17 @@ GLEngine::GLEngine(PhyloTree *tree)
     _nameWeb("http://es.wikipedia.org/wiki/")
 {
   setMouseTracking(true);
+
+  _smoothResizeViewport = 0.1;
+  _smoothResizeWW = 0.2;
+
+  _actualWidth = width();
+  _actualHeight = height();
+
+  _pctWWSize = 0.9;
+  resizeGL(_actualWidth, _actualHeight);
+
   _webView.hide();
-  _webView.resize(600, 300);
-  _webView.move((width() - _webView.width()) / 2,
-		(height() - _webView.height()) / 2);
 }
 
 GLEngine::~GLEngine()
@@ -44,15 +52,21 @@ void GLEngine::viewPage(Node *node)
   if (node != NULL) {
     string dir = _nameWeb + node->name();
     _webView.load(QUrl(dir.c_str()));
-    _webView.show();
+
+    if (_webView.isHidden())
+      _webView.show();
   }
-  else
+  else if (_webView.isVisible()) {
     _webView.hide();
+    _webView.clearFocus();
+  }
 }
 
 void GLEngine::animate()
 {
   repaint();
+  _reloadViewport();
+  _reloadWebView();
 }
 
 void GLEngine::initializeGL()
@@ -103,6 +117,12 @@ void GLEngine::mouseMoveEvent(QMouseEvent *event)
   _lastMouseEvent = pos;
 }
 
+void GLEngine::resizeGL(int width, int height)
+{
+  _finalWWWidth = width * _pctWWSize;
+  _finalWWHeight = height * _pctWWSize;
+}
+
 Vec2f GLEngine::_screen2pic(int x, int y)
 {
   Vec2f inf = _tree->infPic();
@@ -113,4 +133,51 @@ Vec2f GLEngine::_screen2pic(int x, int y)
 
   return Vec2f(inf.x() + desplX,
 	       inf.y() + desplY);
+}
+
+void GLEngine::_reloadViewport()
+{
+  bool change = false;
+
+  if ((int)_actualWidth != width()) {
+    float difWidth = _actualWidth - width();
+    _actualWidth -= difWidth * _smoothResizeViewport;
+    change = true;
+  }
+
+  if ((int)_actualHeight != height()) {
+    float difHeight = _actualHeight - height();
+    _actualHeight -= difHeight * _smoothResizeViewport;
+    change = true;
+  }
+
+  if (change)
+    glViewport(0, 0, _actualWidth, _actualHeight);
+}
+
+void GLEngine::_reloadWebView()
+{
+  bool change = false;
+
+  int wwWidth = _webView.width();
+  int wwHeight = _webView.height();
+
+  if ((int)_finalWWWidth != wwWidth) {
+    float dif = wwWidth - _finalWWWidth;
+    wwWidth -= dif * _smoothResizeWW;
+    change = true;
+  }
+
+  if ((int)_finalWWHeight != wwHeight) {
+    float dif = wwHeight - _finalWWHeight;
+    wwHeight -= dif * _smoothResizeWW;
+    change = true;
+  }
+
+  if (true){
+    _webView.resize(wwWidth, wwHeight);
+
+    _webView.move((width() - wwWidth) / 2,
+    		  (height() - wwHeight) / 2);
+  }
 }
