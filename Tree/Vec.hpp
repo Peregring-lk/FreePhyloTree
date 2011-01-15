@@ -61,7 +61,7 @@ namespace FreePhyloTree
     void _calcNorm();
   };
 
-  class Vec2f
+  class Vec3f
   {
   public:
     Vec3f();
@@ -72,7 +72,7 @@ namespace FreePhyloTree
     GLfloat z() const;
 
     GLfloat norm() const;
-    Vec2f unit() const;
+    Vec3f unit() const;
 
     Vec3f operator+ (const Vec3f& vec) const;
     Vec3f operator- (const Vec3f& vec) const;

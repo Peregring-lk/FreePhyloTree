@@ -68,7 +68,7 @@ namespace FreePhyloTree
     void mouseDoubleClickEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
 
-    Vec2f _screen2pic(int x, int y);
+    Vec3f _screen2pic(int x, int y);
     void _reloadViewport();
     void _reloadWebView();
   };

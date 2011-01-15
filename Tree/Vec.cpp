@@ -156,17 +156,17 @@ GLfloat Vec3f::y() const
   return _y;
 }
 
-GLfloat Vec3f::y() const
+GLfloat Vec3f::z() const
 {
   return _z;
 }
 
-GLfloat Vec2f::norm() const
+GLfloat Vec3f::norm() const
 {
   return _norm;
 }
 
-Vec2f Vec2f::unit() const
+Vec3f Vec3f::unit() const
 {
   return Vec3f(_x / _norm, _y / _norm, _z / _norm);
 }
@@ -196,7 +196,7 @@ bool Vec3f::inRadius(Vec3f vec, GLfloat radius) const
   return (*this - vec).norm() < radius;
 }
 
-void Vec3f::setAlloc(GLfloat x, GLfloat y)
+void Vec3f::setAlloc(GLfloat x, GLfloat y, GLfloat z)
 {
   _x = x;
   _y = y;
@@ -252,7 +252,7 @@ Vec3f Vec3f::operator/= (GLfloat k)
   return *this;
 }
 
-void Vec2f::_calcNorm()
+void Vec3f::_calcNorm()
 {
   _norm = sqrt(pow(_x, 2) + pow(_y, 2) + pow(_z, 2));
 }

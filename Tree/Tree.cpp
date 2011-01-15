@@ -135,11 +135,14 @@ Vec3f Tree::_rand(Node *father)
 {
   GLfloat nx = rand() / (GLfloat)RAND_MAX;
   GLfloat ny = rand() / (GLfloat)RAND_MAX;
+  //  GLfloat nz = rand() / (GLfloat)RAND_MAX;
 
   nx = 30 * (1 - 2 * nx);
   ny = 30 * (1 - 2 * ny);
+  //  nz = 30 * (1 - 2 * nz);
 
-  Vec3f alloc(nx, ny);
+  //  Vec3f alloc(nx, ny, nz);
+  Vec3f alloc(nx, ny, 0);
 
   if (father != NULL) {
     alloc *= _root->height() / (father->level() + 1); 
