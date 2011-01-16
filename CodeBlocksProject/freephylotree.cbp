@@ -76,8 +76,8 @@
 		<Unit filename="../Tree/Node.hpp" />
 		<Unit filename="../Tree/Tree.cpp" />
 		<Unit filename="../Tree/Tree.hpp" />
-		<Unit filename="../Tree/Vec2f.cpp" />
-		<Unit filename="../Tree/Vec2f.hpp" />
+		<Unit filename="../Tree/Vec.cpp" />
+		<Unit filename="../Tree/Vec.hpp" />
 		<Unit filename="../program.cpp" />
 		<Extensions>
 			<code_completion />
