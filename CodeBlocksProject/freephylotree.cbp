@@ -62,6 +62,14 @@
 		<Unit filename="../FreePhyloTree.hpp" />
 		<Unit filename="../GLEngine.cpp" />
 		<Unit filename="../GLEngine.hpp" />
+		<Unit filename="../GraphicEngine/Camera.cpp" />
+		<Unit filename="../GraphicEngine/Camera.hpp" />
+		<Unit filename="../GraphicEngine/Canvas.cpp" />
+		<Unit filename="../GraphicEngine/Canvas.hpp" />
+		<Unit filename="../GraphicEngine/GraphicEngine.cpp" />
+		<Unit filename="../GraphicEngine/GraphicEngine.hpp" />
+		<Unit filename="../GraphicEngine/Scene.cpp" />
+		<Unit filename="../GraphicEngine/Scene.hpp" />
 		<Unit filename="../PhyloTree.cpp" />
 		<Unit filename="../PhyloTree.hpp" />
 		<Unit filename="../Strategies/Alloc.cpp" />

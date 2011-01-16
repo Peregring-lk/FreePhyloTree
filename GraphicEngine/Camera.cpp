@@ -17,32 +17,24 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _FREE_PHYLO_TREE_
-#define _FREE_PHYLO_TREE_
+// -------------------------------------------
+// Main header file
+// -------------------------------------------
+#include "Camera.hpp"
 
-#include <QApplication>
-#include <QTimer>
+// Activate namespace
+using namespace std;
+using namespace FreePhyloTree;
 
-#include "GLEngine.hpp"
-
-namespace FreePhyloTree
+Camera::Camera(PhyloTree *tree)
+    : _tree(tree)
+    , _pos(0.f,0.f,-1.f)
+    , _aim(0.f,0.f,0.f)
 {
-  class QFreePhyloTree : public QApplication
-  {
-  public:
-    QFreePhyloTree(PhyloTree *tree, int argc, char **argv);
-
-    void run();
-
-    /** Returns the Qt timer manager
-     * @return Qt timer manager.
-     */
-    QTimer* GetTimer(){return &_qTimer;}
-
-  private:
-    GLEngine _glEngine;
-    QTimer _qTimer;
-  };
+    _size = Vec2f(_tree->supPic().x()-_tree->infPic().x(),_tree->supPic().y()-_tree->infPic().y());
 }
 
-#endif
+Camera::~Camera()
+{
+}
+
