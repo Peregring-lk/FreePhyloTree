@@ -1,7 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" href="$d3/d70/classFreePhyloTree_1_1Tree.html#ad04557c83b5c35df4274534b034f4b85" title="FreePhyloTree::Tree::_moveEdge" alt="" coords="247,59,460,88"/>
-<area shape="rect" href="$d3/d70/classFreePhyloTree_1_1Tree.html#ad33314e5a499a45d1982fee1033d14a0" title="FreePhyloTree::Tree::_newNode" alt="" coords="251,112,456,141"/>
-<area shape="rect" href="$d6/d37/classFreePhyloTree_1_1Edge.html#a4d414e93d1f2be12a9fb98c0c04edba6" title="FreePhyloTree::Edge::source" alt="" coords="509,5,699,35"/>
-<area shape="rect" href="$d6/d37/classFreePhyloTree_1_1Edge.html#acda89353534f0484002cc65fd6a6d8bb" title="FreePhyloTree::Edge::target" alt="" coords="512,59,696,88"/>
-<area shape="rect" href="$d3/d70/classFreePhyloTree_1_1Tree.html#ae07b1280157f15452036707ffbd2e525" title="FreePhyloTree::Tree::_isNew" alt="" coords="511,112,697,141"/>
-</map>
