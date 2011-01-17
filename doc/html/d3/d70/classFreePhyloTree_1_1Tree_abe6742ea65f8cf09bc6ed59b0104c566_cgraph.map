@@ -1,9 +1,0 @@
-<map id="G" name="G">
-<area shape="rect" href="$d3/d70/classFreePhyloTree_1_1Tree.html#a47bc214cd18016527341def2d3b478e6" title="FreePhyloTree::Tree::_rand" alt="" coords="301,59,477,88"/>
-<area shape="rect" href="$d5/d81/classFreePhyloTree_1_1Node.html#a6cc4924edef315702344247d10f2e9d4" title="FreePhyloTree::Node::children" alt="" coords="292,112,487,141"/>
-<area shape="rect" href="$d5/d81/classFreePhyloTree_1_1Node.html#ac5d10616eb9facb9a415617224eea826" title="FreePhyloTree::Node::crib" alt="" coords="304,165,475,195"/>
-<area shape="rect" href="$d3/d70/classFreePhyloTree_1_1Tree.html#ae629b2ea3887bdf1d3f107660246c122" title="FreePhyloTree::Tree::node" alt="" coords="303,219,476,248"/>
-<area shape="rect" href="$d5/d81/classFreePhyloTree_1_1Node.html#ae05579e2d6907019e2ededc2ca7c4986" title="FreePhyloTree::Node::alloc" alt="" coords="541,5,717,35"/>
-<area shape="rect" href="$d5/d81/classFreePhyloTree_1_1Node.html#a5661e3cca0ef8f56dd31aef9246e6812" title="FreePhyloTree::Node::height" alt="" coords="537,59,721,88"/>
-<area shape="rect" href="$d5/d81/classFreePhyloTree_1_1Node.html#a61739780e63052eb7daf876b6f402998" title="FreePhyloTree::Node::level" alt="" coords="541,112,717,141"/>
-</map>
