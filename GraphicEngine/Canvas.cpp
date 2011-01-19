@@ -39,7 +39,7 @@ Canvas::Canvas(GraphicEngine *ge, PhyloTree *tree, Camera *cam)
     /// 1st.- Activate mouse events
     setMouseTracking(true);
     /// 2nd.- Get canvas size
-    _size = Vec2f(width(),height());
+    _size = Vec2f(width(), height());
     resizeGL(_size.x(), _size.y());
 
     _webView.hide();
@@ -119,6 +119,7 @@ void Canvas::resizeGL(int width, int height)
 {
     _size = Vec2f(width, height);
 
+    cerr << (GLsizei)width << " " << (GLsizei)height << endl;
     // Setup the viewport
     glViewport(0, 0, (GLsizei) width, (GLsizei) height);
     // Enter on projection work space

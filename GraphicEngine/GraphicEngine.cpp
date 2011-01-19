@@ -32,8 +32,7 @@ using namespace std;
 using namespace FreePhyloTree;
 
 GraphicEngine::GraphicEngine(QFreePhyloTree *app, PhyloTree *tree)
-    : _app(app)
-    , _tree(tree)
+  : _app(app), _tree(tree)
 {
     /// 1st.- Construct entities
     _cam = new Camera(_tree);
@@ -54,6 +53,16 @@ GraphicEngine::~GraphicEngine()
     /// Destructor libera la memoria del arbol (y lo anula para evitar problemas)
     delete _tree;
     _tree=0;
+}
+
+QFreePhyloTree* GraphicEngine::GetApp()
+{
+  return _app;
+}
+
+Canvas* GraphicEngine::GetCanvas()
+{
+  return _canvas;
 }
 
 Scene* GraphicEngine::GetScene(int id)

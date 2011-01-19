@@ -17,17 +17,18 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
 #include "FreePhyloTree.hpp"
 
+using namespace std;
 using namespace FreePhyloTree;
 
 QFreePhyloTree::QFreePhyloTree(PhyloTree *tree, int argc, char **argv)
-  : QApplication(argc, argv)
-  , _tree(tree)
-  // , _glEngine(tree)
+  : QApplication(argc, argv), _tree(tree) // , _glEngine(tree)
   , _qTimer(this)
 {
     _glEngine = new GraphicEngine(this, _tree);
+
 }
 
 void QFreePhyloTree::run()
@@ -38,7 +39,7 @@ void QFreePhyloTree::run()
 
     _glEngine.show();
     */
-    connect(&_qTimer, SIGNAL(timeout()), _glEngine->GetCanvas(), SLOT( animate() ));
+    connect(&_qTimer, SIGNAL(timeout()), _glEngine->GetCanvas(), SLOT(animate()));
     _qTimer.start(40);
     _glEngine->GetCanvas()->show();
 }

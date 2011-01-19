@@ -57,7 +57,7 @@
 
 namespace FreePhyloTree
 {
-    class QFreePhyloTree;
+  class QFreePhyloTree;
 
 /** @class GraphicEngine GraphicEngine.h GraphicEngine/GraphicEngine.h
  * @brief Graphic engine controla el apartado visual, gestionando las
@@ -74,18 +74,18 @@ public:
      * @param app Main application
      * @param tree Screen output tree
      */
-    GraphicEngine(QFreePhyloTree *app, PhyloTree *tree);
+  GraphicEngine(QFreePhyloTree *app, PhyloTree *tree);
     /// Destructor.
     ~GraphicEngine();
 
     /** Returns the app
      * @return App
      */
-    QFreePhyloTree* GetApp(){return _app;}
+  QFreePhyloTree* GetApp();
     /** Returns active canvas.
      * @return Main canvas.
      */
-    Canvas* GetCanvas(){return _canvas;}
+  Canvas* GetCanvas();
     /** Returns a scene
      * @param id Identifier of the scene.
      * @return Scene.
