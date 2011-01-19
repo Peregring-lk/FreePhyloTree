@@ -38,6 +38,8 @@ GraphicEngine::GraphicEngine(QFreePhyloTree *app, PhyloTree *tree)
     /// 1st.- Construct entities
     _cam = new Camera(_tree);
     _canvas = new Canvas(this, _tree, _cam);
+    _scenes = new Scene* [_N_SCENES_];
+    _scenes[_NORMAL_SCENE_] = new Scene(_tree, _cam, (QGLContext*)_canvas->context());
     /// 2nd.- Build entities (shared info channels)
     /// 3rd.- Setup the canvas
     /*
@@ -52,4 +54,11 @@ GraphicEngine::~GraphicEngine()
     /// Destructor libera la memoria del arbol (y lo anula para evitar problemas)
     delete _tree;
     _tree=0;
+}
+
+Scene* GraphicEngine::GetScene(int id)
+{
+    if((id < 0) || (id>=_N_SCENES_))
+        return 0;
+    return _scenes[id];
 }

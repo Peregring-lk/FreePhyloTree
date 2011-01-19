@@ -71,6 +71,11 @@ public:
     /// Destructor.
     ~Canvas();
 
+    /** Returns the openGL window size.
+     * @return Window size.
+     */
+    Vec2f GetSize(){return _size;}
+
 public slots:
     /** Method called every frame in order to repaint the scene.
      */
@@ -115,7 +120,6 @@ private:
     QWebView _webView;
     /// Web name
     const std::string _nameWeb;
-
 };
 
 }   // namespace FreePhyloTree

@@ -54,12 +54,18 @@ class Scene
 {
 public:
     /** Constructor.
-     * @param tree Screen output tree
-     * @param cam Main camera
+     * @param tree Screen output tree.
+     * @param cam Main camera.
+     * @param context Active context.
      */
-    Scene(PhyloTree *tree, Camera *cam);
+    Scene(PhyloTree *tree, Camera *cam, QGLContext *context);
     /// Destructor.
     ~Scene();
+
+    /** Returns the rendered scene
+     * @return Texture with rendered scene
+     */
+    GLuint GetTexture(){return _rttObject->texture();}
 
     /** Renders the scene.
      * @warning This method Calls Draw function, that must
@@ -71,8 +77,10 @@ private:
     /** Draws the scene.
      * @warning This method is pure virtual, so must
      * be overloaded in your class.
+     * @note This method could be used to draw the tree with
+     * normal orthodromic camera, only for development purposes.
      */
-    virtual void Draw(){}
+    virtual void Draw();
 
 
     /// Screen output tree

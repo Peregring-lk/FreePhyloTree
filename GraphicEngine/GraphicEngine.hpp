@@ -44,6 +44,16 @@
 // -------------------------------------------
 #include "../PhyloTree.hpp"
 #include "Canvas.hpp"
+#include "Scene.hpp"
+
+// -------------------------------------------
+// Defines for scenes
+// -------------------------------------------
+#ifndef _SCENES_DEFINES_
+#define _SCENES_DEFINES_
+    #define _N_SCENES_ 1
+    #define _NORMAL_SCENE_ 0
+#endif
 
 namespace FreePhyloTree
 {
@@ -76,6 +86,11 @@ public:
      * @return Main canvas.
      */
     Canvas* GetCanvas(){return _canvas;}
+    /** Returns a scene
+     * @param id Identifier of the scene.
+     * @return Scene.
+     */
+    Scene* GetScene(int id);
 
 private:
     /// Main application
@@ -86,6 +101,8 @@ private:
     Camera *_cam;
     /// Output canvas
     Canvas *_canvas;
+    /// Scene
+    Scene **_scenes;
 };
 
 }   // namespace FreePhyloTree
