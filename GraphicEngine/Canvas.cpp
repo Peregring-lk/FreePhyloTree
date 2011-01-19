@@ -119,8 +119,9 @@ void Canvas::resizeGL(int width, int height)
 {
     _size = Vec2f(width, height);
 
-    cerr << (GLsizei)width << " " << (GLsizei)height << endl;
     // Setup the viewport
+    // TODO: Segmentation fault in this line (with g++ compiler at
+    // least)
     glViewport(0, 0, (GLsizei) width, (GLsizei) height);
     // Enter on projection work space
     glMatrixMode(GL_PROJECTION);
