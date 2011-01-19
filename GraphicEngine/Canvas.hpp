@@ -61,11 +61,6 @@ class Canvas : public QGLWidget
 {
     Q_OBJECT
 
-public slots:
-    /** Method called every frame in order to repaint the scene.
-     */
-    void animate();
-
 public:
     /** Constructor.
      * @param ge Main graphic engine
@@ -75,6 +70,11 @@ public:
     Canvas(GraphicEngine *ge, PhyloTree *tree, Camera *cam);
     /// Destructor.
     ~Canvas();
+
+public slots:
+    /** Method called every frame in order to repaint the scene.
+     */
+    void animate();
 
 private:
     /** Perform the initialization of the canvas.

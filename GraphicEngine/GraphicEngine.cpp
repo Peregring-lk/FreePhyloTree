@@ -22,6 +22,11 @@
 // -------------------------------------------
 #include "GraphicEngine.hpp"
 
+// -------------------------------------------
+// FreePhyloTree classes
+// -------------------------------------------
+#include "../FreePhyloTree.hpp"
+
 // Activate namespace
 using namespace std;
 using namespace FreePhyloTree;
@@ -35,9 +40,11 @@ GraphicEngine::GraphicEngine(QFreePhyloTree *app, PhyloTree *tree)
     _canvas = new Canvas(this, _tree, _cam);
     /// 2nd.- Build entities (shared info channels)
     /// 3rd.- Setup the canvas
-    app->connect(app->GetTimer(), SIGNAL(timeout()), _canvas, SLOT(animate()));
+    /*
+    app->connect(app->GetTimer(), SIGNAL(timeout()), _canvas, SLOT( animate() ));
     app->GetTimer()->start(40);
     _canvas->show();
+    */
 }
 
 GraphicEngine::~GraphicEngine()

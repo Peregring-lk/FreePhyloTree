@@ -24,6 +24,7 @@
 #include <QTimer>
 
 #include "GLEngine.hpp"
+#include "GraphicEngine/GraphicEngine.hpp"
 
 namespace FreePhyloTree
 {
@@ -40,7 +41,9 @@ namespace FreePhyloTree
     QTimer* GetTimer(){return &_qTimer;}
 
   private:
-    GLEngine _glEngine;
+    // GLEngine _glEngine;
+    PhyloTree *_tree;
+    GraphicEngine *_glEngine;
     QTimer _qTimer;
   };
 }

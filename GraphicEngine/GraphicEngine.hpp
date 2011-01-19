@@ -42,12 +42,12 @@
 // -------------------------------------------
 // FreePhyloTree classes
 // -------------------------------------------
-#include "../FreePhyloTree.hpp"
 #include "../PhyloTree.hpp"
 #include "Canvas.hpp"
 
 namespace FreePhyloTree
 {
+    class QFreePhyloTree;
 
 /** @class GraphicEngine GraphicEngine.h GraphicEngine/GraphicEngine.h
  * @brief Graphic engine controla el apartado visual, gestionando las
@@ -67,6 +67,15 @@ public:
     GraphicEngine(QFreePhyloTree *app, PhyloTree *tree);
     /// Destructor.
     ~GraphicEngine();
+
+    /** Returns the app
+     * @return App
+     */
+    QFreePhyloTree* GetApp(){return _app;}
+    /** Returns active canvas.
+     * @return Main canvas.
+     */
+    Canvas* GetCanvas(){return _canvas;}
 
 private:
     /// Main application
