@@ -40,7 +40,7 @@ Canvas::Canvas(GraphicEngine *ge, PhyloTree *tree, Camera *cam)
     setMouseTracking(true);
     /// 2nd.- Get canvas size
     _size = Vec2f(width(), height());
-    resizeGL(_size.x(), _size.y());
+    //resizeGL(_size.x(), _size.y());
 
     _webView.hide();
 }

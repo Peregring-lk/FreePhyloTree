@@ -28,7 +28,6 @@ QFreePhyloTree::QFreePhyloTree(PhyloTree *tree, int argc, char **argv)
   , _qTimer(this)
 {
     _glEngine = new GraphicEngine(this, _tree);
-
 }
 
 void QFreePhyloTree::run()
