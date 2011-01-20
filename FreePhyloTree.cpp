@@ -19,6 +19,7 @@
 
 #include <iostream>
 #include "FreePhyloTree.hpp"
+#include "GraphicEngine/Canvas.hpp"
 
 using namespace std;
 using namespace FreePhyloTree;
@@ -27,18 +28,24 @@ QFreePhyloTree::QFreePhyloTree(PhyloTree *tree, int argc, char **argv)
   : QApplication(argc, argv), _tree(tree) // , _glEngine(tree)
   , _qTimer(this)
 {
-    _glEngine = new GraphicEngine(this, _tree);
+  _glEngine = new GraphicEngine(this, _tree);
 }
 
 void QFreePhyloTree::run()
 {
-    /*
+  /*
     connect(&_qTimer, SIGNAL(timeout()), &_glEngine, SLOT(animate()));
     _qTimer.start(40);
 
     _glEngine.show();
-    */
-    connect(&_qTimer, SIGNAL(timeout()), _glEngine->GetCanvas(), SLOT(animate()));
-    _qTimer.start(40);
-    _glEngine->GetCanvas()->show();
+  */
+  connect(&_qTimer, SIGNAL(timeout()), _glEngine->GetCanvas(),
+	  SLOT(animate()));
+  _qTimer.start(40);
+  _glEngine->GetCanvas()->show();
+}
+
+QTimer* QFreePhyloTree::GetTimer()
+{
+  return &_qTimer;
 }

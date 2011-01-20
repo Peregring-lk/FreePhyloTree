@@ -15,11 +15,12 @@ SET(QT_USE_QTWEBKIT TRUE)
 INCLUDE(${QT_USE_FILE})
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
-QT4_AUTOMOC(Canvas.cpp GLEngine.cpp)
+QT4_WRAP_CPP(MOC_HEADERS GraphicEngine/Canvas.hpp)
+#QT4_AUTOMOC(Canvas.cpp)
 
 SET(TREES PhyloTree ${TREE} ${STRGY} ${GENGINE})
-SET(SRC FreePhyloTree GLEngine ${TREES} program ${GENGINE})
+SET(SRC FreePhyloTree ${TREES} program ${GENGINE})
 
-ADD_EXECUTABLE(FreePhyloTree ${SRC})
+ADD_EXECUTABLE(FreePhyloTree ${SRC} ${MOC_HEADERS})
 
 TARGET_LINK_LIBRARIES(FreePhyloTree ftgl m ${QT_LIBRARIES})

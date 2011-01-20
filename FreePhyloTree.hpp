@@ -23,7 +23,6 @@
 #include <QApplication>
 #include <QTimer>
 
-#include "GLEngine.hpp"
 #include "GraphicEngine/GraphicEngine.hpp"
 
 namespace FreePhyloTree
@@ -38,7 +37,7 @@ namespace FreePhyloTree
     /** Returns the Qt timer manager
      * @return Qt timer manager.
      */
-    QTimer* GetTimer(){return &_qTimer;}
+    QTimer* GetTimer();
 
   private:
     // GLEngine _glEngine;

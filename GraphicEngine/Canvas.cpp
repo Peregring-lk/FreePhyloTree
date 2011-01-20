@@ -20,7 +20,7 @@
 // -------------------------------------------
 // Main header file
 // -------------------------------------------
-#include "Canvas.moc"
+#include "Canvas.hpp"
 
 // -------------------------------------------
 // FreePhyloTree classes
@@ -32,9 +32,7 @@ using namespace std;
 using namespace FreePhyloTree;
 
 Canvas::Canvas(GraphicEngine *ge, PhyloTree *tree, Camera *cam)
-    : _ge(ge)
-    , _tree(tree)
-    , _cam(cam)
+  : _ge(ge), _tree(tree), _cam(cam)
 {
     /// 1st.- Activate mouse events
     setMouseTracking(true);
@@ -46,32 +44,31 @@ Canvas::Canvas(GraphicEngine *ge, PhyloTree *tree, Camera *cam)
 }
 
 Canvas::~Canvas()
-{
-}
+{}
 
 void Canvas::animate()
 {
-    repaint();
+  repaint();
 }
 
 void Canvas::initializeGL()
 {
-    // General options
-    glEnable( GL_TEXTURE_2D );
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  // General options
+  glEnable( GL_TEXTURE_2D );
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // Setup the viewport
-    glViewport(0, 0, (GLsizei) width(), (GLsizei) height());
-    // Enter on projection work space
-    glMatrixMode(GL_PROJECTION);
-    // Clear all previous transformation
-    glLoadIdentity();
-    // Make a really simplest orthodromic camera
-    glOrtho(-1.0,1.0,-1.0,1.0,-1.0,1.0);
-    // We return to model work space
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+  // Setup the viewport
+  glViewport(0, 0, (GLsizei)width(), (GLsizei)height());
+  // Enter on projection work space
+  glMatrixMode(GL_PROJECTION);
+  // Clear all previous transformation
+  glLoadIdentity();
+  // Make a really simplest orthodromic camera
+  glOrtho(-1.0,1.0,-1.0,1.0,-1.0,1.0);
+  // We return to model work space
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
 }
 
 void Canvas::paintGL()

@@ -21,11 +21,6 @@
 #define CANVAS_HPP_INCLUDED
 
 // -------------------------------------------
-// OpenGL libraries
-// -------------------------------------------
-//#include<GL/glu.h>
-
-// -------------------------------------------
 // Qt OpenGL libraries
 // -------------------------------------------
 #include <QApplication>
@@ -49,7 +44,7 @@
 namespace FreePhyloTree
 {
 
-    class GraphicEngine;
+  class GraphicEngine;
 
 /** @class Canvas Canvas.h GraphicEngine/Canvas.h
  * @brief Esta clase es la salida por pantalla. Recibe la informacion
@@ -123,6 +118,5 @@ private:
 };
 
 }   // namespace FreePhyloTree
-
 
 #endif // CANVAS_HPP_INCLUDED

@@ -21,20 +21,6 @@
 #define GRAPHICENGINE_HPP_INCLUDED
 
 // -------------------------------------------
-// OpenGL libraries
-// -------------------------------------------
-#include<GL/glu.h>
-
-// -------------------------------------------
-// Qt OpenGL libraries
-// -------------------------------------------
-#include <QApplication>
-#include <QGLWidget>
-#include <QMouseEvent>
-#include <QKeyEvent>
-#include <QWebView>
-
-// -------------------------------------------
 // String libraries
 // -------------------------------------------
 #include <string>
