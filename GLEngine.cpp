@@ -19,7 +19,7 @@
 
 #include <iostream>
 #include <QApplication>
-#include "GLEngine.moc"
+#include "GLEngine.hpp"
 
 using namespace std;
 using namespace FreePhyloTree;
