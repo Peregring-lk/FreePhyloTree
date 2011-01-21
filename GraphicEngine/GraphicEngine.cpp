@@ -33,7 +33,8 @@ GraphicEngine::GraphicEngine(QFreePhyloTree *app, PhyloTree *tree)
     _webView.hide();
 
     /// 2nd.- Construct entities
-    _cam = new Camera(_tree);
+    float aspectRatio = width()/height();
+    _cam = new Camera(_tree, aspectRatio);
     _scenes = new Scene* [_N_SCENES_];
     _scenes[_NORMAL_SCENE_] = new Scene(width(), height(), _tree, _cam, (QGLContext*)context());
         _scenes[_NORMAL_SCENE_]->create();
@@ -129,6 +130,12 @@ void GraphicEngine::resizeGL(int width, int height)
         glLoadIdentity();
         glOrtho(-1.0,1.0,-1.0,1.0,-1.0,1.0);
     glMatrixMode(GL_MODELVIEW);
+
+    float aspectRatio = (float)height/width;
+    _cam->setAspectRatio(aspectRatio);
+    for(int i=0; i < _N_SCENES_; i++) {
+        _scenes[_NORMAL_SCENE_]->resize(width,height);
+    }
 }
 
 void GraphicEngine::keyPressEvent(QKeyEvent *event)

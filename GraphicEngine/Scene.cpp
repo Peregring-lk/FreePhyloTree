@@ -106,7 +106,13 @@ void Scene::draw()
     drawPlane(_tree->root(), _tree->root()->bloom(), _textureid[0]);
     drawPlane(_tree->root(), 5, _textureid[2]);
     glLoadIdentity();
-    gluLookAt( 0.2, 0.1,-0.5, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+
+    // Position the camera
+    Vec3f cameraPos = _cam->position();
+    Vec3f cameraAim = _cam->aimingPoint();
+    gluLookAt(  cameraPos.x(), cameraPos.y(), cameraPos.z(),
+                cameraAim.x(), cameraAim.y(), cameraAim.z(),
+                0.f,           1.f,           0.f);
 }
 
 void Scene::drawPlane(Node *node, float radius, GLuint tex)

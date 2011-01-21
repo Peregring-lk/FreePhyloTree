@@ -44,38 +44,48 @@ class Camera
 public:
     /** Constructor.
      * @param tree Arbol a descargar en el visual
+     * @param aspectRatio Aspect ratio of the OpenGL window.
+     * @remarks Aspect ratio is defines as width / height.
      */
-    Camera(PhyloTree *tree);
+    Camera(PhyloTree *tree, float aspectRatio);
     /// Destructor.
     ~Camera();
 
-    /** Set viewport size
-     * @param size Viewport size.
+    /** Set aspect ratio.
+     * @param aspectRatio Aspect ratio of the OpenGL window.
+     * @remarks Aspect ratio is defines as width / height.
      */
-    void SetSize(Vec2f size){_size = size;}
+    void setAspectRatio(float aspectRatio);
+
+    /** Get aspect ratio.
+     * @return Aspect ratio of the OpenGL window.
+     * @remarks Aspect ratio is defines as width / height.
+     */
+    float aspectRatio();
+
     /** Get viewport size
      * @return Viewport size.
      */
-    Vec2f GetSize(){return _size;}
+    Vec2f size();
 
     /** Set camera position.
      * @param pos Position of the camera.
      */
-    void SetPosition(Vec3f pos){_pos = pos;}
+    void setPosition(Vec3f pos);
     /** Set camera view point.
      * @param aim Camera view point.
      * @note If any point is provided, center of scene
      * (0,0,0) sill be selected.
      */
-    void SetAimingPoint(Vec3f aim=Vec3f(0.f,0.f,0.f)){_aim = aim;}
+    void setAimingPoint(Vec3f aim=Vec3f(0.f,0.f,0.f));
     /** Return camera position.
      * @return Position of the camera.
      */
-    Vec3f GetPosition(){return _pos;}
+    Vec3f position();
     /** Return camera view point.
      * @return Camera view point.
      */
-    Vec3f GetAimingPoint(){return _aim;}
+    Vec3f aimingPoint();
 
     /** Return camera view direction.
      * @return Normalized view direction.
@@ -83,11 +93,15 @@ public:
     Vec3f viewDirection();
 
 private:
+    void resize();
+
     /// Screen output tree
     PhyloTree *_tree;
 
     /// Viewport size
     Vec2f _size;
+    /// Aspect ratio
+    float _aspectRatio;
 
     /// Camera position
     Vec3f _pos;
