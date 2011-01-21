@@ -35,7 +35,7 @@ GraphicEngine::GraphicEngine(QFreePhyloTree *app, PhyloTree *tree)
     /// 2nd.- Construct entities
     _cam = new Camera(_tree);
     _scenes = new Scene* [_N_SCENES_];
-    _scenes[_NORMAL_SCENE_] = new Scene(_tree, _cam, (QGLContext*)context());
+    _scenes[_NORMAL_SCENE_] = new Scene(width(), height(), _tree, _cam, (QGLContext*)context());
         _scenes[_NORMAL_SCENE_]->create();
 }
 

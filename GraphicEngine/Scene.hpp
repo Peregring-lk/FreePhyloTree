@@ -55,18 +55,26 @@ class Scene
 {
 public:
     /** Constructor.
+     * @param width Width of the canvas.
+     * @param hegiht Hegiht of the canvas.
      * @param tree Screen output tree.
      * @param cam Main camera.
      * @param context Active context.
      * @remarks This method only construct the class,
      * you must call create method after calling this.
      */
-    Scene(PhyloTree *tree, Camera *cam, QGLContext *context);
+    Scene(int width, int height, PhyloTree *tree, Camera *cam, QGLContext *context);
     /// Destructor.
     ~Scene();
     /** Method that finish the construction process.
      */
     void create();
+
+    /** Resize the offscreen frame buffer.
+     * @param width Width of the canvas.
+     * @param hegiht Hegiht of the canvas.
+     */
+    void resize(int width, int height);
 
     /** Returns the rendered scene
      * @return Texture with rendered scene
@@ -102,6 +110,10 @@ private:
      */
     virtual void drawPlane(Node *node, float radius, GLuint tex);
 
+    /// Width of the canvas and offscreen buffer
+    int _width;
+    /// Height of the canvas and offscreen buffer
+    int _height;
     /// Screen output tree
     PhyloTree *_tree;
     /// Main camera

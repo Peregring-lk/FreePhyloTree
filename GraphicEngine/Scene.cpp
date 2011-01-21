@@ -26,8 +26,10 @@
 using namespace std;
 using namespace FreePhyloTree;
 
-Scene::Scene(PhyloTree *tree, Camera *cam, QGLContext *context)
-    : _tree(tree)
+Scene::Scene(int width, int height, PhyloTree *tree, Camera *cam, QGLContext *context)
+    : _width(width)
+    , _height(height)
+    , _tree(tree)
     , _cam(cam)
     , _context(context)
     , _textureid(0)
@@ -35,7 +37,7 @@ Scene::Scene(PhyloTree *tree, Camera *cam, QGLContext *context)
     /// 1st.- Setup OpenGL context
     _context->makeCurrent();
     /// 2nd.- Build the frame buffer object where the rendered scene will be stored
-    _rttObject = new QGLFramebufferObject(1024, 1024);
+    _rttObject = new QGLFramebufferObject(_width, _height);
 }
 
 Scene::~Scene()
@@ -47,6 +49,15 @@ Scene::~Scene()
 void Scene::create()
 {
     loadTextures();
+}
+
+void Scene::resize(int width, int height)
+{
+    _width = width;
+    _height = height;
+    delete _rttObject;
+    _rttObject=0;
+    _rttObject = new QGLFramebufferObject(_width, _height);
 }
 
 GLuint Scene::texture()
@@ -81,7 +92,7 @@ void Scene::loadTextures()
 
 void Scene::draw()
 {
-    glViewport(0, 0, (GLsizei) 1024, (GLsizei) 1024);
+    glViewport(0, 0, (GLsizei) _width, (GLsizei) _height);
     glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         glOrtho(-10.0,10.0,-10.0,10.0,-1.0,1.0);
