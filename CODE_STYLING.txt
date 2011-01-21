@@ -1,0 +1,70 @@
+☛ Tabulaciones de dos espacios
+☛ Respetar ANSI C de declarado de bloques:
+       if (expresión) {
+         cuerpo
+       }
+
+  y nunca
+       if (expresion)
+       {
+         cuerpo
+       }
+
+☛ Sentencias return, new y delete sin paréntesis: return 0 y nunca
+       return (0);
+
+☛ Intentar respetar —en la medida de lo posible— la ley de Demeter:
+     Intentar diseñar las clases de modo que no sea necesario que una
+       clase tenga que navegar entre muchas clases para obtener
+       información, por ejemplo, evitar verse obligado a escribir
+       expresiones de éste tipo:
+          puntero1->puntero2->datoDeseado();
+     Si se cumple esta ley significa que hay bajo acoplamiento entre
+       clases.
+
+☛ Los nombres de las clases públicas se declaran bajo estilo
+UpperCameCase, y los nombres de las funciones y variables públicas o
+locales lowerCamelCase.
+
+☛ Los atributos y métodos privados usan notación _lowerCamelCase.
+
+☛ Implementar las funciones SIEMPRE en los .cpp, y nunca en los .hpp
+ni aunque sean funciones de corta implementación.
+
+☛ Las funciones lectoras deben ser siempre constantes, y no serán del
+tipo Type getAtribute() const, sino sencillamente Type atribute()
+const.
+
+☛ Las funciones deben declararse en el .hpp por familias, por ejemplo,
+las funciones lectoras se declaran juntas y antes de las
+modificadoras. A su vez, si varias funciones lectoras o modificadoras
+realizan funciones similares o que siguen un mismo propósito,
+declararlas agrupadas (una a continuación de la otra), y separadas de
+otras «familias» de funciones.
+
+☛ Intentar aplicar patrones de diseño, especialmente patrón
+estrategía, factorías o singletones (las más habituales y además más
+adecuadas para la naturaleza de este proyecto), en la medida de lo
+posible.
+
+☛ El código también debe ser, en sí mismo, un gigantesco
+comentario. Por lo tanto: se deben elegir nombres lo más descriptivos
+posibles, de modo que se sepa para qué sirven. Y como segunda
+consecuencia, no comentar lo que el propio código ya explique:
+	// Obtenemos el tamaño de la pantalla
+	size = pantalla->size();
+
+Evidentemente, ese primer comentario sobra. Los comentarios
+redundantes logran el propósito contrario: dificultar la comprensión
+del código (sobreabundancia).
+
+☛ La documentación del código (no hablo de los comentarios para
+doxygen, sino la documentación interna) debe servir para especificar
+qué pretendemos hacer, y no qué estamos haciendo. Dicho de otra forma,
+no sirve para acompañar el código, sino para dirigir nuestro
+pensamiento a priori en la lectura del mismo. El código explica el
+cómo, no el porqué. No hacer que la documentación explique el cómo
+nuevamente. Es mejor comentar al principio de cada grupo de sentencias
+qué es lo que se pretende hacer en las líneas consecuentes (y que
+luego el código se explique por sí mismo), que explicar qué hace cada
+línea. Ésta es la verdadera filosofía de la documentación.
