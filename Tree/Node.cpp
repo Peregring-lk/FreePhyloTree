@@ -104,6 +104,11 @@ GLfloat Node::y() const
   return _alloc.y();
 }
 
+GLfloat Node::z() const
+{
+  return _alloc.z();
+}
+
 const Color& Node::color() const
 {
   return _color;

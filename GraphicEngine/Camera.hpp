@@ -77,7 +77,10 @@ public:
      */
     Vec3f GetAimingPoint(){return _aim;}
 
-
+    /** Return camera view direction.
+     * @return Normalized view direction.
+     */
+    Vec3f viewDirection();
 
 private:
     /// Screen output tree

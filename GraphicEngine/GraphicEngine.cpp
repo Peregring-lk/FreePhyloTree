@@ -36,6 +36,7 @@ GraphicEngine::GraphicEngine(QFreePhyloTree *app, PhyloTree *tree)
     _cam = new Camera(_tree);
     _scenes = new Scene* [_N_SCENES_];
     _scenes[_NORMAL_SCENE_] = new Scene(_tree, _cam, (QGLContext*)context());
+        _scenes[_NORMAL_SCENE_]->create();
 }
 
 GraphicEngine::~GraphicEngine()
@@ -84,8 +85,8 @@ void GraphicEngine::paintGL()
 {
     // Call to draw the scenes and return the textures
     GLuint textures[_N_SCENES_];
-    _scenes[_NORMAL_SCENE_]->Render();
-    textures[_NORMAL_SCENE_] = _scenes[_NORMAL_SCENE_]->GetTexture();
+    _scenes[_NORMAL_SCENE_]->render();
+    textures[_NORMAL_SCENE_] = _scenes[_NORMAL_SCENE_]->texture();
 
     // Clean the screen otuput
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

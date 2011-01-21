@@ -73,6 +73,7 @@ namespace FreePhyloTree
 
     GLfloat x() const;
     GLfloat y() const;
+    GLfloat z() const;
 
     const Color& color() const;
     const Vec3f& alloc() const;

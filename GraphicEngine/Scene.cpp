@@ -30,6 +30,7 @@ Scene::Scene(PhyloTree *tree, Camera *cam, QGLContext *context)
     : _tree(tree)
     , _cam(cam)
     , _context(context)
+    , _textureid(0)
 {
     /// 1st.- Setup OpenGL context
     _context->makeCurrent();
@@ -39,49 +40,96 @@ Scene::Scene(PhyloTree *tree, Camera *cam, QGLContext *context)
 
 Scene::~Scene()
 {
+    delete _textureid;
+    _textureid=0;
 }
 
-void Scene::Render()
+void Scene::create()
+{
+    loadTextures();
+}
+
+GLuint Scene::texture()
+{
+    return _rttObject->texture();
+}
+
+void Scene::render()
 {
     /// 1st.- Set the context
     _context->makeCurrent();
     /// 2nd.- Draws the scene
     _rttObject->bind();
-    Draw();
+    draw();
     _rttObject->release();
 }
 
-void Scene::Draw()
+void Scene::loadTextures()
 {
-    // Setup the viewport
+    _textureid = new GLuint[3];
+    QImage textureBloom("Resources/bloom.png");
+    QImage textureBeam("Resources/beam.png");
+    QImage textureNode("Resources/file.png");
+
+    _textureid[0] = _context->bindTexture(textureBloom, GL_TEXTURE_2D,
+                       QGLContext::MipmapBindOption);
+    _textureid[1] = _context->bindTexture(textureBeam, GL_TEXTURE_2D,
+                       QGLContext::MipmapBindOption);
+    _textureid[2] = _context->bindTexture(textureNode, GL_TEXTURE_2D,
+                       QGLContext::MipmapBindOption);
+}
+
+void Scene::draw()
+{
     glViewport(0, 0, (GLsizei) 1024, (GLsizei) 1024);
-    // Enter on projection work space
     glMatrixMode(GL_PROJECTION);
-    // Clear all previous transformation
-    glLoadIdentity();
-    // Make a really simplest orthodromic camera
-    glOrtho(-1.0,1.0,-1.0,1.0,-1.0,1.0);
-    // We return to model work space
+        glLoadIdentity();
+        glOrtho(-10.0,10.0,-10.0,10.0,-1.0,1.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
     // Clean
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    /** In the canvas we only need to draw one quad that
-     * will use the scenes textures and a shader to compute
-     * the screen output.
-     */
-    // Setup textures
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glBegin(GL_QUADS);
-        glColor4f(1.f,0.f,0.f,1.f);
-        // Vertex as the limits of viewport (-1,-1, 1,1)
-        glVertex3f(-0.5f, -0.5f, 0.f);
-        glVertex3f( 0.5f, -0.5f, 0.f);
-        glVertex3f( 0.5f,  0.5f, 0.f);
-        glVertex3f(-0.5f,  0.5f, 0.f);
-    glEnd();
+    glColor4f(_tree->root()->r(), _tree->root()->g(), _tree->root()->b(),1.f);
+    drawPlane(_tree->root(), _tree->root()->bloom(), _textureid[0]);
+    drawPlane(_tree->root(), 5, _textureid[2]);
     glLoadIdentity();
     gluLookAt( 0.2, 0.1,-0.5, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+}
+
+void Scene::drawPlane(Node *node, float radius, GLuint tex)
+{
+    Vec3f point;
+    /* We must paint a plane that looks the camera. In this base
+     * class, the camera is in the center point of Camera class
+     */
+    Vec3f normal = _cam->viewDirection();
+    Vec3f center = Vec3f(node->x(), node->y(), node->z());
+    Vec3f diru = Vec3f(-normal.y(),normal.x(),0.f);  // Z=0 parallel vector
+    float module = diru.norm();
+    if( module < 0.0000001)
+        diru = Vec3f(radius,0.f,0.f);
+    else
+        diru *= radius/module;
+    Vec3f dirv = Vec3f( normal.y()*diru.z() - normal.z()*diru.y(),
+                        normal.z()*diru.x() - normal.x()*diru.z(),
+                        normal.x()*diru.y() - normal.y()*diru.x());
+
+    glBindTexture(GL_TEXTURE_2D, tex);
+
+    glBegin(GL_QUADS);
+        point = center + diru + dirv;
+        glTexCoord2f(1, 1);
+        glVertex3f(point.x(), point.y(), point.z());
+        point = center + diru - dirv;
+        glTexCoord2f(1, 0);
+        glVertex3f(point.x(), point.y(), point.z());
+        point = center - diru - dirv;
+        glTexCoord2f(0, 0);
+        glVertex3f(point.x(), point.y(), point.z());
+        point = center - diru + dirv;
+        glTexCoord2f(0, 1);
+        glVertex3f(point.x(), point.y(), point.z());
+    glEnd();
 }

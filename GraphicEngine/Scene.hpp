@@ -46,7 +46,8 @@ namespace FreePhyloTree
 
 /** @class Scene Scene.h GraphicEngine/Scene.h
  * @brief Esta clase controla la escena, devolviendo la salida a
- * una textura.
+ * una textura. Una vez construida la clase se debe llamar al metodo
+ * create para completar el proceso.
  * @note Clase empleada en el motor grafico 2.0.
  * @remarks Esta clase se diseña para ser sobrecargada.
  */
@@ -57,31 +58,49 @@ public:
      * @param tree Screen output tree.
      * @param cam Main camera.
      * @param context Active context.
+     * @remarks This method only construct the class,
+     * you must call create method after calling this.
      */
     Scene(PhyloTree *tree, Camera *cam, QGLContext *context);
     /// Destructor.
     ~Scene();
+    /** Method that finish the construction process.
+     */
+    void create();
 
     /** Returns the rendered scene
      * @return Texture with rendered scene
      */
-    GLuint GetTexture(){return _rttObject->texture();}
+    GLuint texture();
 
     /** Renders the scene.
      * @warning This method Calls Draw function, that must
      * be overloaded in your class.
      */
-    void Render();
+    void render();
 
 private:
+    /** Load the textures.
+     * @warning This method is pure virtual, so must
+     * be overloaded in your class. Don't forgive construct
+     * the vector of textures.
+     */
+    virtual void loadTextures();
+
     /** Draws the scene.
      * @warning This method is pure virtual, so must
      * be overloaded in your class.
      * @note This method could be used to draw the tree with
      * normal orthodromic camera, only for development purposes.
      */
-    virtual void Draw();
+    virtual void draw();
 
+    /** Draws a squared plane.
+     * @param node Node that contains info about the position.
+     * @param radius Size of the plane to draw
+     * @param tex Texture to use.
+     */
+    virtual void drawPlane(Node *node, float radius, GLuint tex);
 
     /// Screen output tree
     PhyloTree *_tree;
@@ -91,6 +110,9 @@ private:
     QGLContext *_context;
     /// Rendered scene object
     QGLFramebufferObject *_rttObject;
+
+    /// Textures array
+    GLuint *_textureid;
 };
 
 }   // namespace FreePhyloTree

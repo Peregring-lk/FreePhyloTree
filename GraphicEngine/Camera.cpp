@@ -38,3 +38,9 @@ Camera::~Camera()
 {
 }
 
+Vec3f Camera::viewDirection()
+{
+    Vec3f normal = _aim - _pos;
+    normal /= normal.norm();
+    return normal;
+}
