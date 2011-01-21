@@ -66,7 +66,7 @@ public:
     /** Get viewport size
      * @return Viewport size.
      */
-    Vec2f size();
+    Vec3f size();
 
     /** Set camera position.
      * @param pos Position of the camera.
@@ -92,14 +92,16 @@ public:
      */
     Vec3f viewDirection();
 
-private:
+    /** Resize the viewport of the camera.
+     */
     void resize();
+private:
 
     /// Screen output tree
     PhyloTree *_tree;
 
     /// Viewport size
-    Vec2f _size;
+    Vec3f _size;
     /// Aspect ratio
     float _aspectRatio;
 

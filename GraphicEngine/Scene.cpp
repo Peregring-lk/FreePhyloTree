@@ -92,10 +92,11 @@ void Scene::loadTextures()
 
 void Scene::draw()
 {
+    Vec3f camSize = _cam->size();
     glViewport(0, 0, (GLsizei) _width, (GLsizei) _height);
     glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(-10.0,10.0,-10.0,10.0,-1.0,1.0);
+        glOrtho(-camSize.x(),camSize.x(),-camSize.y(),camSize.y(),-camSize.z(),camSize.z());
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 

@@ -50,7 +50,7 @@ float Camera::aspectRatio()
     return _aspectRatio;
 }
 
-Vec2f Camera::size()
+Vec3f Camera::size()
 {
     return _size;
 }
@@ -87,8 +87,9 @@ void Camera::resize()
     float radius = _tree->supPic().x()-_tree->infPic().x();
     if(_tree->supPic().y()-_tree->infPic().y() > radius)
         radius = _tree->supPic().y()-_tree->infPic().y();
+    radius /= 2.f;
     if(_aspectRatio < 1.f)
-        _size = Vec2f(radius, radius*_aspectRatio);
+        _size = Vec3f(radius, radius*_aspectRatio, radius);
     else
-        _size = Vec2f(radius/_aspectRatio, radius);
+        _size = Vec3f(radius/_aspectRatio, radius, radius);
 }

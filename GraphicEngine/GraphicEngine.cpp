@@ -65,6 +65,7 @@ Vec2f GraphicEngine::size()
 
 void GraphicEngine::animate()
 {
+    _cam->resize();
     repaint();
 }
 
