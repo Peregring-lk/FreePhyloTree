@@ -19,7 +19,6 @@
 
 #include <iostream>
 #include "FreePhyloTree.hpp"
-#include "GraphicEngine/Canvas.hpp"
 
 using namespace std;
 using namespace FreePhyloTree;
@@ -39,10 +38,10 @@ void QFreePhyloTree::run()
 
     _glEngine.show();
   */
-  connect(&_qTimer, SIGNAL(timeout()), _glEngine->GetCanvas(),
+  connect(&_qTimer, SIGNAL(timeout()), _glEngine,
 	  SLOT(animate()));
   _qTimer.start(40);
-  _glEngine->GetCanvas()->show();
+  _glEngine->show();
 }
 
 QTimer* QFreePhyloTree::GetTimer()

@@ -26,10 +26,17 @@
 #include <string>
 
 // -------------------------------------------
+// Qt OpenGL libraries
+// -------------------------------------------
+#include <QGLWidget>
+#include <QMouseEvent>
+#include <QKeyEvent>
+#include <QWebView>
+
+// -------------------------------------------
 // FreePhyloTree classes
 // -------------------------------------------
 #include "../PhyloTree.hpp"
-#include "Canvas.hpp"
 #include "Scene.hpp"
 
 // -------------------------------------------
@@ -53,42 +60,81 @@ namespace FreePhyloTree
  * pantalla.
  * @note Este motor es la version 2.0.
  */
-class GraphicEngine
+class GraphicEngine : public QGLWidget
 {
+    Q_OBJECT
+
 public:
     /** Constructor.
      * @param app Main application
      * @param tree Screen output tree
      */
-  GraphicEngine(QFreePhyloTree *app, PhyloTree *tree);
+    GraphicEngine(QFreePhyloTree *app, PhyloTree *tree);
     /// Destructor.
     ~GraphicEngine();
 
     /** Returns the app
      * @return App
      */
-  QFreePhyloTree* GetApp();
-    /** Returns active canvas.
-     * @return Main canvas.
-     */
-  Canvas* GetCanvas();
+    QFreePhyloTree* app();
+
     /** Returns a scene
      * @param id Identifier of the scene.
      * @return Scene.
      */
-    Scene* GetScene(int id);
+    Scene* scene(int id);
+
+    /** Returns the openGL window size.
+     * @return Window size.
+     */
+    Vec2f size();
+
+public slots:
+    /** Method called every frame in order to repaint the scene.
+     */
+    void animate();
 
 private:
+    /** Perform the initialization of the canvas.
+     */
+    void initializeGL();
+    /** Perform canvas drawing
+     */
+    void paintGL();
+    /** Resize the canvas.
+     * @param width New width of the canvas.
+     * @param height New height of the canvas.
+     */
+    void resizeGL(int width, int height);
+    /** Answer the keyboard events.
+     * @param event Keyboard event info.
+     */
+    void keyPressEvent(QKeyEvent *event);
+    /** Answer the double click mouse events.
+     * @param event double click mouse event info.
+     */
+    void mouseDoubleClickEvent(QMouseEvent *event);
+    /** Answer the mouse move events.
+     * @param event mouse move event info.
+     */
+    void mouseMoveEvent(QMouseEvent *event);
+
     /// Main application
     QFreePhyloTree *_app;
     /// Screen output tree
     PhyloTree *_tree;
     /// Main camera
     Camera *_cam;
-    /// Output canvas
-    Canvas *_canvas;
     /// Scene
     Scene **_scenes;
+
+    /// Widget size.
+    Vec2f _size;
+
+    /// Web viewer
+    QWebView _webView;
+    /// Web name
+    const std::string _nameWeb;
 };
 
 }   // namespace FreePhyloTree
