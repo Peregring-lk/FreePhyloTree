@@ -23,7 +23,9 @@ using namespace FreePhyloTree;
 
 Edge::Edge(Node *source, Node *target, int weight)
   : _source(source), _target(target), _weight(weight)
-{}
+{
+    _beam = 2;
+}
 
 Node* Edge::source() const
 {
@@ -47,6 +49,8 @@ Node::Node(const Name& name, bool hide) : _name(name)
   _level = 0;
   _height = 0;
   _crib = false;
+
+  _radius = 5;
 }
 
 Name Node::name() const
@@ -77,6 +81,11 @@ bool Node::hide() const
 float Node::bloom() const
 {
   return _bloom;
+}
+
+float Node::radius() const
+{
+    return _radius;
 }
 
 GLfloat Node::r() const
@@ -197,7 +206,7 @@ void Node::_uploadHeight(Node *n)
 
   if (newHeight > _height) {
     _height = newHeight;
-      
+
     if (_father != NULL)
       _father->_uploadHeight(this);
   }

@@ -79,30 +79,11 @@ Node* PhyloTree::actualNode() const
   return _nodeMouse;
 }
 
-void PhyloTree::initSignal(GLEngine *glEngine)
+void PhyloTree::initSignal()
 {
-  _loadTextures(glEngine);
   _coloring->coloring(_root);
-
-  glEnable(GL_TEXTURE_2D);
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-  Vec3f inf = infPic();
-  Vec3f sup = supPic();
-
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-
-  glOrtho(inf.x(), sup.x(), inf.y(), sup.y(), 1, -1);
-
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-
   _initBloom(_radiusBloom);
   _cribNode(_root);
-
-  lookAt(_root->alloc());
 }
 
 void PhyloTree::gotoRoot()
@@ -152,7 +133,7 @@ void PhyloTree::_drawTree(Node *node)
 {
   float l = 0;
 
-  const Nodes& nodes = node->children(); 
+  const Nodes& nodes = node->children();
 
   if (!node->crib())
     for (int i = 0; i < nodes.size(); ++i) {
@@ -165,7 +146,7 @@ void PhyloTree::_drawTree(Node *node)
   _drawNode(node);
 }
 
-void PhyloTree::_drawEdge(Node *source, Node *target) 
+void PhyloTree::_drawEdge(Node *source, Node *target)
 {
   glBindTexture(GL_TEXTURE_2D, textureid[1]);
 
@@ -235,7 +216,7 @@ void PhyloTree::_drawText()
 
     glColor3f(1, 1, 0);
     //_setColor(_nodeMouse);
-    
+
     glTranslatef(dx, dy, 0);
 
     _font->Render(_nodeMouse->name().c_str());

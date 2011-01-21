@@ -43,12 +43,14 @@ namespace FreePhyloTree
     Node* source() const;
     Node *target() const;
     int weight() const;
+    int beam() const;
 
   private:
     Node *_source;
     Node *_target;
 
     int _weight;
+    int _beam;
   };
 
   //  typedef std::pair<Node*, Node*> Edge;
@@ -66,6 +68,7 @@ namespace FreePhyloTree
     bool crib() const;
     bool hide() const;
     float bloom() const;
+    float radius() const;
 
     GLfloat r() const;
     GLfloat g() const;
@@ -111,6 +114,7 @@ namespace FreePhyloTree
     unsigned _height;
 
     float _bloom;
+    float _radius;
 
     void _uploadHeight(Node *node);
   };

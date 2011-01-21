@@ -81,6 +81,8 @@ void GraphicEngine::initializeGL()
         glOrtho(-1.0,1.0,-1.0,1.0,-1.0,1.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+
+    _tree->initSignal();
 }
 
 void GraphicEngine::paintGL()

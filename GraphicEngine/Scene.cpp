@@ -103,9 +103,7 @@ void Scene::draw()
     // Clean
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glColor4f(_tree->root()->r(), _tree->root()->g(), _tree->root()->b(),1.f);
-    drawPlane(_tree->root(), _tree->root()->bloom(), _textureid[0]);
-    drawPlane(_tree->root(), 5, _textureid[2]);
+    drawTree(_tree->root());
     glLoadIdentity();
 
     // Position the camera
@@ -114,6 +112,64 @@ void Scene::draw()
     gluLookAt(  cameraPos.x(), cameraPos.y(), cameraPos.z(),
                 cameraAim.x(), cameraAim.y(), cameraAim.z(),
                 0.f,           1.f,           0.f);
+}
+
+void Scene::drawTree(Node *node)
+{
+    const Nodes& nodes = node->children();
+
+    if (!node->crib()) {
+        for (int i = 0; i < (int)nodes.size(); ++i) {
+          Node *child = nodes[i];
+          drawEdge(node, child);
+          drawTree(child);
+        }
+    }
+
+    drawNode(node);
+}
+
+void Scene::drawEdge(Node *source, Node *target)
+{
+    Vec3f point;
+    /* We must paint a plane that looks the camera. In this base
+     * class, the camera is in the center point of Camera class
+     */
+    glBindTexture(GL_TEXTURE_2D, _textureid[1]);
+
+    glColor4f(1.f, 1.f, 1.f, 0.f);
+
+    Vec3f sourcePos = Vec3f(source->x(), source->y(), source->z());
+    Vec3f targetPos = Vec3f(target->x(), target->y(), target->z());
+    Vec3f diru = targetPos - sourcePos;
+    diru /= diru.norm();
+    Vec3f normal = _cam->viewDirection();
+    Vec3f dirv = Vec3f( normal.y()*diru.z() - normal.z()*diru.y(),
+                        normal.z()*diru.x() - normal.x()*diru.z(),
+                        normal.x()*diru.y() - normal.y()*diru.x());
+    dirv *= 2;
+
+    glBegin(GL_QUADS);
+        point = sourcePos - dirv;
+        glTexCoord2f(1, 0);
+        glVertex3f(point.x(), point.y(), point.z());
+        glTexCoord2f(0, 0);
+        point = sourcePos + dirv;
+        glVertex3f(point.x(), point.y(), point.z());
+        glTexCoord2f(0, 0);
+        point = targetPos + dirv;
+        glVertex3f(point.x(), point.y(), point.z());
+        glTexCoord2f(1, 0);
+        point = targetPos - dirv;
+        glVertex3f(point.x(), point.y(), point.z());
+    glEnd();
+}
+
+void Scene::drawNode(Node *node)
+{
+    glColor4f(node->r(), node->g(), node->b(),1.f);
+    drawPlane(node, node->bloom(), _textureid[0]);
+    drawPlane(node, node->radius(), _textureid[2]);
 }
 
 void Scene::drawPlane(Node *node, float radius, GLuint tex)

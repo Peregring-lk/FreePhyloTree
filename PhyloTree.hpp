@@ -42,37 +42,37 @@ namespace FreePhyloTree
   public:
     /** Constructor (default constructor is not allowed).
      * @param name Name of the tree.
-     */	
+     */
     PhyloTree(Name name);
     /** Destructor.
-     */	
+     */
     ~PhyloTree();
 
     /** Returns the center of the tree.
      * @return Center of the tree.
-     */	    
+     */
     const Vec3f& centerPic() const;
     /** Returns the inferior Pic of the tree.
      * @return Inferior Pic position of the tree.
-     */	    
+     */
     Vec3f infPic() const;
     /** Returns the superior Pic of the tree.
      * @return Superior Pic position of the tree.
-     */	    
+     */
     Vec3f supPic() const;
     /** Returns the width of the tree.
      * @return Width of the tree.
-     */	    
+     */
     float sidePic() const;
     Node* actualNode() const;
 
     /** Call to prepare the render of the scene.
      * @param glEngine Main graphic engine.
      */
-    void initSignal(GLEngine *glEngine);
+    void initSignal();
 
     /** Situate camera over root node.
-     */	
+     */
     void gotoRoot();
     /** Set the camera looking direction.
      * @param rel Relative position of point to aim.
@@ -88,7 +88,7 @@ namespace FreePhyloTree
      * @param alloc Position to lookfor a Pic.
      */
     void cribNode(const Vec3f& alloc);
-    
+
     /** Draws the scene.
      */
     void draw();

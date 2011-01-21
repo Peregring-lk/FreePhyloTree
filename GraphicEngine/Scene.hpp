@@ -89,9 +89,8 @@ public:
 
 private:
     /** Load the textures.
-     * @warning This method is pure virtual, so must
-     * be overloaded in your class. Don't forgive construct
-     * the vector of textures.
+     * @warning This method is virtual, but probably you don't need
+     * overload it. Don't forgive construct the textures array.
      */
     virtual void loadTextures();
 
@@ -102,6 +101,28 @@ private:
      * normal orthodromic camera, only for development purposes.
      */
     virtual void draw();
+
+    /** Draws a tree.
+     * @warning This method is virtual, but probably you don't need
+     * overload it.
+     * @param node Tree root node.
+     */
+    virtual void drawTree(Node *node);
+
+    /** Draws a union edge.
+     * @warning This method is virtual, but probably you don't need
+     * overload it.
+     * @param source Origin node of the edge.
+     * @param target End node of the edge.
+     */
+    virtual void drawEdge(Node *source, Node *target);
+
+    /** Draws a node.
+     * @warning This method is virtual, but probably you don't need
+     * overload it.
+     * @param node Node to draw.
+     */
+    virtual void drawNode(Node *node);
 
     /** Draws a squared plane.
      * @param node Node that contains info about the position.

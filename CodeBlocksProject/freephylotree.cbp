@@ -66,6 +66,7 @@
 		<Unit filename="../GraphicEngine/GraphicEngine.hpp" />
 		<Unit filename="../GraphicEngine/Scene.cpp" />
 		<Unit filename="../GraphicEngine/Scene.hpp" />
+		<Unit filename="../GraphicEngine/moc_GraphicEngine.cxx" />
 		<Unit filename="../PhyloTree.cpp" />
 		<Unit filename="../PhyloTree.hpp" />
 		<Unit filename="../Strategies/Alloc.cpp" />
