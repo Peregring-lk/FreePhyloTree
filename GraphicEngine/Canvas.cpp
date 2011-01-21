@@ -20,7 +20,7 @@
 // -------------------------------------------
 // Main header file
 // -------------------------------------------
-#include "Canvas.moc"
+#include "Canvas.hpp"
 
 // -------------------------------------------
 // FreePhyloTree classes
@@ -32,46 +32,43 @@ using namespace std;
 using namespace FreePhyloTree;
 
 Canvas::Canvas(GraphicEngine *ge, PhyloTree *tree, Camera *cam)
-    : _ge(ge)
-    , _tree(tree)
-    , _cam(cam)
+  : _ge(ge), _tree(tree), _cam(cam)
 {
     /// 1st.- Activate mouse events
     setMouseTracking(true);
     /// 2nd.- Get canvas size
-    _size = Vec2f(width(),height());
-    resizeGL(_size.x(), _size.y());
+    _size = Vec2f(width(), height());
+    //resizeGL(_size.x(), _size.y());
 
     _webView.hide();
 }
 
 Canvas::~Canvas()
-{
-}
+{}
 
 void Canvas::animate()
 {
-    repaint();
+  repaint();
 }
 
 void Canvas::initializeGL()
 {
-    // General options
-    glEnable( GL_TEXTURE_2D );
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  // General options
+  glEnable( GL_TEXTURE_2D );
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // Setup the viewport
-    glViewport(0, 0, (GLsizei) width(), (GLsizei) height());
-    // Enter on projection work space
-    glMatrixMode(GL_PROJECTION);
-    // Clear all previous transformation
-    glLoadIdentity();
-    // Make a really simplest orthodromic camera
-    glOrtho(-1.0,1.0,-1.0,1.0,-1.0,1.0);
-    // We return to model work space
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+  // Setup the viewport
+  glViewport(0, 0, (GLsizei)width(), (GLsizei)height());
+  // Enter on projection work space
+  glMatrixMode(GL_PROJECTION);
+  // Clear all previous transformation
+  glLoadIdentity();
+  // Make a really simplest orthodromic camera
+  glOrtho(-1.0,1.0,-1.0,1.0,-1.0,1.0);
+  // We return to model work space
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
 }
 
 void Canvas::paintGL()
@@ -120,6 +117,8 @@ void Canvas::resizeGL(int width, int height)
     _size = Vec2f(width, height);
 
     // Setup the viewport
+    // TODO: Segmentation fault in this line (with g++ compiler at
+    // least)
     glViewport(0, 0, (GLsizei) width, (GLsizei) height);
     // Enter on projection work space
     glMatrixMode(GL_PROJECTION);
