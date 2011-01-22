@@ -72,6 +72,8 @@ void Scene::render()
 {
     /// 1st.- Set the context
     _context->makeCurrent();
+    if(!_context->format().depth())
+        printf("WARNING: Deph text could not be performed.\n");
     /// 2nd.- Draws the scene
     _rttObject->bind();
     draw();
@@ -97,6 +99,8 @@ void Scene::draw()
 {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glClearDepth(1.0);
+    glDepthFunc(GL_LESS);
     glEnable(GL_DEPTH_TEST);
 
     Vec3f camSize = _cam->size();

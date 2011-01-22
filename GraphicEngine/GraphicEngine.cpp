@@ -83,6 +83,7 @@ void GraphicEngine::initializeGL()
     glEnable( GL_TEXTURE_2D );
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_DEPTH_TEST);
 
     glViewport(0, 0, (GLsizei)width(), (GLsizei)height());
     glMatrixMode(GL_PROJECTION);
@@ -104,7 +105,6 @@ void GraphicEngine::paintGL()
     // Clean the screen otuput
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glDisable(GL_BLEND);    // We don't want OpenGL make auto blend (alpha channel remains).
-    glDisable(GL_DEPTH_TEST);
 
     /** In the GraphicEngine we only need to draw one quad that
      * will use the scenes textures and a shader to compute

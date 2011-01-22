@@ -32,7 +32,7 @@ PhyloTree::PhyloTree(Name name) : Tree(name)
   _radiusNode = 5;
   _radiusBeam = 2;
 
-  _radiusBloom = 60;
+  _radiusBloom = 40;
   _smoothBloom = 0.05;
 
   _semisidePic = 200;
