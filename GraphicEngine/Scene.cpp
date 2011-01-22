@@ -97,6 +97,7 @@ void Scene::draw()
 {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_DEPTH_TEST);
 
     Vec3f camSize = _cam->size();
     glViewport(0, 0, (GLsizei) _width, (GLsizei) _height);
@@ -105,19 +106,18 @@ void Scene::draw()
         glOrtho(-camSize.x(),camSize.x(),-camSize.y(),camSize.y(),-camSize.z(),camSize.z());
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
-    // Clean
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    drawTree(_tree->root());
-    glLoadIdentity();
-
     // Position the camera
     Vec3f cameraPos = _cam->position();
     Vec3f cameraAim = _cam->aimingPoint();
     gluLookAt(  cameraPos.x(), cameraPos.y(), cameraPos.z(),
                 cameraAim.x(), cameraAim.y(), cameraAim.z(),
                 0.f,           1.f,           0.f);
+    // Clean
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    drawTree(_tree->root());
+    glLoadIdentity();
+
 }
 
 void Scene::drawTree(Node *node)

@@ -119,6 +119,11 @@ private:
      */
     void mouseMoveEvent(QMouseEvent *event);
 
+    /** Perform rotation camera by mouse.
+     * @param event mouse move event info.
+     */
+    void rotateCamera(QMouseEvent *event);
+
     /// Main application
     QFreePhyloTree *_app;
     /// Screen output tree
@@ -135,6 +140,9 @@ private:
     QWebView _webView;
     /// Web name
     const std::string _nameWeb;
+
+    /// Preserve the last position of the mouse.
+    QPointF _lastMouseEvent;
 };
 
 }   // namespace FreePhyloTree

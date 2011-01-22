@@ -17,7 +17,15 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+// -------------------------------------------
+// Main header file
+// -------------------------------------------
 #include "GraphicEngine.hpp"
+
+// -------------------------------------------
+// FreePhyloTree classes
+// -------------------------------------------
+#include "../FreePhyloTree.hpp"
 
 // Activate namespace
 using namespace std;
@@ -96,6 +104,7 @@ void GraphicEngine::paintGL()
     // Clean the screen otuput
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glDisable(GL_BLEND);    // We don't want OpenGL make auto blend (alpha channel remains).
+    glDisable(GL_DEPTH_TEST);
 
     /** In the GraphicEngine we only need to draw one quad that
      * will use the scenes textures and a shader to compute
@@ -107,6 +116,7 @@ void GraphicEngine::paintGL()
         glOrtho(-1.0,1.0,-1.0,1.0,-1.0,1.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    gluLookAt( 0.0, 0.0,-0.5, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
     glBindTexture(GL_TEXTURE_2D, textures[_NORMAL_SCENE_]);
     glBegin(GL_QUADS);
         glColor4f(1.f,1.f,1.f,1.f);
@@ -119,7 +129,6 @@ void GraphicEngine::paintGL()
         glTexCoord2f(0.f, 1.f); glVertex3f(-1.f,  1.f, 0.f);
     glEnd();
     glLoadIdentity();
-    gluLookAt( 0.0, 0.0,-0.5, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 }
 
 void GraphicEngine::resizeGL(int width, int height)
@@ -145,6 +154,14 @@ void GraphicEngine::resizeGL(int width, int height)
 
 void GraphicEngine::keyPressEvent(QKeyEvent *event)
 {
+    switch(event->key())
+    {
+        case Qt::Key_Escape:
+            _app->quit();
+            break;
+        default:
+            break;
+    }
 }
 
 void GraphicEngine::mouseDoubleClickEvent(QMouseEvent *event)
@@ -153,5 +170,33 @@ void GraphicEngine::mouseDoubleClickEvent(QMouseEvent *event)
 
 void GraphicEngine::mouseMoveEvent(QMouseEvent *event)
 {
+    switch(event->buttons())
+    {
+        case Qt::LeftButton:    // Translate camera
+            break;
+        case Qt::RightButton:   // Rotate camera
+            rotateCamera(event);
+            break;
+        default:                // Remarks nodes
+            break;
+    }
+    _lastMouseEvent = event->posF();
 }
 
+void GraphicEngine::rotateCamera(QMouseEvent *event)
+{
+    /** The movement of the camera is preformed in two parts,
+     * ptiching in local coordinates, and heading in global
+     * coordinates. The amount of rotation is selected with,
+     * doing posible to rotate [-PI,PI] head angles, and [-PI/2,PI/2]
+     * pitch angle in a single movement.
+     */
+    float head, pitch;
+    QPointF pos = event->posF();
+    Vec2f vec = Vec2f(pos.x() - _lastMouseEvent.x(), _lastMouseEvent.y() - pos.y());
+    head = vec.x()/width();
+    head *= M_PI;
+    pitch = vec.y()/height();
+    pitch *= M_PI;
+    _cam->rotate(head,pitch);
+}

@@ -21,9 +21,10 @@
 #define CAMERA_HPP_INCLUDED
 
 // -------------------------------------------
-// String libraries
+// Standar libraries
 // -------------------------------------------
 #include <string>
+#include <math.h>
 
 // -------------------------------------------
 // FreePhyloTree classes
@@ -95,6 +96,14 @@ public:
     /** Resize the viewport of the camera.
      */
     void resize();
+
+    /** Rotate the camera.
+     * @param head Heading angle (rad).
+     * @param pitch Pitch angle (rad).
+     * @note The rotation angle will be accumulated.
+     */
+     void rotate(float head, float pitch);
+
 private:
 
     /// Screen output tree

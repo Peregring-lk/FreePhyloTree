@@ -29,7 +29,7 @@ using namespace FreePhyloTree;
 Camera::Camera(PhyloTree *tree, float aspectRatio)
     : _tree(tree)
     , _aspectRatio(aspectRatio)
-    , _pos(0.f,0.f,-1.f)
+    , _pos(0.f,0.f,1.f)
     , _aim(0.f,0.f,0.f)
 {
     resize();
@@ -92,4 +92,26 @@ void Camera::resize()
         _size = Vec3f(radius, radius*_aspectRatio, radius);
     else
         _size = Vec3f(radius/_aspectRatio, radius, radius);
+}
+
+void Camera::rotate(float head, float pitch)
+{
+    Vec3f AimToCam2;
+    Vec3f AimToCam = _pos - _aim;
+    AimToCam /= AimToCam.norm();
+    // Reverse heading rotation
+    float OldHead = atan2(AimToCam.x(), AimToCam.z());
+    float cs = cos(-OldHead);
+    float sn = sin(-OldHead);
+    AimToCam2 = Vec3f(cs*AimToCam.x()-sn*AimToCam.z(), AimToCam.y(), sn*AimToCam.x()+cs*AimToCam.z());
+    // Apply new pitch
+    cs = cos(pitch);
+    sn = sin(pitch);
+    AimToCam = Vec3f(AimToCam2.x(), cs*AimToCam.y()-sn*AimToCam2.z(), sn*AimToCam.y()+cs*AimToCam2.z());
+    // Apply accumulated heading
+    cs = cos(OldHead+head);
+    sn = sin(OldHead+head);
+    AimToCam2 = Vec3f(cs*AimToCam.x()-sn*AimToCam.z(), AimToCam.y(), sn*AimToCam.x()+cs*AimToCam.z());
+    // Set the new position of the camera
+    setPosition(_aim+AimToCam2);
 }
