@@ -67,6 +67,7 @@ void GraphicEngine::animate()
 {
     _cam->resize();
     repaint();
+    _tree->update();
 }
 
 void GraphicEngine::initializeGL()
@@ -94,6 +95,7 @@ void GraphicEngine::paintGL()
 
     // Clean the screen otuput
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glDisable(GL_BLEND);    // We don't want OpenGL make auto blend (alpha channel remains).
 
     /** In the GraphicEngine we only need to draw one quad that
      * will use the scenes textures and a shader to compute

@@ -38,6 +38,9 @@ Scene::Scene(int width, int height, PhyloTree *tree, Camera *cam, QGLContext *co
     _context->makeCurrent();
     /// 2nd.- Build the frame buffer object where the rendered scene will be stored
     _rttObject = new QGLFramebufferObject(_width, _height);
+
+    _font = new FTGLTextureFont("Resources/FreeSans.ttf");
+    _font->FaceSize(12);
 }
 
 Scene::~Scene()
@@ -92,6 +95,9 @@ void Scene::loadTextures()
 
 void Scene::draw()
 {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     Vec3f camSize = _cam->size();
     glViewport(0, 0, (GLsizei) _width, (GLsizei) _height);
     glMatrixMode(GL_PROJECTION);
@@ -137,7 +143,7 @@ void Scene::drawEdge(Node *source, Node *target)
      */
     glBindTexture(GL_TEXTURE_2D, _textureid[1]);
 
-    glColor4f(1.f, 1.f, 1.f, 0.f);
+    glColor4f(1.f, 1.f, 1.f, 1.f);
 
     Vec3f sourcePos = Vec3f(source->x(), source->y(), source->z());
     Vec3f targetPos = Vec3f(target->x(), target->y(), target->z());
@@ -167,7 +173,7 @@ void Scene::drawEdge(Node *source, Node *target)
 
 void Scene::drawNode(Node *node)
 {
-    glColor4f(node->r(), node->g(), node->b(),1.f);
+    glColor3f(node->r(), node->g(), node->b());
     drawPlane(node, node->bloom(), _textureid[0]);
     drawPlane(node, node->radius(), _textureid[2]);
 }

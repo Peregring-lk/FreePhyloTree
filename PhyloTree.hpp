@@ -89,6 +89,10 @@ namespace FreePhyloTree
      */
     void cribNode(const Vec3f& alloc);
 
+    /** Updates the tree frame to frame.
+     */
+    void update();
+
     /** Draws the scene.
      */
     void draw();

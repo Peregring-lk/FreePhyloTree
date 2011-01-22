@@ -32,7 +32,7 @@ PhyloTree::PhyloTree(Name name) : Tree(name)
   _radiusNode = 5;
   _radiusBeam = 2;
 
-  _radiusBloom = 40;
+  _radiusBloom = 60;
   _smoothBloom = 0.05;
 
   _semisidePic = 200;
@@ -112,6 +112,12 @@ void PhyloTree::cribNode(const Vec3f& alloc)
   _cribNode(node);
 }
 
+void PhyloTree::update()
+{
+    _alloc->reAlloc(this);
+    _reloadBloom(_radiusBloom, _smoothBloom);
+}
+
 void PhyloTree::draw()
 {
   glClear(GL_COLOR_BUFFER_BIT);
@@ -173,9 +179,9 @@ void PhyloTree::_drawEdge(Node *source, Node *target)
 
 void PhyloTree::_drawNode(Node *node)
 {
-  _setColor(node);
-  _drawSquare(node, node->bloom(), textureid[0]);
-  _drawSquare(node, _radiusNode, textureid[2]);
+    _setColor(node);
+    _drawSquare(node, node->bloom(), textureid[0]);
+    _drawSquare(node, _radiusNode, textureid[2]);
 }
 
 void PhyloTree::_setColor(Node *node)

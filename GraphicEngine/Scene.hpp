@@ -144,6 +144,9 @@ private:
     /// Rendered scene object
     QGLFramebufferObject *_rttObject;
 
+    /// Main text font
+    FTFont *_font;
+
     /// Textures array
     GLuint *_textureid;
 };
