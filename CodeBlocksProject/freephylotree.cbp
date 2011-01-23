@@ -77,6 +77,8 @@
 		<Unit filename="../Strategies/Interval.hpp" />
 		<Unit filename="../Tree/Color.cpp" />
 		<Unit filename="../Tree/Color.hpp" />
+		<Unit filename="../Tree/Matrix.cpp" />
+		<Unit filename="../Tree/Matrix.hpp" />
 		<Unit filename="../Tree/Node.cpp" />
 		<Unit filename="../Tree/Node.hpp" />
 		<Unit filename="../Tree/Tree.cpp" />

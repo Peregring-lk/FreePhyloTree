@@ -31,6 +31,7 @@
 // -------------------------------------------
 #include "../PhyloTree.hpp"
 #include "../Tree/Vec.hpp"
+#include "../Tree/Matrix.hpp"
 
 namespace FreePhyloTree
 {
@@ -104,6 +105,10 @@ public:
      */
      void rotate(float head, float pitch);
 
+    /** Return view-projection matrix.
+     * @return View-projection matrix.
+     */
+    Mat4f viewProjMatrix() const;
 private:
 
     /// Screen output tree

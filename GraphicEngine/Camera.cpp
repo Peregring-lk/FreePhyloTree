@@ -118,3 +118,26 @@ void Camera::rotate(float head, float pitch)
     AimToCam = AimToCam2 * Distance;
     setPosition(_aim+AimToCam);
 }
+
+Mat4f Camera::viewProjMatrix() const
+{
+    /** ModelViewProjection matrix is the matrix that transform real coordinates
+     * into camera space coordinates. We use orthodromic projection, so the apllied
+     * matrix is oprthogonal, and deph is linear. \n
+     * To learn more, see glOrtho and gluLookAt of OpenGL documentation.
+     */
+    Mat4f view( 1.f/(_size.x()),             0.f,             0.f,             0.f,
+                            0.f,   1.f/_size.y(),             0.f,             0.f,
+                            0.f,             0.f,  -1.f/_size.z(),            -1.f,
+                            0.f,             0.f,             0.f,             1.f);
+    Vec3f f = _aim - _pos;
+    f /= f.norm();
+    Vec3f s = Vec3f(-f.z(), 0.f, f.x());
+    Vec3f u = Vec3f(-f.x()*f.y(), f.x()*f.x() + f.z()*f.z(), -f.y()*f.z());
+
+    Mat4f proj( s.x(), s.y(), s.z(), 0.f,
+                u.x(), u.y(), u.z(), 0.f,
+                f.x(), f.y(), f.z(), 0.f,
+                  0.f,   0.f,   0.f, 1.f);
+    return view*proj;
+}

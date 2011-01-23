@@ -177,7 +177,8 @@ void GraphicEngine::mouseMoveEvent(QMouseEvent *event)
         case Qt::RightButton:   // Rotate camera
             rotateCamera(event);
             break;
-        default:                // Remarks nodes
+        default:                // Search & remarks nodes
+            searchNode(event);
             break;
     }
     _lastMouseEvent = event->posF();
@@ -199,4 +200,53 @@ void GraphicEngine::rotateCamera(QMouseEvent *event)
     pitch = vec.y()/height();
     pitch *= M_PI;
     _cam->rotate(head,pitch);
+}
+
+void GraphicEngine::searchNode(QMouseEvent *event)
+{
+    Vec3f pos = Vec3f(event->posF().x(), event->posF().y(), 0.f);
+    /* ModelViewProjection matrix is capable to transform
+     * 3D world-space coordinates of nodes into normalized
+     * coordinates in camera space.
+     */
+    Mat4f viewProj = _cam->viewProjMatrix();
+    _nodeMouse = _searchNode(_tree->root(), pos, viewProj);
+}
+
+Node* GraphicEngine::_searchNode(Node *node, Vec3f pos, Mat4f viewProjMatrix)
+{
+    Node* SelectedNode=0;
+    const Nodes& nodes = node->children();
+
+    // Recursive method
+    if (!node->crib()) {
+        for (int i = 0; i < (int)nodes.size(); ++i) {
+            Node *child = nodes[i];
+            SelectedNode = _searchNode(child, pos, viewProjMatrix);
+        }
+    }
+    // Active node
+    Vec3f nodePos(node->x(), node->y(), node->z());
+    Vec3f camSpacePos = viewProjMatrix*nodePos;
+    GLfloat w = viewProjMatrix[3][0] + viewProjMatrix[3][1] + viewProjMatrix[3][2] + viewProjMatrix[3][3];
+    camSpacePos /= w;
+    Vec3f nodeToMouse = pos - camSpacePos;
+    // If exist selected node, compare it
+    if(SelectedNode) {
+        nodePos = Vec3f(SelectedNode->x(), SelectedNode->y(), SelectedNode->z());
+        camSpacePos = viewProjMatrix*nodePos;
+        w = viewProjMatrix[3][0] + viewProjMatrix[3][1] + viewProjMatrix[3][2] + viewProjMatrix[3][3];
+        camSpacePos /= w;
+        Vec3f nodeToMouse2 = pos - camSpacePos;
+        if(nodeToMouse2.norm() > nodeToMouse.norm()) {
+            return SelectedNode;
+        }
+        return node;
+    }
+    // If not exist, we must analize it
+    Vec2f nodeToMouse2D(nodeToMouse.x(), nodeToMouse.y());
+    if(nodeToMouse2D.norm() < 0.075f){
+        return node;
+    }
+    return 0;
 }

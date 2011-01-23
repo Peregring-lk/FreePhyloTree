@@ -37,6 +37,7 @@
 // FreePhyloTree classes
 // -------------------------------------------
 #include "../PhyloTree.hpp"
+#include "../Tree/Matrix.hpp"
 #include "Scene.hpp"
 
 // -------------------------------------------
@@ -123,6 +124,16 @@ private:
      * @param event mouse move event info.
      */
     void rotateCamera(QMouseEvent *event);
+    /** Look for selected node.
+     * @param event mouse move event info.
+     */
+    void searchNode(QMouseEvent *event);
+    /** Recursive method to look for the selected node.
+     * @param node Tree root node.
+     * @param pos Camera space position.
+     * @param viewProjMatrix ModelViewProjection matrix.
+     */
+    Node* _searchNode(Node *node, Vec3f pos, Mat4f viewProjMatrix);
 
     /// Main application
     QFreePhyloTree *_app;
@@ -143,6 +154,8 @@ private:
 
     /// Preserve the last position of the mouse.
     QPointF _lastMouseEvent;
+    /// Node selected
+    Node* _nodeMouse;
 };
 
 }   // namespace FreePhyloTree
