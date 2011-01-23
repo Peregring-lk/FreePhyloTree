@@ -107,7 +107,7 @@ void Scene::draw()
     glViewport(0, 0, (GLsizei) _width, (GLsizei) _height);
     glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(-camSize.x(),camSize.x(),-camSize.y(),camSize.y(),-camSize.z(),camSize.z());
+        glOrtho(-camSize.x(),camSize.x(),-camSize.y(),camSize.y(),0.f,2.f*camSize.z());
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     // Position the camera

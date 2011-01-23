@@ -33,6 +33,7 @@ Camera::Camera(PhyloTree *tree, float aspectRatio)
     , _aim(0.f,0.f,0.f)
 {
     resize();
+    setPosition(Vec3f(0.f,0.f,_size.z()));
 }
 
 Camera::~Camera()
@@ -98,7 +99,8 @@ void Camera::rotate(float head, float pitch)
 {
     Vec3f AimToCam2;
     Vec3f AimToCam = _pos - _aim;
-    AimToCam /= AimToCam.norm();
+    float Distance = AimToCam.norm();
+    AimToCam /= Distance;
     // Reverse heading rotation
     float OldHead = atan2(AimToCam.x(), AimToCam.z());
     float cs = cos(-OldHead);
@@ -113,5 +115,6 @@ void Camera::rotate(float head, float pitch)
     sn = sin(OldHead+head);
     AimToCam2 = Vec3f(cs*AimToCam.x()-sn*AimToCam.z(), AimToCam.y(), sn*AimToCam.x()+cs*AimToCam.z());
     // Set the new position of the camera
-    setPosition(_aim+AimToCam2);
+    AimToCam = AimToCam2 * Distance;
+    setPosition(_aim+AimToCam);
 }
