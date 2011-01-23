@@ -120,6 +120,7 @@ void Scene::draw()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     drawTree(_tree->root());
+    drawText();
     glLoadIdentity();
 
 }
@@ -216,4 +217,27 @@ void Scene::drawPlane(Node *node, float radius, GLuint tex)
         glTexCoord2f(0, 1);
         glVertex3f(point.x(), point.y(), point.z());
     glEnd();
+}
+
+void Scene::drawText()
+{
+    Node* _nodeMouse = _tree->selectedNode();
+    if (_nodeMouse != NULL) {
+        FTBBox box = _font->BBox(_nodeMouse->name().c_str());
+
+        float heightBox = box.Upper().Y() - box.Lower().Y();
+
+        GLfloat dx = _nodeMouse->x() + 7;
+        GLfloat dy = _nodeMouse->y() - heightBox / 2;
+        GLfloat dz = _nodeMouse->z();
+
+        glColor3f(1, 1, 0);
+        //_setColor(_nodeMouse);
+
+        glTranslatef(dx, dy, dz);
+
+        _font->Render(_nodeMouse->name().c_str());
+
+        glTranslatef(-dx, -dy, dz);
+    }
 }

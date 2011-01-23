@@ -123,10 +123,10 @@ void GraphicEngine::paintGL()
         // Normal against the camera
         glNormal3f( 0.0f, 0.0f, 1.0f);
         // Vertex as the limits of viewport (-1,-1, 1,1)
-        glTexCoord2f(0.f, 0.f); glVertex3f(-1.f, -1.f, 0.f);
-        glTexCoord2f(1.f, 0.f); glVertex3f( 1.f, -1.f, 0.f);
-        glTexCoord2f(1.f, 1.f); glVertex3f( 1.f,  1.f, 0.f);
-        glTexCoord2f(0.f, 1.f); glVertex3f(-1.f,  1.f, 0.f);
+        glTexCoord2f(1.f, 0.f); glVertex3f(-1.f, -1.f, 0.f);
+        glTexCoord2f(0.f, 0.f); glVertex3f( 1.f, -1.f, 0.f);
+        glTexCoord2f(0.f, 1.f); glVertex3f( 1.f,  1.f, 0.f);
+        glTexCoord2f(1.f, 1.f); glVertex3f(-1.f,  1.f, 0.f);
     glEnd();
     glLoadIdentity();
 }
@@ -204,13 +204,19 @@ void GraphicEngine::rotateCamera(QMouseEvent *event)
 
 void GraphicEngine::searchNode(QMouseEvent *event)
 {
-    Vec3f pos = Vec3f(event->posF().x(), event->posF().y(), 0.f);
+    // The position of mouse must be into [-1,1] range
+    GLfloat x = 2.f*event->posF().x()/width() - 1.f;
+    GLfloat y = 2.f*event->posF().y()/height() - 1.f;
+    // Also, we must revert y coordinate.
+    Vec3f pos = Vec3f(x, -y, 0.f);
+
     /* ModelViewProjection matrix is capable to transform
      * 3D world-space coordinates of nodes into normalized
      * coordinates in camera space.
      */
     Mat4f viewProj = _cam->viewProjMatrix();
-    _nodeMouse = _searchNode(_tree->root(), pos, viewProj);
+    Node* node = _searchNode(_tree->root(), pos, viewProj);
+    _tree->setSelectedNode(node);
 }
 
 Node* GraphicEngine::_searchNode(Node *node, Vec3f pos, Mat4f viewProjMatrix)
@@ -228,15 +234,21 @@ Node* GraphicEngine::_searchNode(Node *node, Vec3f pos, Mat4f viewProjMatrix)
     // Active node
     Vec3f nodePos(node->x(), node->y(), node->z());
     Vec3f camSpacePos = viewProjMatrix*nodePos;
-    GLfloat w = viewProjMatrix[3][0] + viewProjMatrix[3][1] + viewProjMatrix[3][2] + viewProjMatrix[3][3];
-    camSpacePos /= w;
-    Vec3f nodeToMouse = pos - camSpacePos;
+    /* Commented because w is ever equal 1 (Don't erase in order posibles changes)
+        GLfloat w = viewProjMatrix[3][0] + viewProjMatrix[3][1] + viewProjMatrix[3][2] + viewProjMatrix[3][3];
+        camSpacePos /= w;
+    */
+    camSpacePos = Vec3f(camSpacePos.x(), camSpacePos.y(), camSpacePos.z()-1.f);    // Depth normalization
+    Vec3f nodeToMouse = pos-camSpacePos;
     // If exist selected node, compare it
     if(SelectedNode) {
         nodePos = Vec3f(SelectedNode->x(), SelectedNode->y(), SelectedNode->z());
         camSpacePos = viewProjMatrix*nodePos;
-        w = viewProjMatrix[3][0] + viewProjMatrix[3][1] + viewProjMatrix[3][2] + viewProjMatrix[3][3];
-        camSpacePos /= w;
+        /* Commented because w is ever equal 1 (Don't erase in order posibles changes)
+            w = viewProjMatrix[3][0] + viewProjMatrix[3][1] + viewProjMatrix[3][2] + viewProjMatrix[3][3];
+            camSpacePos /= w;
+        */
+        camSpacePos = Vec3f(camSpacePos.x(), camSpacePos.y(), camSpacePos.z()-1.f);    // Depth normalization
         Vec3f nodeToMouse2 = pos - camSpacePos;
         if(nodeToMouse2.norm() > nodeToMouse.norm()) {
             return SelectedNode;
@@ -245,7 +257,8 @@ Node* GraphicEngine::_searchNode(Node *node, Vec3f pos, Mat4f viewProjMatrix)
     }
     // If not exist, we must analize it
     Vec2f nodeToMouse2D(nodeToMouse.x(), nodeToMouse.y());
-    if(nodeToMouse2D.norm() < 0.075f){
+    if(nodeToMouse2D.norm() < 0.01f){
+        printf("%s\n", node->name().c_str());
         return node;
     }
     return 0;

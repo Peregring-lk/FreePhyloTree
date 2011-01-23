@@ -97,8 +97,8 @@ Mat4f Mat4f::operator* (const Mat4f& mat) const
 Vec3f Mat4f::operator* (const Vec3f& vec) const
 {
     Vec3f out(  m[0][0]*vec.x() + m[0][1]*vec.y() + m[0][2]*vec.z() + m[0][3],
-                m[1][0]*vec.x() + m[2][1]*vec.y() + m[1][2]*vec.z() + m[1][3],
-                m[2][0]*vec.x() + m[1][1]*vec.y() + m[2][2]*vec.z() + m[2][3]);
+                m[1][0]*vec.x() + m[1][1]*vec.y() + m[1][2]*vec.z() + m[1][3],
+                m[2][0]*vec.x() + m[2][1]*vec.y() + m[2][2]*vec.z() + m[2][3]);
     return out;
 }
 

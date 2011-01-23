@@ -126,7 +126,7 @@ Mat4f Camera::viewProjMatrix() const
      * matrix is oprthogonal, and deph is linear. \n
      * To learn more, see glOrtho and gluLookAt of OpenGL documentation.
      */
-    Mat4f view( 1.f/(_size.x()),             0.f,             0.f,             0.f,
+    Mat4f proj( 1.f/(_size.x()),             0.f,             0.f,             0.f,
                             0.f,   1.f/_size.y(),             0.f,             0.f,
                             0.f,             0.f,  -1.f/_size.z(),            -1.f,
                             0.f,             0.f,             0.f,             1.f);
@@ -135,7 +135,7 @@ Mat4f Camera::viewProjMatrix() const
     Vec3f s = Vec3f(-f.z(), 0.f, f.x());
     Vec3f u = Vec3f(-f.x()*f.y(), f.x()*f.x() + f.z()*f.z(), -f.y()*f.z());
 
-    Mat4f proj( s.x(), s.y(), s.z(), 0.f,
+    Mat4f view( s.x(), s.y(), s.z(), 0.f,
                 u.x(), u.y(), u.z(), 0.f,
                 f.x(), f.y(), f.z(), 0.f,
                   0.f,   0.f,   0.f, 1.f);

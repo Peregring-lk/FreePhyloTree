@@ -131,6 +131,12 @@ private:
      */
     virtual void drawPlane(Node *node, float radius, GLuint tex);
 
+    /** Draws text (selected node).
+     * @warning This method is virtual, but probably you don't need
+     * overload it.
+     */
+    virtual void drawText();
+
     /// Width of the canvas and offscreen buffer
     int _width;
     /// Height of the canvas and offscreen buffer

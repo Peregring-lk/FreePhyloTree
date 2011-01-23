@@ -89,6 +89,15 @@ namespace FreePhyloTree
      */
     void cribNode(const Vec3f& alloc);
 
+    /** Sets the selected node.
+     * @param node Selected node.
+     */
+    void setSelectedNode(Node* node);
+    /** Gets selected node.
+     * @return Selected node.
+     */
+    Node* selectedNode() const;
+
     /** Updates the tree frame to frame.
      */
     void update();

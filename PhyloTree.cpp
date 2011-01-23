@@ -112,6 +112,16 @@ void PhyloTree::cribNode(const Vec3f& alloc)
   _cribNode(node);
 }
 
+void PhyloTree::setSelectedNode(Node* node)
+{
+    _nodeMouse=node;
+}
+
+Node* PhyloTree::selectedNode() const
+{
+    return _nodeMouse;
+}
+
 void PhyloTree::update()
 {
     _alloc->reAlloc(this);

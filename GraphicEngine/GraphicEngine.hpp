@@ -154,8 +154,6 @@ private:
 
     /// Preserve the last position of the mouse.
     QPointF _lastMouseEvent;
-    /// Node selected
-    Node* _nodeMouse;
 };
 
 }   // namespace FreePhyloTree
