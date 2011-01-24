@@ -119,25 +119,44 @@ void Scene::draw()
     // Clean
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    drawTree(_tree->root());
+    drawBloom(_tree->root());
+    drawNodes(_tree->root());
     drawText();
     glLoadIdentity();
 
 }
 
-void Scene::drawTree(Node *node)
+void Scene::drawBloom(Node *node)
 {
+    // Recursive pass to draw all child nodes
     const Nodes& nodes = node->children();
+    if (!node->crib()) {
+        for (int i = 0; i < (int)nodes.size(); ++i) {
+          Node *child = nodes[i];
+          drawBloom(child);
+        }
+    }
 
+    // Drawing the bloom
+    glColor3f(node->r(), node->g(), node->b());
+    drawPlane(node, node->bloom(), _textureid[0]);
+}
+
+void Scene::drawNodes(Node *node)
+{
+    // Recursive pass to draw all child nodes
+    const Nodes& nodes = node->children();
     if (!node->crib()) {
         for (int i = 0; i < (int)nodes.size(); ++i) {
           Node *child = nodes[i];
           drawEdge(node, child);
-          drawTree(child);
+          drawNodes(child);
         }
     }
 
-    drawNode(node);
+    // Drawing the node
+    glColor3f(node->r(), node->g(), node->b());
+    drawPlane(node, node->radius(), _textureid[2]);
 }
 
 void Scene::drawEdge(Node *source, Node *target)
@@ -174,13 +193,6 @@ void Scene::drawEdge(Node *source, Node *target)
         point = targetPos - dirv;
         glVertex3f(point.x(), point.y(), point.z());
     glEnd();
-}
-
-void Scene::drawNode(Node *node)
-{
-    glColor3f(node->r(), node->g(), node->b());
-    drawPlane(node, node->bloom(), _textureid[0]);
-    drawPlane(node, node->radius(), _textureid[2]);
 }
 
 void Scene::drawPlane(Node *node, float radius, GLuint tex)

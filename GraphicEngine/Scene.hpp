@@ -102,12 +102,18 @@ private:
      */
     virtual void draw();
 
+    /** Draws the bloom effect of a tree.
+     * @warning This method is virtual, but probably you don't need
+     * overload it.
+     * @param node Tree root node.
+     */
+    virtual void drawBloom(Node *node);
     /** Draws a tree.
      * @warning This method is virtual, but probably you don't need
      * overload it.
      * @param node Tree root node.
      */
-    virtual void drawTree(Node *node);
+    virtual void drawNodes(Node *node);
 
     /** Draws a union edge.
      * @warning This method is virtual, but probably you don't need
@@ -116,13 +122,6 @@ private:
      * @param target End node of the edge.
      */
     virtual void drawEdge(Node *source, Node *target);
-
-    /** Draws a node.
-     * @warning This method is virtual, but probably you don't need
-     * overload it.
-     * @param node Node to draw.
-     */
-    virtual void drawNode(Node *node);
 
     /** Draws a squared plane.
      * @param node Node that contains info about the position.
