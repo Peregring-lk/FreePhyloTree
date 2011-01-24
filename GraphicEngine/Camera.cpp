@@ -31,6 +31,7 @@ Camera::Camera(PhyloTree *tree, float aspectRatio)
     , _aspectRatio(aspectRatio)
     , _pos(0.f,0.f,1.f)
     , _aim(0.f,0.f,0.f)
+    , _up(0.f,1.f,0.f)
 {
     resize();
     setPosition(Vec3f(0.f,0.f,_size.z()));
@@ -59,6 +60,7 @@ Vec3f Camera::size()
 void Camera::setPosition(Vec3f pos)
 {
     _pos = pos;
+    reCalcUp();
 }
 
 Vec3f Camera::position()
@@ -69,6 +71,7 @@ Vec3f Camera::position()
 void Camera::setAimingPoint(Vec3f aim)
 {
     _aim = aim;
+    reCalcUp();
 }
 
 Vec3f Camera::aimingPoint()
@@ -105,18 +108,36 @@ void Camera::rotate(float head, float pitch)
     float OldHead = atan2(AimToCam.x(), AimToCam.z());
     float cs = cos(-OldHead);
     float sn = sin(-OldHead);
-    AimToCam2 = Vec3f(cs*AimToCam.x()-sn*AimToCam.z(), AimToCam.y(), sn*AimToCam.x()+cs*AimToCam.z());
+    printf("a:\t%g, %g, %g\n", AimToCam.x(), AimToCam.y(), AimToCam.z());
+    Mat4f Rot(   cs,  0.f,   sn,  0.f,
+                0.f,  1.f,  0.f,  0.f,
+                -sn,  0.f,   cs,  0.f,
+                0.f,  0.f,  0.f,  1.f);
+    AimToCam2 = Rot*AimToCam;
+    printf("b:\t%g, %g, %g\n", AimToCam2.x(), AimToCam2.y(), AimToCam2.z());
     // Apply new pitch
     cs = cos(pitch);
     sn = sin(pitch);
-    AimToCam = Vec3f(AimToCam2.x(), cs*AimToCam.y()-sn*AimToCam2.z(), sn*AimToCam.y()+cs*AimToCam2.z());
+    Rot=Mat4f(  1.f,  0.f,  0.f,  0.f,
+                0.f,   cs,  -sn,  0.f,
+                0.f,   sn,   cs,  0.f,
+                0.f,  0.f,  0.f,  1.f);
+    AimToCam = Rot*AimToCam2;
+    printf("c:\t%g, %g, %g\n", AimToCam.x(), AimToCam.y(), AimToCam.z());
     // Apply accumulated heading
     cs = cos(OldHead+head);
     sn = sin(OldHead+head);
-    AimToCam2 = Vec3f(cs*AimToCam.x()-sn*AimToCam.z(), AimToCam.y(), sn*AimToCam.x()+cs*AimToCam.z());
+    Rot=Mat4f(   cs,  0.f,   sn,  0.f,
+                0.f,  1.f,  0.f,  0.f,
+                -sn,  0.f,   cs,  0.f,
+                0.f,  0.f,  0.f,  1.f);
+    AimToCam2 = Rot*AimToCam;
+    printf("d:\t%g, %g, %g\n", AimToCam2.x(), AimToCam2.y(), AimToCam2.z());
     // Set the new position of the camera
     AimToCam = AimToCam2 * Distance;
+    printf("e:\t%g, %g, %g\n", AimToCam.x(), AimToCam.y(), AimToCam.z());
     setPosition(_aim+AimToCam);
+    reCalcUp();
 }
 
 Mat4f Camera::viewProjMatrix() const
@@ -132,12 +153,23 @@ Mat4f Camera::viewProjMatrix() const
                             0.f,             0.f,             0.f,             1.f);
     Vec3f f = _aim - _pos;
     f /= f.norm();
-    Vec3f s = Vec3f(-f.z(), 0.f, f.x());
-    Vec3f u = Vec3f(-f.x()*f.y(), f.x()*f.x() + f.z()*f.z(), -f.y()*f.z());
+    Vec3f s = f.cross(_up);
+    Vec3f u = s.cross(f);
 
     Mat4f view( s.x(), s.y(), s.z(), 0.f,
                 u.x(), u.y(), u.z(), 0.f,
                 f.x(), f.y(), f.z(), 0.f,
                   0.f,   0.f,   0.f, 1.f);
     return view*proj;
+}
+
+void Camera::reCalcUp()
+{
+    Vec3f w = _pos - _aim;
+    // XOZ plane vector perpendicualr to AimToCam
+    Vec3f u(w.z(),0.f,-w.x());
+    _up = w.cross(u);
+    if(_up.norm() < 0.0001f)
+        _up = Vec3f(1.f,0.f,0.f);
+    _up /= _up.norm();
 }

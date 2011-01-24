@@ -91,6 +91,12 @@ namespace FreePhyloTree
     Vec3f operator*= (GLfloat k);
     Vec3f operator/= (GLfloat k);
 
+    /** Performs cross product.
+     * @param v Vector to operate.
+     * @return Cross product.
+     */
+    Vec3f cross(Vec3f v) const;
+
   private:
     GLfloat _x;
     GLfloat _y;

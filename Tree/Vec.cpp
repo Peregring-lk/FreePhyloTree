@@ -252,6 +252,11 @@ Vec3f Vec3f::operator/= (GLfloat k)
   return *this;
 }
 
+Vec3f Vec3f::cross(Vec3f v) const
+{
+    return Vec3f(_y*v.z()-_z*v.y(), _z*v.x()-_x*v.z(), _x*v.y()-_y*v.x());
+}
+
 void Vec3f::_calcNorm()
 {
   _norm = sqrt(pow(_x, 2) + pow(_y, 2) + pow(_z, 2));

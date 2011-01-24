@@ -110,6 +110,10 @@ public:
      */
     Mat4f viewProjMatrix() const;
 private:
+    /** Recalculates up vector
+     */
+    void reCalcUp();
+
 
     /// Screen output tree
     PhyloTree *_tree;
@@ -123,6 +127,8 @@ private:
     Vec3f _pos;
     /// Camera direction
     Vec3f _aim;
+    /// Up viewer vector
+    Vec3f _up;
 };
 
 }   // namespace FreePhyloTree
