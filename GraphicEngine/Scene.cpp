@@ -38,9 +38,6 @@ Scene::Scene(int width, int height, PhyloTree *tree, Camera *cam, QGLContext *co
     _context->makeCurrent();
     /// 2nd.- Build the frame buffer object where the rendered scene will be stored
     _rttObject = new QGLFramebufferObject(_width, _height);
-
-    _font = new FTGLTextureFont("Resources/FreeSans.ttf");
-    _font->FaceSize(12);
 }
 
 Scene::~Scene()
@@ -121,7 +118,11 @@ void Scene::draw()
 
     drawBloom(_tree->root());
     drawNodes(_tree->root());
-    drawText();
+    // remarks selected node
+    if(_tree->selectedNode()) {
+        glColor3f(_tree->selectedNode()->r(), _tree->selectedNode()->g(), _tree->selectedNode()->b());
+        drawPlane(_tree->selectedNode(), _tree->selectedNode()->radius(), _textureid[2]);
+    }
     glLoadIdentity();
 
 }
@@ -229,27 +230,4 @@ void Scene::drawPlane(Node *node, float radius, GLuint tex)
         glTexCoord2f(0, 1);
         glVertex3f(point.x(), point.y(), point.z());
     glEnd();
-}
-
-void Scene::drawText()
-{
-    Node* _nodeMouse = _tree->selectedNode();
-    if (_nodeMouse != NULL) {
-        FTBBox box = _font->BBox(_nodeMouse->name().c_str());
-
-        float heightBox = box.Upper().Y() - box.Lower().Y();
-
-        GLfloat dx = _nodeMouse->x() + 7;
-        GLfloat dy = _nodeMouse->y() - heightBox / 2;
-        GLfloat dz = _nodeMouse->z();
-
-        glColor3f(1, 1, 0);
-        //_setColor(_nodeMouse);
-
-        glTranslatef(dx, dy, dz);
-
-        _font->Render(_nodeMouse->name().c_str());
-
-        glTranslatef(-dx, -dy, dz);
-    }
 }

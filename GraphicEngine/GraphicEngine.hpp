@@ -133,7 +133,11 @@ private:
      * @param pos Camera space position.
      * @param viewProjMatrix ModelViewProjection matrix.
      */
-    Node* _searchNode(Node *node, Vec3f pos, Mat4f viewProjMatrix);
+    void _searchNode(Node *node, Vec3f pos, Mat4f viewProjMatrix);
+
+    /** Draws text (name of selected node).
+     */
+    void drawText();
 
     /// Main application
     QFreePhyloTree *_app;
@@ -154,6 +158,9 @@ private:
 
     /// Preserve the last position of the mouse.
     QPointF _lastMouseEvent;
+
+    /// Main text font
+    FTFont *_font;
 };
 
 }   // namespace FreePhyloTree

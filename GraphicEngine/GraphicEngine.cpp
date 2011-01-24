@@ -46,11 +46,16 @@ GraphicEngine::GraphicEngine(QFreePhyloTree *app, PhyloTree *tree)
     _scenes = new Scene* [_N_SCENES_];
     _scenes[_NORMAL_SCENE_] = new Scene(width(), height(), _tree, _cam, (QGLContext*)context());
         _scenes[_NORMAL_SCENE_]->create();
+    _font = new FTGLTextureFont("Resources/FreeSans.ttf");
+    _font->FaceSize(12);
+
 }
 
 GraphicEngine::~GraphicEngine()
 {
     delete _tree;
+    delete _font;
+    _font=0;
 }
 
 QFreePhyloTree* GraphicEngine::app()
@@ -128,6 +133,7 @@ void GraphicEngine::paintGL()
         glTexCoord2f(0.f, 1.f); glVertex3f( 1.f,  1.f, 0.f);
         glTexCoord2f(1.f, 1.f); glVertex3f(-1.f,  1.f, 0.f);
     glEnd();
+    drawText();
     glLoadIdentity();
 }
 
@@ -215,20 +221,20 @@ void GraphicEngine::searchNode(QMouseEvent *event)
      * coordinates in camera space.
      */
     Mat4f viewProj = _cam->viewProjMatrix();
-    Node* node = _searchNode(_tree->root(), pos, viewProj);
-    _tree->setSelectedNode(node);
+    _tree->setSelectedNode(0);
+    _searchNode(_tree->root(), pos, viewProj);
 }
 
-Node* GraphicEngine::_searchNode(Node *node, Vec3f pos, Mat4f viewProjMatrix)
+void GraphicEngine::_searchNode(Node *node, Vec3f pos, Mat4f viewProjMatrix)
 {
-    Node* SelectedNode=0;
+    Node* SelectedNode=_tree->selectedNode();
     const Nodes& nodes = node->children();
 
     // Recursive method
     if (!node->crib()) {
         for (int i = 0; i < (int)nodes.size(); ++i) {
             Node *child = nodes[i];
-            SelectedNode = _searchNode(child, pos, viewProjMatrix);
+            _searchNode(child, pos, viewProjMatrix);
         }
     }
     // Active node
@@ -250,16 +256,42 @@ Node* GraphicEngine::_searchNode(Node *node, Vec3f pos, Mat4f viewProjMatrix)
         */
         camSpacePos = Vec3f(camSpacePos.x(), camSpacePos.y(), camSpacePos.z()-1.f);    // Depth normalization
         Vec3f nodeToMouse2 = pos - camSpacePos;
-        if(nodeToMouse2.norm() > nodeToMouse.norm()) {
-            return SelectedNode;
+        Vec2f nodeToMouse2D(nodeToMouse.x(), nodeToMouse.y());
+        Vec2f nodeToMouse22D(nodeToMouse2.x(), nodeToMouse2.y());
+        if(nodeToMouse22D.norm() > nodeToMouse2D.norm()) {
+            _tree->setSelectedNode(node);
         }
-        return node;
     }
     // If not exist, we must analize it
-    Vec2f nodeToMouse2D(nodeToMouse.x(), nodeToMouse.y());
-    if(nodeToMouse2D.norm() < 0.01f){
-        printf("%s\n", node->name().c_str());
-        return node;
+    else {
+        Vec2f nodeToMouse2D(nodeToMouse.x(), nodeToMouse.y());
+        if(nodeToMouse2D.norm() < 40.f/width()){
+            _tree->setSelectedNode(node);
+        }
     }
-    return 0;
+}
+
+void GraphicEngine::drawText()
+{
+    Node* _nodeMouse = _tree->selectedNode();
+    if (_nodeMouse != NULL) {
+        FTBBox box = _font->BBox(_nodeMouse->name().c_str());
+
+        float heightBox = box.Upper().Y() - box.Lower().Y();
+
+        GLfloat dx = -2.f*(_lastMouseEvent.x()+16.f)/width() + 1.f;
+        GLfloat dy = -2.f*(_lastMouseEvent.y()+16.f)/height() + 1.f;
+        GLfloat dz = -0.1f;
+
+        glColor3f(1.f, 1.f, 0.f);
+
+        renderText(dx,dy,dz,_nodeMouse->name().c_str());
+        /*
+        glTranslatef(dx, dy, dz);
+
+        _font->Render(_nodeMouse->name().c_str());
+
+        glTranslatef(-dx, -dy, -dz);
+        */
+    }
 }
