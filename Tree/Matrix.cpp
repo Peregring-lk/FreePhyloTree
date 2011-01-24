@@ -143,3 +143,14 @@ Mat4f Mat4f::operator*= (const Mat4f& mat) const
     }
     return *this;
 }
+
+void Mat4f::debugprint()
+{
+    int i,j;
+    for(i=0;i<4;i++){
+        for(j=0;j<4;j++){
+            printf("%f,\t", m[i][j]);
+        }
+        printf("\n");
+    }
+}

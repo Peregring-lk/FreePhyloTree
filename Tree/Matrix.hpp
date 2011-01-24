@@ -104,6 +104,8 @@ public:
      */
     Mat4f operator*= (const Mat4f& mat) const;
 
+    void debugprint();
+
 private:
     /// Array of values
     GLfloat **m;

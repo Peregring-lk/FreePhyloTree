@@ -133,7 +133,7 @@ private:
      * @param pos Camera space position.
      * @param viewProjMatrix ModelViewProjection matrix.
      */
-    void _searchNode(Node *node, Vec3f pos, Mat4f viewProjMatrix);
+    void _searchNode(Node *node, Vec3f pos, Mat4f modelViewProjMatrix);
 
     /** Draws text (name of selected node).
      */

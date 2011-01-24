@@ -108,7 +108,7 @@ public:
     /** Return view-projection matrix.
      * @return View-projection matrix.
      */
-    Mat4f viewProjMatrix() const;
+    Mat4f modelViewProjMatrix() const;
 private:
     /** Recalculates up vector
      */

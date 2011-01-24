@@ -108,13 +108,11 @@ void Camera::rotate(float head, float pitch)
     float OldHead = atan2(AimToCam.x(), AimToCam.z());
     float cs = cos(-OldHead);
     float sn = sin(-OldHead);
-    printf("a:\t%g, %g, %g\n", AimToCam.x(), AimToCam.y(), AimToCam.z());
     Mat4f Rot(   cs,  0.f,   sn,  0.f,
                 0.f,  1.f,  0.f,  0.f,
                 -sn,  0.f,   cs,  0.f,
                 0.f,  0.f,  0.f,  1.f);
     AimToCam2 = Rot*AimToCam;
-    printf("b:\t%g, %g, %g\n", AimToCam2.x(), AimToCam2.y(), AimToCam2.z());
     // Apply new pitch
     cs = cos(pitch);
     sn = sin(pitch);
@@ -122,8 +120,8 @@ void Camera::rotate(float head, float pitch)
                 0.f,   cs,  -sn,  0.f,
                 0.f,   sn,   cs,  0.f,
                 0.f,  0.f,  0.f,  1.f);
-    AimToCam = Rot*AimToCam2;
-    printf("c:\t%g, %g, %g\n", AimToCam.x(), AimToCam.y(), AimToCam.z());
+    // AimToCam = Rot*AimToCam2;
+    AimToCam = AimToCam2;
     // Apply accumulated heading
     cs = cos(OldHead+head);
     sn = sin(OldHead+head);
@@ -132,15 +130,13 @@ void Camera::rotate(float head, float pitch)
                 -sn,  0.f,   cs,  0.f,
                 0.f,  0.f,  0.f,  1.f);
     AimToCam2 = Rot*AimToCam;
-    printf("d:\t%g, %g, %g\n", AimToCam2.x(), AimToCam2.y(), AimToCam2.z());
     // Set the new position of the camera
     AimToCam = AimToCam2 * Distance;
-    printf("e:\t%g, %g, %g\n", AimToCam.x(), AimToCam.y(), AimToCam.z());
     setPosition(_aim+AimToCam);
     reCalcUp();
 }
 
-Mat4f Camera::viewProjMatrix() const
+Mat4f Camera::modelViewProjMatrix() const
 {
     /** ModelViewProjection matrix is the matrix that transform real coordinates
      * into camera space coordinates. We use orthodromic projection, so the apllied
@@ -156,18 +152,28 @@ Mat4f Camera::viewProjMatrix() const
     Vec3f s = f.cross(_up);
     Vec3f u = s.cross(f);
 
-    Mat4f view( s.x(), s.y(), s.z(), 0.f,
-                u.x(), u.y(), u.z(), 0.f,
-                f.x(), f.y(), f.z(), 0.f,
-                  0.f,   0.f,   0.f, 1.f);
-    return view*proj;
+    Mat4f view(  s.x(),  s.y(),  s.z(), 0.f,
+                 u.x(),  u.y(),  u.z(), 0.f,
+                -f.x(), -f.y(), -f.z(), 0.f,
+                   0.f,    0.f,    0.f, 1.f);
+
+    Mat4f viewProj = view*proj;
+    Vec3f eye = viewProj*_pos;
+    printf("%g, %g, %g\n", eye.x(), eye.y(), eye.z());
+
+    Mat4f model(  1.f,  0.f,  0.f,  -eye.x(),
+                  0.f,  1.f,  0.f,  -eye.y(),
+                  0.f,  0.f,  1.f,  -eye.z(),
+                  0.f,  0.f,  0.f,       1.f);
+    return model*viewProj;
 }
 
 void Camera::reCalcUp()
 {
     Vec3f w = _pos - _aim;
     // XOZ plane vector perpendicualr to AimToCam
-    Vec3f u(w.z(),0.f,-w.x());
+    Vec3f y(0.f, 1.f, 0.f);
+    Vec3f u = y.cross(w);
     _up = w.cross(u);
     if(_up.norm() < 0.0001f)
         _up = Vec3f(1.f,0.f,0.f);

@@ -220,12 +220,12 @@ void GraphicEngine::searchNode(QMouseEvent *event)
      * 3D world-space coordinates of nodes into normalized
      * coordinates in camera space.
      */
-    Mat4f viewProj = _cam->viewProjMatrix();
+    Mat4f modelViewProjMatrix = _cam->modelViewProjMatrix();
     _tree->setSelectedNode(0);
-    _searchNode(_tree->root(), pos, viewProj);
+    _searchNode(_tree->root(), pos, modelViewProjMatrix);
 }
 
-void GraphicEngine::_searchNode(Node *node, Vec3f pos, Mat4f viewProjMatrix)
+void GraphicEngine::_searchNode(Node *node, Vec3f pos, Mat4f modelViewProjMatrix)
 {
     Node* SelectedNode=_tree->selectedNode();
     const Nodes& nodes = node->children();
@@ -234,12 +234,12 @@ void GraphicEngine::_searchNode(Node *node, Vec3f pos, Mat4f viewProjMatrix)
     if (!node->crib()) {
         for (int i = 0; i < (int)nodes.size(); ++i) {
             Node *child = nodes[i];
-            _searchNode(child, pos, viewProjMatrix);
+            _searchNode(child, pos, modelViewProjMatrix);
         }
     }
     // Active node
     Vec3f nodePos(node->x(), node->y(), node->z());
-    Vec3f camSpacePos = viewProjMatrix*nodePos;
+    Vec3f camSpacePos = modelViewProjMatrix*nodePos;
     /* Commented because w is ever equal 1 (Don't erase in order posibles changes)
         GLfloat w = viewProjMatrix[3][0] + viewProjMatrix[3][1] + viewProjMatrix[3][2] + viewProjMatrix[3][3];
         camSpacePos /= w;
@@ -249,7 +249,7 @@ void GraphicEngine::_searchNode(Node *node, Vec3f pos, Mat4f viewProjMatrix)
     // If exist selected node, compare it
     if(SelectedNode) {
         nodePos = Vec3f(SelectedNode->x(), SelectedNode->y(), SelectedNode->z());
-        camSpacePos = viewProjMatrix*nodePos;
+        camSpacePos = modelViewProjMatrix*nodePos;
         /* Commented because w is ever equal 1 (Don't erase in order posibles changes)
             w = viewProjMatrix[3][0] + viewProjMatrix[3][1] + viewProjMatrix[3][2] + viewProjMatrix[3][3];
             camSpacePos /= w;
@@ -277,7 +277,7 @@ void GraphicEngine::drawText()
     if (_nodeMouse != NULL) {
         FTBBox box = _font->BBox(_nodeMouse->name().c_str());
 
-        float heightBox = box.Upper().Y() - box.Lower().Y();
+        // float heightBox = box.Upper().Y() - box.Lower().Y();
 
         GLfloat dx = -2.f*(_lastMouseEvent.x()+16.f)/width() + 1.f;
         GLfloat dy = -2.f*(_lastMouseEvent.y()+16.f)/height() + 1.f;
