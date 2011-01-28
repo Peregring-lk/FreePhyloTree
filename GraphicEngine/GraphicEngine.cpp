@@ -34,6 +34,8 @@ using namespace FreePhyloTree;
 GraphicEngine::GraphicEngine(QFreePhyloTree *app, PhyloTree *tree)
   : _app(app)
   , _tree(tree)
+  , _webView(this)
+  , _nameWeb("http://es.wikipedia.org/wiki/")
 {
     /// 1st.- Construct the OpenGL window
     setMouseTracking(true);
@@ -74,6 +76,17 @@ Scene* GraphicEngine::scene(int id)
 Vec2f GraphicEngine::size()
 {
     return _size;
+}
+
+void GraphicEngine::viewPage(Node* node)
+{
+    if (node != NULL) {
+        string dir = _nameWeb + node->name();
+        _webView.load(QUrl(dir.c_str()));
+        _webView.show();
+    }
+    else
+        _webView.hide();
 }
 
 void GraphicEngine::animate()
@@ -178,10 +191,9 @@ void GraphicEngine::mouseDoubleClickEvent(QMouseEvent *event)
             _tree->cribNode(_tree->selectedNode());
             break;
         case Qt::RightButton:   // Rotate camera
-            rotateCamera(event);
+            viewPage(_tree->selectedNode());
             break;
         default:                // Search & remarks nodes
-            searchNode(event);
             break;
     }
 }

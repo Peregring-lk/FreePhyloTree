@@ -90,6 +90,11 @@ public:
      */
     Vec2f size();
 
+    /** Shows a web browser with the wiki information.
+     * @param node Selected node to explore.
+     */
+    void viewPage(Node* node);
+
 public slots:
     /** Method called every frame in order to repaint the scene.
      */
