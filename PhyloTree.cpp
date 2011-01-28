@@ -83,7 +83,7 @@ void PhyloTree::initSignal()
 {
   _coloring->coloring(_root);
   _initBloom(_radiusBloom);
-  _cribNode(_root);
+  cribNode(_root);
 }
 
 void PhyloTree::gotoRoot()
@@ -105,11 +105,18 @@ void PhyloTree::allocMouse(const Vec3f& alloc)
   _nodeMouse = _searchNode(alloc);
 }
 
-void PhyloTree::cribNode(const Vec3f& alloc)
+void PhyloTree::cribNode(Node *node)
 {
-  Node *node = _searchNode(alloc);
+    if (node != NULL) {
+        bool crib = node->crib();
 
-  _cribNode(node);
+        node->setCrib(!crib);
+
+        if (crib) {
+            node->setBloom(_radiusBloom * node->nodes());
+            _rebootChildren(node);
+        }
+    }
 }
 
 void PhyloTree::setSelectedNode(Node* node)
@@ -152,7 +159,7 @@ void PhyloTree::_drawTree(Node *node)
   const Nodes& nodes = node->children();
 
   if (!node->crib())
-    for (int i = 0; i < nodes.size(); ++i) {
+    for (int i = 0; i < (int)nodes.size(); ++i) {
       Node *child = nodes[i];
 
       _drawEdge(node, child);
@@ -270,20 +277,6 @@ Node* PhyloTree::_searchNode(const Vec3f& alloc)
   }
 
   return NULL;
-}
-
-void PhyloTree::_cribNode(Node *node)
-{
-  if (node != NULL) {
-    bool crib = node->crib();
-
-    node->setCrib(!crib);
-
-    if (crib) {
-      node->setBloom(_radiusBloom * node->nodes());
-      _rebootChildren(node);
-    }
-  }
 }
 
 void PhyloTree::_loadTextures(GLEngine *glEngine)

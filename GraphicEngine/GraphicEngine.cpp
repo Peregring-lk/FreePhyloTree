@@ -172,6 +172,18 @@ void GraphicEngine::keyPressEvent(QKeyEvent *event)
 
 void GraphicEngine::mouseDoubleClickEvent(QMouseEvent *event)
 {
+    switch(event->buttons())
+    {
+        case Qt::LeftButton:    // Translate camera
+            _tree->cribNode(_tree->selectedNode());
+            break;
+        case Qt::RightButton:   // Rotate camera
+            rotateCamera(event);
+            break;
+        default:                // Search & remarks nodes
+            searchNode(event);
+            break;
+    }
 }
 
 void GraphicEngine::mouseMoveEvent(QMouseEvent *event)

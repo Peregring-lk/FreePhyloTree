@@ -84,10 +84,10 @@ namespace FreePhyloTree
      * @param alloc Mouse position.
      */
     void allocMouse(const Vec3f& alloc);
-    /** Lookfor the node into the view space provided position.
-     * @param alloc Position to lookfor a Pic.
+    /** Collapse a node, merging all the content tree into.
+     * @param node Node to collapse.
      */
-    void cribNode(const Vec3f& alloc);
+    void cribNode(Node *node);
 
     /** Sets the selected node.
      * @param node Selected node.
@@ -178,10 +178,6 @@ namespace FreePhyloTree
      * @return Node reached, NULL (0) if anyone.
      */
     Node* _searchNode(const Vec3f& alloc);
-    /** Crib a node.
-     * @param node Node to crib.
-     */
-    void _cribNode(Node *node);
 
     /** Draw the text if needed.
      * @note This method uses the info
