@@ -118,20 +118,20 @@ void GraphicEngine::paintGL()
     glViewport(0, 0, (GLsizei) width(), (GLsizei) height());
     glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(-1.0,1.0,-1.0,1.0,-1.0,1.0);
+        glOrtho(-1.f,1.f,-1.f,1.f,-1.f,1.f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt( 0.0, 0.0,-0.5, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+    gluLookAt( 0.f, 0.f,-0.5f, 0.f, 0.f, 0.f, 0.f, -1.f, 0.f);
     glBindTexture(GL_TEXTURE_2D, textures[_NORMAL_SCENE_]);
     glBegin(GL_QUADS);
         glColor4f(1.f,1.f,1.f,1.f);
         // Normal against the camera
         glNormal3f( 0.0f, 0.0f, 1.0f);
         // Vertex as the limits of viewport (-1,-1, 1,1)
-        glTexCoord2f(1.f, 0.f); glVertex3f(-1.f, -1.f, 0.f);
-        glTexCoord2f(0.f, 0.f); glVertex3f( 1.f, -1.f, 0.f);
-        glTexCoord2f(0.f, 1.f); glVertex3f( 1.f,  1.f, 0.f);
-        glTexCoord2f(1.f, 1.f); glVertex3f(-1.f,  1.f, 0.f);
+        glTexCoord2f(0.f, 0.f); glVertex3f(-1.f, -1.f, 0.f);
+        glTexCoord2f(1.f, 0.f); glVertex3f( 1.f, -1.f, 0.f);
+        glTexCoord2f(1.f, 1.f); glVertex3f( 1.f,  1.f, 0.f);
+        glTexCoord2f(0.f, 1.f); glVertex3f(-1.f,  1.f, 0.f);
     glEnd();
     drawText();
     glLoadIdentity();
@@ -213,8 +213,7 @@ void GraphicEngine::searchNode(QMouseEvent *event)
     // The position of mouse must be into [-1,1] range
     GLfloat x = 2.f*event->posF().x()/width() - 1.f;
     GLfloat y = 2.f*event->posF().y()/height() - 1.f;
-    // Also, we must revert y coordinate.
-    Vec3f pos = Vec3f(x, -y, 0.f);
+    Vec3f pos = Vec3f(x, y, 0.f);
 
     /* ModelViewProjection matrix is capable to transform
      * 3D world-space coordinates of nodes into normalized
@@ -275,8 +274,8 @@ void GraphicEngine::drawText()
     if (_nodeMouse != NULL) {
         FTBBox box = _font->BBox(_nodeMouse->name().c_str());
 
-        GLfloat dx = -2.f*(_lastMouseEvent.x()+16.f)/width() + 1.f;
-        GLfloat dy = -2.f*(_lastMouseEvent.y()+16.f)/height() + 1.f;
+        GLfloat dx = 2.f*(_lastMouseEvent.x()+16.f)/width() - 1.f;
+        GLfloat dy = 2.f*(_lastMouseEvent.y()+16.f)/height() - 1.f;
         GLfloat dz = -0.1f;
 
         glColor3f(1.f, 1.f, 0.f);

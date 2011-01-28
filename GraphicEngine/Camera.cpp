@@ -225,5 +225,17 @@ Mat4f Camera::recalcModelViewProjMatrix() const
 
 void Camera::reCalcUp()
 {
-    _up = Vec3f(0.f,1.f,0.f);
+    // Gets normal to view direction into XZ plane
+    Vec3f viewDir = viewDirection();
+    Vec3f nViewDir(viewDir.z(), 0.f, -viewDir.x());
+    if(nViewDir.norm() < 0.001f) {
+        _up = Vec3f(1.f, 0.f, 0.f);
+    }
+    else {
+        _up = viewDir.cross(nViewDir);
+        if(_up.y() < 0.f)
+            _up *= -1.f;
+
+    }
+    _up /= _up.norm();
 }
