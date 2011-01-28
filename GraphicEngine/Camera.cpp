@@ -61,22 +61,29 @@ void Camera::setPosition(Vec3f pos)
 {
     _pos = pos;
     reCalcUp();
-}
-
-Vec3f Camera::position()
-{
-    return _pos;
+    setupModelViewProjMatrix();
 }
 
 void Camera::setAimingPoint(Vec3f aim)
 {
     _aim = aim;
     reCalcUp();
+    setupModelViewProjMatrix();
 }
 
-Vec3f Camera::aimingPoint()
+Vec3f Camera::position() const
+{
+    return _pos;
+}
+
+Vec3f Camera::aimingPoint() const
 {
     return _aim;
+}
+
+Vec3f Camera::up() const
+{
+    return _up;
 }
 
 Vec3f Camera::viewDirection()
@@ -96,6 +103,7 @@ void Camera::resize()
         _size = Vec3f(radius, radius*_aspectRatio, radius);
     else
         _size = Vec3f(radius/_aspectRatio, radius, radius);
+    setupModelViewProjMatrix();
 }
 
 void Camera::rotate(float head, float pitch)
@@ -120,8 +128,7 @@ void Camera::rotate(float head, float pitch)
                 0.f,   cs,  -sn,  0.f,
                 0.f,   sn,   cs,  0.f,
                 0.f,  0.f,  0.f,  1.f);
-    // AimToCam = Rot*AimToCam2;
-    AimToCam = AimToCam2;
+    AimToCam = Rot*AimToCam2;
     // Apply accumulated heading
     cs = cos(OldHead+head);
     sn = sin(OldHead+head);
@@ -133,10 +140,58 @@ void Camera::rotate(float head, float pitch)
     // Set the new position of the camera
     AimToCam = AimToCam2 * Distance;
     setPosition(_aim+AimToCam);
-    reCalcUp();
 }
 
 Mat4f Camera::modelViewProjMatrix() const
+{
+    return _modelViewProjMatrix;
+}
+
+void Camera::setupModelViewProjMatrix(bool OpenGL)
+{
+    if(OpenGL)
+        _modelViewProjMatrix = getModelViewProjMatrix();
+    else
+        _modelViewProjMatrix = recalcModelViewProjMatrix();
+}
+
+Mat4f Camera::getModelViewProjMatrix() const
+{
+    GLfloat	proj[16], modv[16];
+    Mat4f modelViewMatrix, ProjectionMatrix;
+    /** ModelViewProjection matrix is the matrix that transform real coordinates
+     * into camera space coordinates. We use orthodromic projection, so the apllied
+     * matrix is oprthogonal, and deph is linear. \n
+     * To learn more, see glOrtho and gluLookAt of OpenGL documentation.
+     */
+    // Get the info from OpenGL
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();     // Save actual matrix
+    glLoadIdentity();
+    glOrtho(-_size.x(),_size.x(),-_size.y(),_size.y(),0.f,2.f*_size.z());
+    glGetFloatv( GL_PROJECTION_MATRIX, proj );
+    glPopMatrix();      // Restore matrix
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();     // Save actual matrix
+    glLoadIdentity();
+    gluLookAt(  _pos.x(), _pos.y(), _pos.z(),
+                _aim.x(), _aim.y(), _aim.z(),
+                 _up.x(),  _up.y(),  _up.z());
+    glGetFloatv( GL_MODELVIEW_MATRIX, modv );
+    glPopMatrix();      // Restore matrix
+    // Process info
+    modelViewMatrix = Mat4f( modv[ 0], modv[ 1], modv[ 2], modv[ 3],
+                             modv[ 4], modv[ 5], modv[ 6], modv[ 7],
+                             modv[ 8], modv[ 9], modv[10], modv[11],
+                             modv[12], modv[13], modv[14], modv[15]);
+    ProjectionMatrix = Mat4f( proj[ 0], proj[ 1], proj[ 2], proj[ 3],
+                              proj[ 4], proj[ 5], proj[ 6], proj[ 7],
+                              proj[ 8], proj[ 9], proj[10], proj[11],
+                              proj[12], proj[13], proj[14], proj[15]);
+    return modelViewMatrix*ProjectionMatrix;
+}
+
+Mat4f Camera::recalcModelViewProjMatrix() const
 {
     /** ModelViewProjection matrix is the matrix that transform real coordinates
      * into camera space coordinates. We use orthodromic projection, so the apllied
@@ -158,24 +213,17 @@ Mat4f Camera::modelViewProjMatrix() const
                    0.f,    0.f,    0.f, 1.f);
 
     Mat4f viewProj = view*proj;
-    Vec3f eye = viewProj*_pos;
-    printf("%g, %g, %g\n", eye.x(), eye.y(), eye.z());
+    Vec3f eye = viewProj*_aim;
 
     Mat4f model(  1.f,  0.f,  0.f,  -eye.x(),
                   0.f,  1.f,  0.f,  -eye.y(),
                   0.f,  0.f,  1.f,  -eye.z(),
                   0.f,  0.f,  0.f,       1.f);
+
     return model*viewProj;
 }
 
 void Camera::reCalcUp()
 {
-    Vec3f w = _pos - _aim;
-    // XOZ plane vector perpendicualr to AimToCam
-    Vec3f y(0.f, 1.f, 0.f);
-    Vec3f u = y.cross(w);
-    _up = w.cross(u);
-    if(_up.norm() < 0.0001f)
-        _up = Vec3f(1.f,0.f,0.f);
-    _up /= _up.norm();
+    _up = Vec3f(0.f,1.f,0.f);
 }

@@ -110,9 +110,10 @@ void Scene::draw()
     // Position the camera
     Vec3f cameraPos = _cam->position();
     Vec3f cameraAim = _cam->aimingPoint();
+    Vec3f cameraUp  = _cam->up();
     gluLookAt(  cameraPos.x(), cameraPos.y(), cameraPos.z(),
                 cameraAim.x(), cameraAim.y(), cameraAim.z(),
-                0.f,           1.f,           0.f);
+                 cameraUp.x(),  cameraUp.y(),  cameraUp.z());
     // Clean
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -120,10 +121,11 @@ void Scene::draw()
     drawNodes(_tree->root());
     // remarks selected node
     if(_tree->selectedNode()) {
-        glColor3f(_tree->selectedNode()->r(), _tree->selectedNode()->g(), _tree->selectedNode()->b());
+        glColor3f(1.f, 1.f, 0.f);
+        drawPlane(_tree->selectedNode(), _tree->selectedNode()->bloom()+50, _textureid[0]);
         drawPlane(_tree->selectedNode(), _tree->selectedNode()->radius(), _textureid[2]);
     }
-    glLoadIdentity();
+    // glLoadIdentity();
 
 }
 

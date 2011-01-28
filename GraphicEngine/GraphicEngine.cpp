@@ -244,7 +244,6 @@ void GraphicEngine::_searchNode(Node *node, Vec3f pos, Mat4f modelViewProjMatrix
         GLfloat w = viewProjMatrix[3][0] + viewProjMatrix[3][1] + viewProjMatrix[3][2] + viewProjMatrix[3][3];
         camSpacePos /= w;
     */
-    camSpacePos = Vec3f(camSpacePos.x(), camSpacePos.y(), camSpacePos.z()-1.f);    // Depth normalization
     Vec3f nodeToMouse = pos-camSpacePos;
     // If exist selected node, compare it
     if(SelectedNode) {
@@ -254,7 +253,6 @@ void GraphicEngine::_searchNode(Node *node, Vec3f pos, Mat4f modelViewProjMatrix
             w = viewProjMatrix[3][0] + viewProjMatrix[3][1] + viewProjMatrix[3][2] + viewProjMatrix[3][3];
             camSpacePos /= w;
         */
-        camSpacePos = Vec3f(camSpacePos.x(), camSpacePos.y(), camSpacePos.z()-1.f);    // Depth normalization
         Vec3f nodeToMouse2 = pos - camSpacePos;
         Vec2f nodeToMouse2D(nodeToMouse.x(), nodeToMouse.y());
         Vec2f nodeToMouse22D(nodeToMouse2.x(), nodeToMouse2.y());
@@ -277,8 +275,6 @@ void GraphicEngine::drawText()
     if (_nodeMouse != NULL) {
         FTBBox box = _font->BBox(_nodeMouse->name().c_str());
 
-        // float heightBox = box.Upper().Y() - box.Lower().Y();
-
         GLfloat dx = -2.f*(_lastMouseEvent.x()+16.f)/width() + 1.f;
         GLfloat dy = -2.f*(_lastMouseEvent.y()+16.f)/height() + 1.f;
         GLfloat dz = -0.1f;
@@ -286,12 +282,5 @@ void GraphicEngine::drawText()
         glColor3f(1.f, 1.f, 0.f);
 
         renderText(dx,dy,dz,_nodeMouse->name().c_str());
-        /*
-        glTranslatef(dx, dy, dz);
-
-        _font->Render(_nodeMouse->name().c_str());
-
-        glTranslatef(-dx, -dy, -dz);
-        */
     }
 }

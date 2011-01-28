@@ -27,6 +27,14 @@
 #include <math.h>
 
 // -------------------------------------------
+// Qt OpenGL libraries
+// -------------------------------------------
+#include <QGLWidget>
+#include <QMouseEvent>
+#include <QKeyEvent>
+#include <QWebView>
+
+// -------------------------------------------
 // FreePhyloTree classes
 // -------------------------------------------
 #include "../PhyloTree.hpp"
@@ -83,11 +91,15 @@ public:
     /** Return camera position.
      * @return Position of the camera.
      */
-    Vec3f position();
+    Vec3f position() const;
     /** Return camera view point.
      * @return Camera view point.
      */
-    Vec3f aimingPoint();
+    Vec3f aimingPoint() const;
+    /** Return up vector of the camera.
+     * @return Up vector.
+     */
+    Vec3f up() const;
 
     /** Return camera view direction.
      * @return Normalized view direction.
@@ -110,6 +122,20 @@ public:
      */
     Mat4f modelViewProjMatrix() const;
 private:
+    /** Setup model-view-projection matrix.
+     * @param OpenGL If true, let OpenGL sets the matrix
+     * (strongly recommended). \n
+     * Otherwise the class try to calculate it.
+     */
+    void setupModelViewProjMatrix(bool OpenGL=true);
+    /** OpenGL sets the model-view-projection matrix.
+     */
+    Mat4f getModelViewProjMatrix() const;
+    /** Class recalculates model-view-projection matrix.
+     */
+    Mat4f recalcModelViewProjMatrix() const;
+
+
     /** Recalculates up vector
      */
     void reCalcUp();
@@ -129,6 +155,9 @@ private:
     Vec3f _aim;
     /// Up viewer vector
     Vec3f _up;
+
+    /// model-view-projection matrix
+    Mat4f _modelViewProjMatrix;
 };
 
 }   // namespace FreePhyloTree
