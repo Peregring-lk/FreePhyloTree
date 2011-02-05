@@ -28,7 +28,7 @@
 
 /** @namespace FreePhyloTree Space to all classes of FreePhyloTree.
  */
-namespace FreePhyloTree
+namespace fpt
 {
     class GLEngine;
 

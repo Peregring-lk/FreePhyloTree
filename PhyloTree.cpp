@@ -22,7 +22,7 @@
 #include "GLEngine.hpp"
 #include "PhyloTree.hpp"
 
-using namespace FreePhyloTree;
+using namespace fpt;
 
 PhyloTree::PhyloTree(Name name)
     : LocTree(name), ColorTree(name), Tree(name)

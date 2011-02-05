@@ -19,7 +19,7 @@
 
 #include "Interval.hpp"
 
-using namespace FreePhyloTree;
+using namespace fpt;
 
 Interval::Interval() : _inf(0, 0, 0), _sup(1, 1, 1)
 {}

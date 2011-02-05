@@ -21,7 +21,7 @@
 
 #include "LocTree.hpp"
 
-using namespace FreePhyloTree;
+using namespace fpt;
 
 LocTree::LocTree(const Name& name) : Tree(name)
 {

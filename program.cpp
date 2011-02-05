@@ -33,7 +33,7 @@
 #include "FreePhyloTree.hpp"
 
 using namespace std;
-using namespace FreePhyloTree;
+using namespace fpt;
 
 PhyloTree* createClade()
 {

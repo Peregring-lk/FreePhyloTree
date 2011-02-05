@@ -20,7 +20,7 @@
 #include "Tree.hpp"
 
 using namespace std;
-using namespace FreePhyloTree;
+using namespace fpt;
 
 Tree::Tree(const Name& name) : _name(name)
 {

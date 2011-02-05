@@ -23,7 +23,7 @@
 #include "ColorTree.hpp"
 #include "Interval.hpp"
 
-namespace FreePhyloTree
+namespace fpt
 {
   class Coloring
   {

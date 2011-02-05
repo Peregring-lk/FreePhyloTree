@@ -22,7 +22,7 @@
 #include "GLEngine.hpp"
 
 using namespace std;
-using namespace FreePhyloTree;
+using namespace fpt;
 
 GLEngine::GLEngine(PhyloTree *tree)
     : _tree(tree), _webView(this),

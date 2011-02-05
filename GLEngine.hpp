@@ -30,7 +30,7 @@
 
 #include "PhyloTree.hpp"
 
-namespace FreePhyloTree
+namespace fpt
 {
   class GLEngine : public QGLWidget
   {

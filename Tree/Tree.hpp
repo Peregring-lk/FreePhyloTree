@@ -22,7 +22,7 @@
 
 #include "Node.hpp"
 
-namespace FreePhyloTree
+namespace fpt
 {
     class Tree
     {

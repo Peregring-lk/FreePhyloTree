@@ -19,7 +19,7 @@
 
 #include "LocNode.hpp"
 
-using namespace FreePhyloTree;
+using namespace fpt;
 
 LocNode::LocNode(const Name& name) : Node(name)
 {

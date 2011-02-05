@@ -23,7 +23,7 @@
 #include "../Tree/Tree.hpp"
 #include "ColorNode.hpp"
 
-namespace FreePhyloTree
+namespace fpt
 {
     class ColorTree : virtual public Tree
     {

@@ -23,7 +23,7 @@
 #include "../Tree/Tree.hpp"
 #include "LocNode.hpp"
 
-namespace FreePhyloTree
+namespace fpt
 {
     class LocTree : virtual public Tree
     {

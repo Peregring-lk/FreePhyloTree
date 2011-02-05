@@ -23,7 +23,7 @@
 #include "Vec2f.hpp"
 #include "../Tree/Node.hpp"
 
-namespace FreePhyloTree
+namespace fpt
 {
     class LocTree;
 

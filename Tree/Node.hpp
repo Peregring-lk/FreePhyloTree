@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 
-namespace FreePhyloTree
+namespace fpt
 {
     typedef std::string Name;
 

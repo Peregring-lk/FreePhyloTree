@@ -19,7 +19,7 @@
 
 #include "ColorTree.hpp"
 
-using namespace FreePhyloTree;
+using namespace fpt;
 
 ColorTree::ColorTree(const Name& name) : Tree(name)
 {}

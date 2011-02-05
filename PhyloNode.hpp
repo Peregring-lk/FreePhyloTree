@@ -23,7 +23,7 @@
 #include "Strategies/ColorNode.hpp"
 #include "Strategies/LocNode.hpp"
 
-namespace FreePhyloTree
+namespace fpt
 {
     class PhyloNode : public LocNode, public ColorNode
     {

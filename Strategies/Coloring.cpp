@@ -19,7 +19,7 @@
 
 #include "Coloring.hpp"
 
-using namespace FreePhyloTree;
+using namespace fpt;
 
 void Coloring::coloring(ColorNode *node)
 {

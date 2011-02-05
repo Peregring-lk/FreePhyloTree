@@ -20,7 +20,7 @@
 #include <cmath>
 #include "Vec2f.hpp"
 
-using namespace FreePhyloTree;
+using namespace fpt;
 
 Vec2f::Vec2f()
 {

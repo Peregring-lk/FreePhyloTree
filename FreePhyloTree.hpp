@@ -25,7 +25,7 @@
 
 #include "GLEngine.hpp"
 
-namespace FreePhyloTree
+namespace fpt
 {
   class QFreePhyloTree : public QApplication
   {
@@ -33,7 +33,7 @@ namespace FreePhyloTree
     QFreePhyloTree(PhyloTree *tree, int argc, char **argv);
 
     void run();
-    
+
   private:
     GLEngine _glEngine;
     QTimer _qTimer;

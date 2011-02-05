@@ -19,7 +19,7 @@
 
 #include "Color.hpp"
 
-using namespace FreePhyloTree;
+using namespace fpt;
 
 Color::Color()
 {

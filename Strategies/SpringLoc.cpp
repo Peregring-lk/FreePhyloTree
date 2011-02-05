@@ -22,7 +22,7 @@
 #include "SpringLoc.hpp"
 
 using namespace std;
-using namespace FreePhyloTree;
+using namespace fpt;
 
 SpringLoc::SpringLoc(float c1, float c2, float c3, float c4)
     : _c1(c1), _c2(c2), _c3(c3), _c4(c4)

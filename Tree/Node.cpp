@@ -19,7 +19,7 @@
 
 #include "Node.hpp"
 
-using namespace FreePhyloTree;
+using namespace fpt;
 
 Edge::Edge(Node *source, Node *target, int weight)
   : _source(source), _target(target), _weight(weight)

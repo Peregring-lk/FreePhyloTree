@@ -19,7 +19,7 @@
 
 #include "FreePhyloTree.hpp"
 
-using namespace FreePhyloTree;
+using namespace fpt;
 
 QFreePhyloTree::QFreePhyloTree(PhyloTree *tree, int argc, char **argv)
   : QApplication(argc, argv), _glEngine(tree), _qTimer(this)

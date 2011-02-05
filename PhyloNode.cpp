@@ -19,7 +19,7 @@
 
 #include "PhyloNode.hpp"
 
-using namespace FreePhyloTree;
+using namespace fpt;
 
 PhyloNode::PhyloNode(const Name& name)
     : LocNode(name), ColorNode(name), Node(name)

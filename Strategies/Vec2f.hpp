@@ -22,7 +22,7 @@
 
 #include <GL/gl.h>
 
-namespace FreePhyloTree
+namespace fpt
 {
     class Vec2f
     {

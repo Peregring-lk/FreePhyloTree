@@ -22,7 +22,7 @@
 
 #include "LocTree.hpp"
 
-namespace FreePhyloTree
+namespace fpt
 {
     class SpringLoc
     {
