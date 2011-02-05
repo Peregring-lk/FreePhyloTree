@@ -17,32 +17,34 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _ALLOC_
-#define _ALLOC_
+#ifndef _COLOR_NODE_
+#define _COLOR_NODE_
 
-#include "../Tree/Tree.hpp"
+#include "Color.hpp"
+#include "../Tree/Node.hpp"
 
 namespace FreePhyloTree
 {
-  class SpringAlloc
-  {
-  public:
-    SpringAlloc(float c1, float c2, float c3, float c4);
+    class ColorNode : virtual public Node
+    {
+    public:
+	ColorNode(const Name& name);
 
-    void reAlloc(Tree *tree);
+	GLfloat r() const;
+	GLfloat g() const;
+	GLfloat b() const;
 
-  private:
-    float _c1;
-    float _c2;
-    float _c3;
-    float _c4;
+	const Color& color() const;
 
-    typedef std::vector<Vec2f> _Moves;
-    _Moves _moves;
+	float bloom() const;
 
-    void _fa(Node *source, Node *target, int _weight);
-    void _fr(Node *source, Node *target);
-  };
+	void setColor(const Color& color);
+	void setBloom(float bloom);
+
+    private:
+	Color _color;
+	float _bloom;
+    };
 }
 
 #endif

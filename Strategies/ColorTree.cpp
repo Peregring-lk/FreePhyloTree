@@ -17,24 +17,31 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _COLORING_
-#define _COLORING_
-
 #include "ColorTree.hpp"
-#include "Interval.hpp"
 
-namespace FreePhyloTree
+using namespace FreePhyloTree;
+
+ColorTree::ColorTree(const Name& name) : Tree(name)
+{}
+
+void ColorTree::_initBloom(float bloom)
 {
-  class Coloring
-  {
-  public:
-    void coloring(ColorNode *tree);
+    for (int i = 0; i < _nodes.size(); ++i) {
+	ColorNode *node = dynamic_cast<ColorNode*>(_nodes[i]);
 
-  private:
-    TypeColor _actual;
+	node->setBloom(bloom);
+    }
+}
 
-    void _coloring(ColorNode *node, Interval interval, TypeColor t);
-  };
-};
+void ColorTree::_reloadBloom(float bloom, float smooth)
+{
+    for (int i = 0; i < _nodes.size(); ++i) {
+	ColorNode *node = dynamic_cast<ColorNode*>(_nodes[i]);
 
-#endif
+	float nodeBloom = node->bloom();
+	float difBloom = nodeBloom - bloom;
+
+	node->setBloom(nodeBloom - difBloom * smooth);
+    }
+}
+

@@ -40,7 +40,7 @@ namespace FreePhyloTree
     GLEngine(PhyloTree *tree);
     ~GLEngine();
 
-    void viewPage(Node *node);
+    void viewPage(PhyloNode *node);
 
   public slots:
     void animate();

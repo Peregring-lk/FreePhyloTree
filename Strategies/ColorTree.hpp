@@ -17,24 +17,23 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _COLORING_
-#define _COLORING_
+#ifndef _COLOR_TREE_
+#define _COLOR_TREE_
 
-#include "ColorTree.hpp"
-#include "Interval.hpp"
+#include "../Tree/Tree.hpp"
+#include "ColorNode.hpp"
 
 namespace FreePhyloTree
 {
-  class Coloring
-  {
-  public:
-    void coloring(ColorNode *tree);
+    class ColorTree : virtual public Tree
+    {
+    public:
+	ColorTree(const Name& name);
 
-  private:
-    TypeColor _actual;
-
-    void _coloring(ColorNode *node, Interval interval, TypeColor t);
-  };
-};
+    protected:
+	void _initBloom(float bloom);
+	void _reloadBloom(float bloom, float smooth);
+    };
+}
 
 #endif

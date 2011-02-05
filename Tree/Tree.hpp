@@ -24,46 +24,40 @@
 
 namespace FreePhyloTree
 {
-  class Tree
-  {
-  public:
-    Tree(const Name& name);
+    class Tree
+    {
+    public:
+	Tree(const Name& name);
 
-    Name name() const;
+	Name name() const;
 
-    const Nodes& nodes() const;
-    const Edges& edges() const;
-    const Edges& noAdjs() const;
+	const Nodes& nodes() const;
+	const Edges& edges() const;
+	const Edges& noAdjs() const;
 
-    Node* root() const;
-    Node* node(Label label) const;
+	Node* root() const;
+	Node* node(Label label) const;
 
-    unsigned height() const;
-    unsigned order() const;
+//    unsigned height() const;
+	unsigned order() const;
 
-    void setRoot(Node *root);
-    void setChild(Node *father, Node *child);
+	void setRoot(Node *root);
+	void setChild(Node *father, Node *child);
 
-  protected:
-    Name _name;
-    Node *_root;
+    protected:
+	Name _name;
+	Node *_root;
 
-    Nodes _nodes;
-    Edges _edges;
-    Edges _noAdjs;
+	Nodes _nodes;
+	Edges _edges;
+	Edges _noAdjs;
 
-    int _weight;
+	int _weight;
 
-    void _newNode(Node *node, Node *father);
-    void _moveEdge(Node *source, Node *target);
-    bool _isNew(Node *node);
-
-    Vec2f _rand(Node *father);
-    void _rebootChildren(Node *father);
-
-    void _initBloom(float bloom);
-    void _reloadBloom(float bloom, float smooth);
-  };
+	void _newNode(Node *node, Node *father);
+	void _moveEdge(Node *source, Node *target);
+	bool _isNew(Node *node);
+    };
 }
 
 #endif

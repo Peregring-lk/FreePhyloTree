@@ -17,24 +17,46 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _COLORING_
-#define _COLORING_
+#include "ColorNode.hpp"
 
-#include "ColorTree.hpp"
-#include "Interval.hpp"
+using namespace FreePhyloTree;
 
-namespace FreePhyloTree
+ColorNode::ColorNode(const Name& name) : Node(name)
+{}
+
+GLfloat ColorNode::r() const
 {
-  class Coloring
-  {
-  public:
-    void coloring(ColorNode *tree);
+  return _color.r();
+}
 
-  private:
-    TypeColor _actual;
+GLfloat ColorNode::g() const
+{
+  return _color.g();
+}
 
-    void _coloring(ColorNode *node, Interval interval, TypeColor t);
-  };
-};
+GLfloat ColorNode::b() const
+{
+  return _color.b();
+}
 
-#endif
+const Color& ColorNode::color() const
+{
+  return _color;
+}
+
+float ColorNode::bloom() const
+{
+  return _bloom;
+}
+
+void ColorNode::setColor(const Color& color)
+{
+  _color = color;
+}
+
+void ColorNode::setBloom(float bloom)
+{
+  _bloom = bloom;
+}
+
+

@@ -17,24 +17,38 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _COLORING_
-#define _COLORING_
+#ifndef _LOC_NODE_
+#define _LOC_NODE_
 
-#include "ColorTree.hpp"
-#include "Interval.hpp"
+#include "Vec2f.hpp"
+#include "../Tree/Node.hpp"
 
 namespace FreePhyloTree
 {
-  class Coloring
-  {
-  public:
-    void coloring(ColorNode *tree);
+    class LocTree;
 
-  private:
-    TypeColor _actual;
+    class LocNode : virtual public Node
+    {
+    public:
+	LocNode(const Name& name);
 
-    void _coloring(ColorNode *node, Interval interval, TypeColor t);
-  };
-};
+	GLfloat x() const;
+	GLfloat y() const;
+
+	const Vec2f& loc() const;
+
+	bool crib() const;
+	bool hide() const;
+
+	void setLoc(const Vec2f& loc);
+	void move(const Vec2f& delta);
+
+	void setCrib(bool crib);
+
+    private:
+	Vec2f _loc;
+	bool _crib;
+    };
+}
 
 #endif

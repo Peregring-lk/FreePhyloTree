@@ -23,96 +23,71 @@
 #include <string>
 #include <vector>
 
-#include "Color.hpp"
-#include "Vec2f.hpp"
-
 namespace FreePhyloTree
 {
-  typedef std::string Name;
+    typedef std::string Name;
 
-  class Node;
+    class Node;
 
-  typedef int Label;
-  typedef std::vector<Node*> Nodes;
+    typedef int Label;
+    typedef std::vector<Node*> Nodes;
 
-  class Edge
-  {
-  public:
-    Edge(Node *source, Node *target, int weight);
+    class Edge
+    {
+    public:
+	Edge(Node *source, Node *target, int weight);
 
-    Node* source() const;
-    Node *target() const;
-    int weight() const;
+	Node* source() const;
+	Node *target() const;
+	int weight() const;
 
-  private:
-    Node *_source;
-    Node *_target;
+    private:
+	Node *_source;
+	Node *_target;
 
-    int _weight;
-  };
+	int _weight;
+    };
 
-  //  typedef std::pair<Node*, Node*> Edge;
-  typedef std::vector<Edge> Edges;
+    //  typedef std::pair<Node*, Node*> Edge;
+    typedef std::vector<Edge> Edges;
 
-  //class Tree;
+    //class Tree;
 
-  class Node
-  {
-  public:
-    Node(const Name& name, bool hide = false);
+    class Node
+    {
+    public:
+	Node(const Name& name);
 
-    Name name() const;
-    Label label() const;
-    bool crib() const;
-    bool hide() const;
-    float bloom() const;
+	const Name& name() const;
+	Label label() const;
 
-    GLfloat r() const;
-    GLfloat g() const;
-    GLfloat b() const;
+	Node* father() const;
+	const Nodes& children() const;
 
-    GLfloat x() const;
-    GLfloat y() const;
+	virtual unsigned nodes() const;
 
-    const Color& color() const;
-    const Vec2f& alloc() const;
+/*
+  unsigned degree() const;
+  unsigned level() const;
+  unsigned height() const;
+*/
 
-    Node* father() const;
-    const Nodes& children() const;
+	Node* root();
 
-    unsigned degree() const;
-    unsigned level() const;
-    unsigned height() const;
-    unsigned nodes() const;
+	friend class Tree;
 
-    Node* root();
+    protected:
+	Name _name;
+	Label _label;
 
-    void setColor(const Color& color);
-    void setAlloc(const Vec2f& alloc);
-    void setBloom(float bloom);
-    void setCrib(bool crib);
+	Node *_father;
+	Nodes _children;
 
-    void move(const Vec2f& delta);
+//    unsigned _level;
+//    unsigned _height;
 
-    friend class Tree;
-
-  private:
-    Name _name;
-    Color _color;
-    Vec2f _alloc;
-    Label _label;
-    bool _crib;
-
-    Node *_father;
-    Nodes _children;
-
-    unsigned _level;
-    unsigned _height;
-
-    float _bloom;
-
-    void _uploadHeight(Node *node);
-  };
+//    void _uploadHeight(Node *node);
+    };
 }
 
 #endif

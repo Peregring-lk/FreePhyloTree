@@ -16,7 +16,7 @@ ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 QT4_WRAP_CPP(MOC_HEADERS GLEngine.hpp)
 
-SET(TREES PhyloTree ${TREE} ${STRGY})
+SET(TREES PhyloTree PhyloNode ${TREE} ${STRGY})
 SET(SRC FreePhyloTree GLEngine ${TREES} program)
 
 ADD_EXECUTABLE(FreePhyloTree ${SRC} ${MOC_HEADERS})

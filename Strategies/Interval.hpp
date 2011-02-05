@@ -20,7 +20,7 @@
 #ifndef _INTERVAL_
 #define _INTERVAL_
 
-#include "../Tree/Color.hpp"
+#include "Color.hpp"
 
 namespace FreePhyloTree
 {

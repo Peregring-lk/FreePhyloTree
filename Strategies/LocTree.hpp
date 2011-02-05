@@ -17,34 +17,23 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _COLOR_
-#define _COLOR_
+#ifndef _LOC_TREE_
+#define _LOC_TREE_
 
-#include <GL/gl.h>
+#include "../Tree/Tree.hpp"
+#include "LocNode.hpp"
 
 namespace FreePhyloTree
 {
-  enum TypeColor { R, G, B };
+    class LocTree : virtual public Tree
+    {
+    public:
+	LocTree(const Name& name);
 
-  class Color
-  {
-  public:
-    Color();
-    Color(GLfloat r, GLfloat g, GLfloat b);
-    Color(const Color& color);
-
-    GLfloat r() const;
-    GLfloat g() const;
-    GLfloat b() const;
-
-    GLfloat color(TypeColor t) const;
-
-    void setColor(GLfloat r, GLfloat g, GLfloat b);
-    void setColor(TypeColor t, GLfloat value);
-
-  private:
-    GLfloat _color[3];
-  };
+    protected:
+	Vec2f _rand(LocNode *father);
+	void _rebootChildren(LocNode *father);
+    };
 }
 
 #endif

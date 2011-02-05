@@ -25,159 +25,159 @@ using namespace std;
 using namespace FreePhyloTree;
 
 GLEngine::GLEngine(PhyloTree *tree)
-  : _tree(tree), _webView(this),
-    _nameWeb("http://es.wikipedia.org/wiki/")
+    : _tree(tree), _webView(this),
+      _nameWeb("http://es.wikipedia.org/wiki/")
 {
-  setMouseTracking(true);
+    setMouseTracking(true);
 
-  _smoothResizeViewport = 0.1;
-  _smoothResizeWW = 0.2;
+    _smoothResizeViewport = 0.1;
+    _smoothResizeWW = 0.2;
 
-  _actualWidth = width();
-  _actualHeight = height();
+    _actualWidth = width();
+    _actualHeight = height();
 
-  _pctWWSize = 0.9;
-  resizeGL(_actualWidth, _actualHeight);
+    _pctWWSize = 0.9;
+    resizeGL(_actualWidth, _actualHeight);
 
-  _webView.hide();
+    _webView.hide();
 }
 
 GLEngine::~GLEngine()
 {
-  delete _tree;
+    delete _tree;
 }
 
-void GLEngine::viewPage(Node *node)
+void GLEngine::viewPage(PhyloNode *node)
 {
-  if (node != NULL) {
-    string dir = _nameWeb + node->name();
-    _webView.load(QUrl(dir.c_str()));
+    if (node != NULL) {
+	string dir = _nameWeb + node->name();
+	_webView.load(QUrl(dir.c_str()));
 
-    if (_webView.isHidden())
-      _webView.show();
-  }
-  else if (_webView.isVisible()) {
-    _webView.hide();
-    _webView.clearFocus();
-  }
+	if (_webView.isHidden())
+	    _webView.show();
+    }
+    else if (_webView.isVisible()) {
+	_webView.hide();
+	_webView.clearFocus();
+    }
 }
 
 void GLEngine::animate()
 {
-  repaint();
-  _reloadViewport();
-  _reloadWebView();
+    repaint();
+    _reloadViewport();
+    _reloadWebView();
 }
 
 void GLEngine::initializeGL()
 {
-  _tree->initSignal(this);
+    _tree->initSignal(this);
 }
 
 void GLEngine::paintGL()
 {
-  _tree->draw();
+    _tree->draw();
 }
 
 void GLEngine::keyPressEvent(QKeyEvent *event)
 {
-  if (event->key() == Qt::Key_Space)
-    _tree->gotoRoot();
-  else if (event->key() == Qt::Key_Escape) {
-    if (_webView.isVisible())
-      viewPage(NULL);
-    else
-      QApplication::quit();
-  }
+    if (event->key() == Qt::Key_Space)
+	_tree->gotoRoot();
+    else if (event->key() == Qt::Key_Escape) {
+	if (_webView.isVisible())
+	    viewPage(NULL);
+	else
+	    QApplication::quit();
+    }
 }
 
 void GLEngine::mouseDoubleClickEvent(QMouseEvent *event)
 {
-  if (event->button() == Qt::LeftButton)
-    _tree->cribNode(_screen2pic(event->x(), event->y()));
-  else if (event->button() == Qt::RightButton)
-    viewPage(_tree->actualNode());
+    if (event->button() == Qt::LeftButton)
+	_tree->cribNode(_screen2pic(event->x(), event->y()));
+    else if (event->button() == Qt::RightButton)
+	viewPage(_tree->actualNode());
 }
 
 void GLEngine::mouseMoveEvent(QMouseEvent *event)
 {
-  QPointF pos = event->posF();
+    QPointF pos = event->posF();
 
-  if (event->buttons() == Qt::LeftButton) {
-    Vec2f vec = Vec2f(pos.x() - _lastMouseEvent.x(),
-		      _lastMouseEvent.y() - pos.y());
+    if (event->buttons() == Qt::LeftButton) {
+	Vec2f vec = Vec2f(pos.x() - _lastMouseEvent.x(),
+			  _lastMouseEvent.y() - pos.y());
 
-    _tree->lookAt(vec);
-  }
-  else {
-    Vec2f alloc = _screen2pic(event->x(), event->y());
-    _tree->allocMouse(alloc);
-  }
+	_tree->lookAt(vec);
+    }
+    else {
+	Vec2f loc = _screen2pic(event->x(), event->y());
+	_tree->locMouse(loc);
+    }
 
-  _lastMouseEvent = pos;
+    _lastMouseEvent = pos;
 }
 
 void GLEngine::resizeGL(int width, int height)
 {
-  _finalWWWidth = width * _pctWWSize;
-  _finalWWHeight = height * _pctWWSize;
+    _finalWWWidth = width * _pctWWSize;
+    _finalWWHeight = height * _pctWWSize;
 }
 
 Vec2f GLEngine::_screen2pic(int x, int y)
 {
-  Vec2f inf = _tree->infPic();
-  Vec2f sup = _tree->supPic();
+    Vec2f inf = _tree->infPic();
+    Vec2f sup = _tree->supPic();
 
-  float desplX = ((float)x / width()) * (sup.x() - inf.x());
-  float desplY = (1 - (float)y / height()) * (sup.y() - inf.y());
+    float desplX = ((float)x / width()) * (sup.x() - inf.x());
+    float desplY = (1 - (float)y / height()) * (sup.y() - inf.y());
 
-  return Vec2f(inf.x() + desplX,
-	       inf.y() + desplY);
+    return Vec2f(inf.x() + desplX,
+		 inf.y() + desplY);
 }
 
 void GLEngine::_reloadViewport()
 {
-  bool change = false;
+    bool change = false;
 
-  if ((int)_actualWidth != width()) {
-    float difWidth = _actualWidth - width();
-    _actualWidth -= difWidth * _smoothResizeViewport;
-    change = true;
-  }
+    if ((int)_actualWidth != width()) {
+	float difWidth = _actualWidth - width();
+	_actualWidth -= difWidth * _smoothResizeViewport;
+	change = true;
+    }
 
-  if ((int)_actualHeight != height()) {
-    float difHeight = _actualHeight - height();
-    _actualHeight -= difHeight * _smoothResizeViewport;
-    change = true;
-  }
+    if ((int)_actualHeight != height()) {
+	float difHeight = _actualHeight - height();
+	_actualHeight -= difHeight * _smoothResizeViewport;
+	change = true;
+    }
 
-  if (change)
-    glViewport(0, 0, _actualWidth, _actualHeight);
+    if (change)
+	glViewport(0, 0, _actualWidth, _actualHeight);
 }
 
 void GLEngine::_reloadWebView()
 {
-  bool change = false;
+    bool change = false;
 
-  int wwWidth = _webView.width();
-  int wwHeight = _webView.height();
+    int wwWidth = _webView.width();
+    int wwHeight = _webView.height();
 
-  if ((int)_finalWWWidth != wwWidth) {
-    float dif = wwWidth - _finalWWWidth;
-    wwWidth -= dif * _smoothResizeWW;
-    change = true;
-  }
+    if ((int)_finalWWWidth != wwWidth) {
+	float dif = wwWidth - _finalWWWidth;
+	wwWidth -= dif * _smoothResizeWW;
+	change = true;
+    }
 
-  if ((int)_finalWWHeight != wwHeight) {
-    float dif = wwHeight - _finalWWHeight;
-    wwHeight -= dif * _smoothResizeWW;
-    change = true;
-  }
+    if ((int)_finalWWHeight != wwHeight) {
+	float dif = wwHeight - _finalWWHeight;
+	wwHeight -= dif * _smoothResizeWW;
+	change = true;
+    }
 
-  if (true){
-    _webView.resize(wwWidth, wwHeight);
+    if (true){
+	_webView.resize(wwWidth, wwHeight);
 
-    _webView.move((width() - wwWidth) / 2,
-    		  (height() - wwHeight) / 2);
-  }
+	_webView.move((width() - wwWidth) / 2,
+		      (height() - wwHeight) / 2);
+    }
 }

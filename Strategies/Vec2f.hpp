@@ -17,24 +17,50 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _COLORING_
-#define _COLORING_
+#ifndef _VEC_
+#define _VEC_
 
-#include "ColorTree.hpp"
-#include "Interval.hpp"
+#include <GL/gl.h>
 
 namespace FreePhyloTree
 {
-  class Coloring
-  {
-  public:
-    void coloring(ColorNode *tree);
+    class Vec2f
+    {
+    public:
+	Vec2f();
+	Vec2f(GLfloat x, GLfloat y);
 
-  private:
-    TypeColor _actual;
+	GLfloat x() const;
+	GLfloat y() const;
 
-    void _coloring(ColorNode *node, Interval interval, TypeColor t);
-  };
-};
+	GLfloat norm() const;
+	Vec2f unit() const;
+
+	Vec2f operator+ (const Vec2f& vec) const;
+	Vec2f operator- (const Vec2f& vec) const;
+	Vec2f operator* (GLfloat k) const;
+	Vec2f operator/ (GLfloat k) const;
+
+	bool inRadius(Vec2f vec, GLfloat radius) const;
+
+	void setAlloc(GLfloat x, GLfloat y);
+	void setX(GLfloat x);
+	void setY(GLfloat y);
+
+	Vec2f& operator+= (const Vec2f& vec);
+	Vec2f& operator-= (const Vec2f& vec);
+	Vec2f& operator*= (GLfloat k);
+	Vec2f& operator/= (GLfloat k);
+
+    private:
+	GLfloat _x;
+	GLfloat _y;
+
+	mutable GLfloat _norm;
+	mutable bool _upToDateNorm;
+
+	void _calcNorm() const;
+    };
+}
 
 #endif

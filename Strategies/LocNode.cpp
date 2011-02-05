@@ -17,24 +17,58 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _COLORING_
-#define _COLORING_
+#include "LocNode.hpp"
 
-#include "ColorTree.hpp"
-#include "Interval.hpp"
+using namespace FreePhyloTree;
 
-namespace FreePhyloTree
+LocNode::LocNode(const Name& name) : Node(name)
 {
-  class Coloring
-  {
-  public:
-    void coloring(ColorNode *tree);
+    _crib = false;
+}
 
-  private:
-    TypeColor _actual;
+GLfloat LocNode::x() const
+{
+    return _loc.x();
+}
 
-    void _coloring(ColorNode *node, Interval interval, TypeColor t);
-  };
-};
+GLfloat LocNode::y() const
+{
+    return _loc.y();
+}
 
-#endif
+const Vec2f& LocNode::loc() const
+{
+    return _loc;
+}
+
+bool LocNode::crib() const
+{
+    return _crib;
+}
+
+bool LocNode::hide() const
+{
+    LocNode *father = dynamic_cast<LocNode*>(_father);
+
+    if (_father == NULL)
+	return false;
+    else if (father->crib())
+	return true;
+    else
+	return father->hide();
+}
+
+void LocNode::setLoc(const Vec2f& loc)
+{
+    _loc = loc;
+}
+
+void LocNode::move(const Vec2f& desp)
+{
+    _loc += desp;
+}
+
+void LocNode::setCrib(bool crib)
+{
+    _crib = crib;
+}

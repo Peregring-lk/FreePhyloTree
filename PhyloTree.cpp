@@ -24,279 +24,289 @@
 
 using namespace FreePhyloTree;
 
-PhyloTree::PhyloTree(Name name) : Tree(name)
+PhyloTree::PhyloTree(Name name)
+    : LocTree(name), ColorTree(name), Tree(name)
 {
-  _alloc = new SpringAlloc(3, 25, 80, 1);
-  _coloring = new Coloring();
+    _loc = new SpringLoc(3, 25, 80, 1);
+    _coloring = new Coloring();
 
-  _radiusNode = 5;
-  _radiusBeam = 2;
+    _radiusNode = 5;
+    _radiusBeam = 2;
 
-  _radiusBloom = 40;
-  _smoothBloom = 0.05;
+    _radiusBloom = 40;
+    _smoothBloom = 0.05;
 
-  _semisidePic = 200;
-  _smoothCamera = 0.08;
+    _semisidePic = 200;
+    _smoothCamera = 0.08;
 
-  _nodeMouse = NULL;
+    _nodeMouse = NULL;
 
-  _font = new FTGLTextureFont("Resources/FreeSans.ttf");
-  _font->FaceSize(12);
+    _font = new FTGLTextureFont("Resources/FreeSans.ttf");
+    _font->FaceSize(12);
 }
 
 PhyloTree::~PhyloTree()
 {
-  delete _alloc;
-  delete _coloring;
+    delete _loc;
+    delete _coloring;
 }
 
 Vec2f PhyloTree::infPic() const
 {
-  return (Vec2f(_centerPic.x() - _semisidePic,
-		_centerPic.y() - _semisidePic));
+    return (Vec2f(_centerPic.x() - _semisidePic,
+		  _centerPic.y() - _semisidePic));
 }
 
 Vec2f PhyloTree::supPic() const
 {
-  return (Vec2f(_centerPic.x() + _semisidePic,
-		_centerPic.y() + _semisidePic));
+    return (Vec2f(_centerPic.x() + _semisidePic,
+		  _centerPic.y() + _semisidePic));
 }
 
 const Vec2f& PhyloTree::centerPic() const
 {
-  return _centerPic;
+    return _centerPic;
 }
 
 float PhyloTree::sidePic() const
 {
-  return _semisidePic * 2;
+    return _semisidePic * 2;
 }
 
-Node* PhyloTree::actualNode() const
+PhyloNode* PhyloTree::actualNode() const
 {
-  return _nodeMouse;
+    return _nodeMouse;
 }
 
 void PhyloTree::initSignal(GLEngine *glEngine)
 {
-  _loadTextures(glEngine);
-  _coloring->coloring(_root);
+    _loadTextures(glEngine);
+    _coloring->coloring(dynamic_cast<ColorNode*>(_root));
 
-  glEnable(GL_TEXTURE_2D);
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-  Vec2f inf = infPic();
-  Vec2f sup = supPic();
+    Vec2f inf = infPic();
+    Vec2f sup = supPic();
 
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
 
-  glOrtho(inf.x(), sup.x(), inf.y(), sup.y(), 1, -1);
+    glOrtho(inf.x(), sup.x(), inf.y(), sup.y(), 1, -1);
 
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 
-  _initBloom(_radiusBloom);
-  _cribNode(_root);
+    _initBloom(_radiusBloom);
 
-  lookAt(_root->alloc());
+    PhyloNode *root = dynamic_cast<PhyloNode*>(_root);
+
+    root->setCrib(true);
+    _cribNode(root);
+
+    lookAt(root->loc());
 }
 
 void PhyloTree::gotoRoot()
 {
-  _relCamera = _root->alloc() - _centerPic;
+    PhyloNode *root = dynamic_cast<PhyloNode*>(_root);
 
-  _restSmoothCamera = _smoothCamera;
+    _relCamera = root->loc() - _centerPic;
+
+    _restSmoothCamera = _smoothCamera;
 }
 
 void PhyloTree::lookAt(const Vec2f& rel)
 {
-  _restSmoothCamera = _smoothCamera;
-  _relCamera += rel;
+    _restSmoothCamera = _smoothCamera;
+    _relCamera += rel;
 }
 
-void PhyloTree::allocMouse(const Vec2f& alloc)
+void PhyloTree::locMouse(const Vec2f& loc)
 {
-  _allocMouse = alloc;
-  _nodeMouse = _searchNode(alloc);
+    _locMouse = loc;
+    _nodeMouse = _searchNode(loc);
 }
 
-void PhyloTree::cribNode(const Vec2f& alloc)
+void PhyloTree::cribNode(const Vec2f& loc)
 {
-  Node *node = _searchNode(alloc);
+    PhyloNode *node = _searchNode(loc);
 
-  _cribNode(node);
+    _cribNode(node);
 }
 
 void PhyloTree::draw()
 {
-  glClear(GL_COLOR_BUFFER_BIT);
+    PhyloNode *root = dynamic_cast<PhyloNode*>(_root);
 
-  glPushMatrix();
-  _drawTree(_root);
-  _drawText();
-  glPopMatrix();
+    glClear(GL_COLOR_BUFFER_BIT);
 
-  Vec2f allocRoot = _root->alloc();
+    glPushMatrix();
+    _drawTree(root);
+    _drawText();
+    glPopMatrix();
 
-  _alloc->reAlloc(this);
-  lookAt(_root->alloc() - allocRoot);
-  _reloadCamera();
-  _reloadBloom(_radiusBloom, _smoothBloom);
+    Vec2f locRoot = root->loc();
+    _loc->reLoc(this);
+
+    lookAt(root->loc() - locRoot);
+
+    _reloadCamera();
+    _reloadBloom(_radiusBloom, _smoothBloom);
 }
 
-void PhyloTree::_drawTree(Node *node)
+void PhyloTree::_drawTree(PhyloNode *node)
 {
-  float l = 0;
+    float l = 0;
 
-  const Nodes& nodes = node->children(); 
+    const Nodes& nodes = node->children();
 
-  if (!node->crib())
-    for (int i = 0; i < nodes.size(); ++i) {
-      Node *child = nodes[i];
+    if (!node->crib())
+	for (int i = 0; i < nodes.size(); ++i) {
+	    PhyloNode *child = dynamic_cast<PhyloNode*>(nodes[i]);
 
-      _drawEdge(node, child);
-      _drawTree(child);
-    }
+	    _drawEdge(node, child);
+	    _drawTree(child);
+	}
 
-  _drawNode(node);
+    _drawNode(node);
 }
 
-void PhyloTree::_drawEdge(Node *source, Node *target) 
+void PhyloTree::_drawEdge(PhyloNode *source, PhyloNode *target)
 {
-  glBindTexture(GL_TEXTURE_2D, textureid[1]);
+    glBindTexture(GL_TEXTURE_2D, textureid[1]);
 
-  glColor3f(1, 1, 1);
+    glColor3f(1, 1, 1);
 
-  float xs = source->x();
-  float ys = source->y();
-  float xt = target->x();
-  float yt = target->y();
+    float xs = source->x();
+    float ys = source->y();
+    float xt = target->x();
+    float yt = target->y();
 
-  glBegin(GL_QUADS);
+    glBegin(GL_QUADS);
 
-  glTexCoord2f(1, 0);
-  glVertex2f(xs, ys - _radiusBeam);
-  glTexCoord2f(0, 0);
-  glVertex2f(xs, ys + _radiusBeam);
-  glTexCoord2f(0, 0);
-  glVertex2f(xt, yt + _radiusBeam);
-  glTexCoord2f(1, 0);
-  glVertex2f(xt, yt - _radiusBeam);
+    glTexCoord2f(1, 0);
+    glVertex2f(xs, ys - _radiusBeam);
+    glTexCoord2f(0, 0);
+    glVertex2f(xs, ys + _radiusBeam);
+    glTexCoord2f(0, 0);
+    glVertex2f(xt, yt + _radiusBeam);
+    glTexCoord2f(1, 0);
+    glVertex2f(xt, yt - _radiusBeam);
 
-  glEnd();
+    glEnd();
 }
 
-void PhyloTree::_drawNode(Node *node)
+void PhyloTree::_drawNode(PhyloNode *node)
 {
-  _setColor(node);
-  _drawSquare(node, node->bloom(), textureid[0]);
-  _drawSquare(node, _radiusNode, textureid[2]);
+    _setColor(node);
+    _drawSquare(node, node->bloom(), textureid[0]);
+    _drawSquare(node, _radiusNode, textureid[2]);
 }
 
-void PhyloTree::_setColor(Node *node)
+void PhyloTree::_setColor(PhyloNode *node)
 {
-  glColor3f(node->r(), node->g(), node->b());
+    glColor3f(node->r(), node->g(), node->b());
 }
 
-void PhyloTree::_drawSquare(Node *node, float side, GLuint tex)
+void PhyloTree::_drawSquare(PhyloNode *node, float side, GLuint tex)
 {
-  glBindTexture(GL_TEXTURE_2D, tex);
+    glBindTexture(GL_TEXTURE_2D, tex);
 
-  float x = node->x();
-  float y = node->y();
+    float x = node->x();
+    float y = node->y();
 
-  glBegin(GL_QUADS);
+    glBegin(GL_QUADS);
 
-  glTexCoord2f(1, 1);
-  glVertex2f(x + side, y + side);
-  glTexCoord2f(1, 0);
-  glVertex2f(x + side, y - side);
-  glTexCoord2f(0, 0);
-  glVertex2f(x - side, y - side);
-  glTexCoord2f(0, 1);
-  glVertex2f(x - side, y + side);
+    glTexCoord2f(1, 1);
+    glVertex2f(x + side, y + side);
+    glTexCoord2f(1, 0);
+    glVertex2f(x + side, y - side);
+    glTexCoord2f(0, 0);
+    glVertex2f(x - side, y - side);
+    glTexCoord2f(0, 1);
+    glVertex2f(x - side, y + side);
 
-  glEnd();
+    glEnd();
 }
 
 void PhyloTree::_drawText()
 {
-  if (_nodeMouse != NULL) {
-    FTBBox box = _font->BBox(_nodeMouse->name().c_str());
+    if (_nodeMouse != NULL) {
+	FTBBox box = _font->BBox(_nodeMouse->name().c_str());
 
-    float heightBox = box.Upper().Y() - box.Lower().Y();
+	float heightBox = box.Upper().Y() - box.Lower().Y();
 
-    GLfloat dx = _nodeMouse->x() + 7;
-    GLfloat dy = _nodeMouse->y() - heightBox / 2;
+	GLfloat dx = _nodeMouse->x() + 7;
+	GLfloat dy = _nodeMouse->y() - heightBox / 2;
 
-    glColor3f(1, 1, 0);
-    //_setColor(_nodeMouse);
-    
-    glTranslatef(dx, dy, 0);
+	glColor3f(1, 1, 0);
+	//_setColor(_nodeMouse);
 
-    _font->Render(_nodeMouse->name().c_str());
+	glTranslatef(dx, dy, 0);
 
-    glTranslatef(-dx, -dy, 0);
-  }
+	_font->Render(_nodeMouse->name().c_str());
+
+	glTranslatef(-dx, -dy, 0);
+    }
 }
 
 void PhyloTree::_reloadCamera()
 {
-  Vec2f rel = _relCamera * _restSmoothCamera;
-  _restSmoothCamera /= 2;
+    Vec2f rel = _relCamera * _restSmoothCamera;
+    _restSmoothCamera /= 2;
 
-  _centerPic += rel;
-  _relCamera -= rel;
+    _centerPic += rel;
+    _relCamera -= rel;
 
-  Vec2f inf = infPic();
-  Vec2f sup = supPic();
+    Vec2f inf = infPic();
+    Vec2f sup = supPic();
 
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
 
-  glOrtho(inf.x(), sup.x(), inf.y(), sup.y(), 1, -1);
+    glOrtho(inf.x(), sup.x(), inf.y(), sup.y(), 1, -1);
 
-  glMatrixMode(GL_MODELVIEW);
+    glMatrixMode(GL_MODELVIEW);
 }
 
-Node* PhyloTree::_searchNode(const Vec2f& alloc)
+PhyloNode* PhyloTree::_searchNode(const Vec2f& loc)
 {
-  for (int i = 0; i < _nodes.size(); ++i) {
-    Node *target = _nodes[i];
+    for (int i = 0; i < _nodes.size(); ++i) {
+	PhyloNode *target = dynamic_cast<PhyloNode*>(_nodes[i]);
 
-    if (target->alloc().inRadius(alloc, _radiusNode))
-      return target;
-  }
-
-  return NULL;
-}
-
-void PhyloTree::_cribNode(Node *node)
-{
-  if (node != NULL) {
-    bool crib = node->crib();
-
-    node->setCrib(!crib);
-
-    if (crib) {
-      node->setBloom(_radiusBloom * node->nodes());
-      _rebootChildren(node);
+	if (target->loc().inRadius(loc, _radiusNode))
+	    return target;
     }
-  }
+
+    return NULL;
+}
+
+void PhyloTree::_cribNode(PhyloNode *node)
+{
+    if (node != NULL) {
+	bool crib = node->crib();
+
+	node->setCrib(!crib);
+
+	if (crib) {
+	    node->setBloom(_radiusBloom * node->nodes());
+	    _rebootChildren(node);
+	}
+    }
 }
 
 void PhyloTree::_loadTextures(GLEngine *glEngine)
 {
-  QImage textureBloom("Resources/bloom.png");
-  QImage textureBeam("Resources/beam.png");
-  QImage textureNode("Resources/file.png");
+    QImage textureBloom("Resources/bloom.png");
+    QImage textureBeam("Resources/beam.png");
+    QImage textureNode("Resources/file.png");
 
-  textureid[0] = glEngine->bindTexture(textureBloom, GL_TEXTURE_2D,
-				       QGLContext::MipmapBindOption);
-  textureid[1] = glEngine->bindTexture(textureBeam, GL_TEXTURE_2D,
-				       QGLContext::MipmapBindOption);
-  textureid[2] = glEngine->bindTexture(textureNode, GL_TEXTURE_2D,
-  				       QGLContext::MipmapBindOption);
+    textureid[0] = glEngine->bindTexture(textureBloom, GL_TEXTURE_2D,
+					 QGLContext::MipmapBindOption);
+    textureid[1] = glEngine->bindTexture(textureBeam, GL_TEXTURE_2D,
+					 QGLContext::MipmapBindOption);
+    textureid[2] = glEngine->bindTexture(textureNode, GL_TEXTURE_2D,
+					 QGLContext::MipmapBindOption);
 }

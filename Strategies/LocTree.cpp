@@ -17,29 +17,45 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "Coloring.hpp"
+#include <cstdlib>
+
+#include "LocTree.hpp"
 
 using namespace FreePhyloTree;
 
-void Coloring::coloring(ColorNode *node)
+LocTree::LocTree(const Name& name) : Tree(name)
 {
-  _coloring(node, Interval(), R);
+    srand(time(NULL));
 }
 
-void Coloring::_coloring(ColorNode *node, Interval interval, TypeColor t)
+Vec2f LocTree::_rand(LocNode *father)
 {
-    TypeColor newt = (TypeColor)((t + 1) % 3);
-    const Nodes& nodes = node->children();
+    GLfloat nx = rand() / (GLfloat)RAND_MAX;
+    GLfloat ny = rand() / (GLfloat)RAND_MAX;
 
-    node->setColor(interval.center());
+    nx = 30 * (1 - 2 * nx);
+    ny = 30 * (1 - 2 * ny);
 
-    for (int i = 0; i < nodes.size(); ++i) {
+    Vec2f loc(nx, ny);
 
-	Interval newInterval(interval);
-	newInterval.cut(t, nodes.size(), i);
+    if (father != NULL) {
+//    loc *= _root->height() / (father->level() + 1);
+	loc += father->loc();
+    }
 
-	ColorNode *node = dynamic_cast<ColorNode*>(nodes[i]);
+    return loc;
+}
 
-	_coloring(node, newInterval, newt);
-  }
+void LocTree::_rebootChildren(LocNode *father)
+{
+    const Nodes& children = father->children();
+
+    for (int i = 0; i < children.size(); ++i) {
+	LocNode *node = dynamic_cast<LocNode*>(children[i]);
+
+	node->setLoc(_rand(father));
+
+	if (!node->crib())
+	    _rebootChildren(node);
+    }
 }
