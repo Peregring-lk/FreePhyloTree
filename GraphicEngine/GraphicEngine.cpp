@@ -250,19 +250,21 @@ void GraphicEngine::searchNode(QMouseEvent *event)
 
 void GraphicEngine::_searchNode(Node *node, Vec3f pos, Mat4f modelViewProjMatrix)
 {
+    // Recursive method
     Node* SelectedNode=_tree->selectedNode();
     const Nodes& nodes = node->children();
-
-    // Recursive method
     if (!node->crib()) {
         for (int i = 0; i < (int)nodes.size(); ++i) {
             Node *child = nodes[i];
             _searchNode(child, pos, modelViewProjMatrix);
         }
     }
+    // Correction
+    Vec3f Center = modelViewProjMatrix*_cam->aimingPoint();    // This point must be [0,0,0]
+
     // Active node
     Vec3f nodePos(node->x(), node->y(), node->z());
-    Vec3f camSpacePos = modelViewProjMatrix*nodePos;
+    Vec3f camSpacePos = modelViewProjMatrix*nodePos - Center;
     /* Commented because w is ever equal 1 (Don't erase in order posibles changes)
         GLfloat w = viewProjMatrix[3][0] + viewProjMatrix[3][1] + viewProjMatrix[3][2] + viewProjMatrix[3][3];
         camSpacePos /= w;
@@ -271,7 +273,7 @@ void GraphicEngine::_searchNode(Node *node, Vec3f pos, Mat4f modelViewProjMatrix
     // If exist selected node, compare it
     if(SelectedNode) {
         nodePos = Vec3f(SelectedNode->x(), SelectedNode->y(), SelectedNode->z());
-        camSpacePos = modelViewProjMatrix*nodePos;
+        camSpacePos = modelViewProjMatrix*nodePos - Center;
         /* Commented because w is ever equal 1 (Don't erase in order posibles changes)
             w = viewProjMatrix[3][0] + viewProjMatrix[3][1] + viewProjMatrix[3][2] + viewProjMatrix[3][3];
             camSpacePos /= w;
