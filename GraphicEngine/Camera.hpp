@@ -61,6 +61,8 @@ public:
     /// Destructor.
     ~Camera();
 
+    void initSignal();
+
     /** Set aspect ratio.
      * @param aspectRatio Aspect ratio of the OpenGL window.
      * @remarks Aspect ratio is defines as width / height.

@@ -111,6 +111,7 @@ void GraphicEngine::initializeGL()
     glLoadIdentity();
 
     _tree->initSignal();
+    _cam->initSignal();
 }
 
 void GraphicEngine::paintGL()

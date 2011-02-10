@@ -33,12 +33,20 @@ Camera::Camera(PhyloTree *tree, float aspectRatio)
     , _aim(0.f,0.f,0.f)
     , _up(0.f,1.f,0.f)
 {
+/*
     resize();
     setPosition(Vec3f(0.f,0.f,_size.z()));
+*/
 }
 
 Camera::~Camera()
 {
+}
+
+void Camera::initSignal()
+{
+    resize();
+    setPosition(Vec3f(0.f,0.f,_size.z()));
 }
 
 void Camera::setAspectRatio(float aspectRatio)
