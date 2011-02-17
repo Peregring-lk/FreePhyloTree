@@ -17,8 +17,8 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _FREE_PHYLO_TREE_
-#define _FREE_PHYLO_TREE_
+#ifndef _FPT_FREE_PHYLO_TREE_
+#define _FPT_FREE_PHYLO_TREE_
 
 #include <QApplication>
 #include <QTimer>

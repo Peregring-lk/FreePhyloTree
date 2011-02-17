@@ -17,8 +17,8 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _INTERVAL_
-#define _INTERVAL_
+#ifndef _FPT_INTERVAL_
+#define _FPT_INTERVAL_
 
 #include "Color.hpp"
 

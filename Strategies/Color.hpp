@@ -17,8 +17,8 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _COLOR_
-#define _COLOR_
+#ifndef _FPT_COLOR_
+#define _FPT_COLOR_
 
 #include <GL/gl.h>
 

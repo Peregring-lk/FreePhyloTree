@@ -66,16 +66,16 @@ void SpringLoc::reLoc(LocTree *tree)
 
 void SpringLoc::_fa(LocNode *source, LocNode *target, int weight)
 {
-    Vec2f vu = source->loc() - target->loc();
-    Vec2f fa = vu.unit() * _c1 * log(vu.norm() / weight);
+    Vec3f vu = source->loc() - target->loc();
+    Vec3f fa = vu.unit() * _c1 * log(vu.norm() / weight);
 
     _moves[target->label()] += fa * _c4;
 }
 
 void SpringLoc::_fr(LocNode *source, LocNode *target)
 {
-    Vec2f uv = target->loc() - source->loc();
-    Vec2f fr = uv.unit() * (_c3 / pow(uv.norm(), 2));
+    Vec3f uv = target->loc() - source->loc();
+    Vec3f fr = uv.unit() * (_c3 / pow(uv.norm(), 2));
 
     _moves[target->label()] += fr * _c4;
 }

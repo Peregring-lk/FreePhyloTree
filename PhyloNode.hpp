@@ -17,8 +17,8 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _PHYLO_NODE_
-#define _PHYLO_NODE_
+#ifndef _FPT_PHYLO_NODE_
+#define _FPT_PHYLO_NODE_
 
 #include "Strategies/ColorNode.hpp"
 #include "Strategies/LocNode.hpp"

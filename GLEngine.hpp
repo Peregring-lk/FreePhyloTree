@@ -18,8 +18,8 @@
 */
 
 
-#ifndef _GL_ENGINE_
-#define _GL_ENGINE_
+#ifndef _FPT_GL_ENGINE_
+#define _FPT_GL_ENGINE_
 
 #include <QGLWidget>
 #include <QMouseEvent>
@@ -68,7 +68,7 @@ namespace fpt
     void mouseDoubleClickEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
 
-    Vec2f _screen2pic(int x, int y);
+    Vec3f _screen2pic(int x, int y);
     void _reloadViewport();
     void _reloadWebView();
   };

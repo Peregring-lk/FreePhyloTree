@@ -51,19 +51,19 @@ PhyloTree::~PhyloTree()
     delete _coloring;
 }
 
-Vec2f PhyloTree::infPic() const
+Vec3f PhyloTree::infPic() const
 {
-    return (Vec2f(_centerPic.x() - _semisidePic,
+    return (Vec3f(_centerPic.x() - _semisidePic,
 		  _centerPic.y() - _semisidePic));
 }
 
-Vec2f PhyloTree::supPic() const
+Vec3f PhyloTree::supPic() const
 {
-    return (Vec2f(_centerPic.x() + _semisidePic,
+    return (Vec3f(_centerPic.x() + _semisidePic,
 		  _centerPic.y() + _semisidePic));
 }
 
-const Vec2f& PhyloTree::centerPic() const
+const Vec3f& PhyloTree::centerPic() const
 {
     return _centerPic;
 }
@@ -87,8 +87,8 @@ void PhyloTree::initSignal(GLEngine *glEngine)
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    Vec2f inf = infPic();
-    Vec2f sup = supPic();
+    Vec3f inf = infPic();
+    Vec3f sup = supPic();
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -117,19 +117,19 @@ void PhyloTree::gotoRoot()
     _restSmoothCamera = _smoothCamera;
 }
 
-void PhyloTree::lookAt(const Vec2f& rel)
+void PhyloTree::lookAt(const Vec3f& rel)
 {
     _restSmoothCamera = _smoothCamera;
     _relCamera += rel;
 }
 
-void PhyloTree::locMouse(const Vec2f& loc)
+void PhyloTree::locMouse(const Vec3f& loc)
 {
     _locMouse = loc;
     _nodeMouse = _searchNode(loc);
 }
 
-void PhyloTree::cribNode(const Vec2f& loc)
+void PhyloTree::cribNode(const Vec3f& loc)
 {
     PhyloNode *node = _searchNode(loc);
 
@@ -147,7 +147,7 @@ void PhyloTree::draw()
     _drawText();
     glPopMatrix();
 
-    Vec2f locRoot = root->loc();
+    Vec3f locRoot = root->loc();
     _loc->reLoc(this);
 
     lookAt(root->loc() - locRoot);
@@ -254,14 +254,14 @@ void PhyloTree::_drawText()
 
 void PhyloTree::_reloadCamera()
 {
-    Vec2f rel = _relCamera * _restSmoothCamera;
+    Vec3f rel = _relCamera * _restSmoothCamera;
     _restSmoothCamera /= 2;
 
     _centerPic += rel;
     _relCamera -= rel;
 
-    Vec2f inf = infPic();
-    Vec2f sup = supPic();
+    Vec3f inf = infPic();
+    Vec3f sup = supPic();
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -271,7 +271,7 @@ void PhyloTree::_reloadCamera()
     glMatrixMode(GL_MODELVIEW);
 }
 
-PhyloNode* PhyloTree::_searchNode(const Vec2f& loc)
+PhyloNode* PhyloTree::_searchNode(const Vec3f& loc)
 {
     for (int i = 0; i < _nodes.size(); ++i) {
 	PhyloNode *target = dynamic_cast<PhyloNode*>(_nodes[i]);

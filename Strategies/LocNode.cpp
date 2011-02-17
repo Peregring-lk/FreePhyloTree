@@ -36,7 +36,7 @@ GLfloat LocNode::y() const
     return _loc.y();
 }
 
-const Vec2f& LocNode::loc() const
+const Vec3f& LocNode::loc() const
 {
     return _loc;
 }
@@ -58,12 +58,12 @@ bool LocNode::hide() const
 	return father->hide();
 }
 
-void LocNode::setLoc(const Vec2f& loc)
+void LocNode::setLoc(const Vec3f& loc)
 {
     _loc = loc;
 }
 
-void LocNode::move(const Vec2f& desp)
+void LocNode::move(const Vec3f& desp)
 {
     _loc += desp;
 }

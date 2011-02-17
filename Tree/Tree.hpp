@@ -17,8 +17,8 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _TREE_
-#define _TREE_
+#ifndef _FPT_TREE_
+#define _FPT_TREE_
 
 #include "Node.hpp"
 

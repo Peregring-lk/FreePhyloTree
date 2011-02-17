@@ -17,8 +17,8 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _NODE_
-#define _NODE_
+#ifndef _FPT_NODE_
+#define _FPT_NODE_
 
 #include <string>
 #include <vector>

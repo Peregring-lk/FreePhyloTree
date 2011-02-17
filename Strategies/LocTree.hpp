@@ -17,8 +17,8 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _LOC_TREE_
-#define _LOC_TREE_
+#ifndef _FPT_LOC_TREE_
+#define _FPT_LOC_TREE_
 
 #include "../Tree/Tree.hpp"
 #include "LocNode.hpp"
@@ -31,7 +31,7 @@ namespace fpt
 	LocTree(const Name& name);
 
     protected:
-	Vec2f _rand(LocNode *father);
+	Vec3f _rand(LocNode *father);
 	void _rebootChildren(LocNode *father);
     };
 }

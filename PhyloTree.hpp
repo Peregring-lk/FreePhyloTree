@@ -17,8 +17,8 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _PHYLO_TREE_
-#define _PHYLO_TREE_
+#ifndef _FPT_PHYLO_TREE_
+#define _FPT_PHYLO_TREE_
 
 #include <FTGL/ftgl.h>
 
@@ -52,15 +52,15 @@ namespace fpt
 	/** Returns the center of the tree.
 	 * @return Center of the tree.
 	 */
-	const Vec2f& centerPic() const;
+	const Vec3f& centerPic() const;
 	/** Returns the inferior Pic of the tree.
 	 * @return Inferior Pic position of the tree.
 	 */
-	Vec2f infPic() const;
+	Vec3f infPic() const;
 	/** Returns the superior Pic of the tree.
 	 * @return Superior Pic position of the tree.
 	 */
-	Vec2f supPic() const;
+	Vec3f supPic() const;
 	/** Returns the width of the tree.
 	 * @return Width of the tree.
 	 */
@@ -80,15 +80,15 @@ namespace fpt
 	 * @remarks Relative to camera point must be provided,
 	 * take care to don't use absolute coordinates.
 	 */
-	void lookAt(const Vec2f& rel);
+	void lookAt(const Vec3f& rel);
 	/** Set the position of mouse (to reach mouse aimed Pic if exist).
 	 * @param loc Mouse position.
 	 */
-	void locMouse(const Vec2f& loc);
+	void locMouse(const Vec3f& loc);
 	/** Lookfor the node into the view space provided position.
 	 * @param loc Position to lookfor a Pic.
 	 */
-	void cribNode(const Vec2f& loc);
+	void cribNode(const Vec3f& loc);
 
 	/** Draws the scene.
 	 */
@@ -115,15 +115,15 @@ namespace fpt
 	float _smoothBloom;
 
 	/// Relative position of the root node to the camera
-	Vec2f _relCamera;
+	Vec3f _relCamera;
 	float _restSmoothCamera;
 	float _smoothCamera;
 
-	Vec2f _locMouse;
+	Vec3f _locMouse;
 	PhyloNode *_nodeMouse;
 
 	float _semisidePic;
-	Vec2f _centerPic;
+	Vec3f _centerPic;
 
 	/** Load textures.
 	 * @param glEngine Main graphic engine.
@@ -165,7 +165,7 @@ namespace fpt
 	 * @param Viewspace coordinates where lookfor the node.
 	 * @return Node reached, NULL (0) if anyone.
 	 */
-	PhyloNode* _searchNode(const Vec2f& loc);
+	PhyloNode* _searchNode(const Vec3f& loc);
 	/** Crib a node.
 	 * @param node Node to crib.
 	 */

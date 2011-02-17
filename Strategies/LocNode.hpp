@@ -17,10 +17,10 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _LOC_NODE_
-#define _LOC_NODE_
+#ifndef _FPT_LOC_NODE_
+#define _FPT_LOC_NODE_
 
-#include "Vec2f.hpp"
+#include "Vec3f.hpp"
 #include "../Tree/Node.hpp"
 
 namespace fpt
@@ -35,18 +35,18 @@ namespace fpt
 	GLfloat x() const;
 	GLfloat y() const;
 
-	const Vec2f& loc() const;
+	const Vec3f& loc() const;
 
 	bool crib() const;
 	bool hide() const;
 
-	void setLoc(const Vec2f& loc);
-	void move(const Vec2f& delta);
+	void setLoc(const Vec3f& loc);
+	void move(const Vec3f& delta);
 
 	void setCrib(bool crib);
 
     private:
-	Vec2f _loc;
+	Vec3f _loc;
 	bool _crib;
     };
 }

@@ -28,7 +28,7 @@ LocTree::LocTree(const Name& name) : Tree(name)
     srand(time(NULL));
 }
 
-Vec2f LocTree::_rand(LocNode *father)
+Vec3f LocTree::_rand(LocNode *father)
 {
     GLfloat nx = rand() / (GLfloat)RAND_MAX;
     GLfloat ny = rand() / (GLfloat)RAND_MAX;
@@ -36,7 +36,7 @@ Vec2f LocTree::_rand(LocNode *father)
     nx = 30 * (1 - 2 * nx);
     ny = 30 * (1 - 2 * ny);
 
-    Vec2f loc(nx, ny);
+    Vec3f loc(nx, ny);
 
     if (father != NULL) {
 //    loc *= _root->height() / (father->level() + 1);

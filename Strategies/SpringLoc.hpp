@@ -17,8 +17,8 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _SPRING_LOC_
-#define _SPRING_LOC_
+#ifndef _FPT_SPRING_LOC_
+#define _FPT_SPRING_LOC_
 
 #include "LocTree.hpp"
 
@@ -38,7 +38,7 @@ namespace fpt
 	float _c3;
 	float _c4;
 
-	typedef std::vector<Vec2f> _Moves;
+	typedef std::vector<Vec3f> _Moves;
 	_Moves _moves;
 
 	void _fa(LocNode *source, LocNode *target, int _weight);
