@@ -143,7 +143,8 @@ void PhyloTree::draw()
     glClear(GL_COLOR_BUFFER_BIT);
 
     glPushMatrix();
-    _drawTree(root);
+    _drawBlooms(root);
+    _drawNodes(root);
     _drawText();
     glPopMatrix();
 
@@ -156,10 +157,8 @@ void PhyloTree::draw()
     _reloadBloom(_radiusBloom, _smoothBloom);
 }
 
-void PhyloTree::_drawTree(PhyloNode *node)
+void PhyloTree::_drawNodes(PhyloNode *node)
 {
-    float l = 0;
-
     const Nodes& nodes = node->children();
 
     if (!node->crib())
@@ -167,17 +166,33 @@ void PhyloTree::_drawTree(PhyloNode *node)
 	    PhyloNode *child = dynamic_cast<PhyloNode*>(nodes[i]);
 
 	    _drawEdge(node, child);
-	    _drawTree(child);
+	    _drawNodes(child);
 	}
 
-    _drawNode(node);
+    _setColor(node);
+    _drawSquare(node, _radiusNode, textureid[2]);
+}
+
+void PhyloTree::_drawBlooms(PhyloNode *node)
+{
+    const Nodes& nodes = node->children();
+
+    if (!node->crib())
+	for (int i = 0; i < nodes.size(); ++i) {
+	    PhyloNode *child = dynamic_cast<PhyloNode*>(nodes[i]);
+
+	    _drawBlooms(child);
+	}
+
+    _setColor(node);
+    _drawSquare(node, node->bloom(), textureid[0]);
 }
 
 void PhyloTree::_drawEdge(PhyloNode *source, PhyloNode *target)
 {
     glBindTexture(GL_TEXTURE_2D, textureid[1]);
 
-    glColor3f(1, 1, 1);
+    glColor3f(0.5, 0.5, 0.5);
 
     float xs = source->x();
     float ys = source->y();

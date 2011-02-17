@@ -133,7 +133,8 @@ namespace fpt
 	/** Draws a tree by their root node.
 	 * @param node Root node of the tree.
 	 */
-	void _drawTree(PhyloNode *node);
+	void _drawNodes(PhyloNode *node);
+	void _drawBlooms(PhyloNode *node);
 
 	/** Draws an union edge between nodes.
 	 * @param begin Begining node of the union.
