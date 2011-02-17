@@ -32,11 +32,13 @@ Vec3f LocTree::_rand(LocNode *father)
 {
     GLfloat nx = rand() / (GLfloat)RAND_MAX;
     GLfloat ny = rand() / (GLfloat)RAND_MAX;
+    GLfloat nz = rand() / (GLfloat)RAND_MAX;
 
     nx = 30 * (1 - 2 * nx);
     ny = 30 * (1 - 2 * ny);
+    nz = 30 * (1 - 2 * nz);
 
-    Vec3f loc(nx, ny);
+    Vec3f loc(nx, ny, nz);
 
     if (father != NULL) {
 //    loc *= _root->height() / (father->level() + 1);
