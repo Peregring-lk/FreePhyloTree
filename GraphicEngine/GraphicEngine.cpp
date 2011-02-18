@@ -19,15 +19,17 @@
 
 #include <iostream>
 #include <QApplication>
-#include "GLEngine.hpp"
+#include "GraphicEngine.hpp"
 
 using namespace std;
 using namespace fpt;
 
-GLEngine::GLEngine(PhyloTree *tree)
+GraphicEngine::GraphicEngine(PhyloTree *tree)
     : _tree(tree), _webView(this),
       _nameWeb("http://es.wikipedia.org/wiki/")
 {
+    _viewing = new Viewing(_tree, width(), height());
+
     setMouseTracking(true);
 
     _smoothResizeViewport = 0.1;
@@ -42,12 +44,12 @@ GLEngine::GLEngine(PhyloTree *tree)
     _webView.hide();
 }
 
-GLEngine::~GLEngine()
+GraphicEngine::~GraphicEngine()
 {
     delete _tree;
 }
 
-void GLEngine::viewPage(PhyloNode *node)
+void GraphicEngine::viewPage(PhyloNode *node)
 {
     if (node != NULL) {
 	string dir = _nameWeb + node->name();
@@ -62,24 +64,28 @@ void GLEngine::viewPage(PhyloNode *node)
     }
 }
 
-void GLEngine::animate()
+void GraphicEngine::animate()
 {
     repaint();
+
+    _viewing->nextStep();
+
     _reloadViewport();
     _reloadWebView();
 }
 
-void GLEngine::initializeGL()
+void GraphicEngine::initializeGL()
 {
     _tree->initSignal(this);
+    _viewing->initSignal();
 }
 
-void GLEngine::paintGL()
+void GraphicEngine::paintGL()
 {
-    _tree->draw();
+    _tree->draw(_viewing);
 }
 
-void GLEngine::keyPressEvent(QKeyEvent *event)
+void GraphicEngine::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Space)
 	_tree->gotoRoot();
@@ -91,7 +97,7 @@ void GLEngine::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void GLEngine::mouseDoubleClickEvent(QMouseEvent *event)
+void GraphicEngine::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
 	_tree->cribNode(_screen2pic(event->x(), event->y()));
@@ -99,7 +105,7 @@ void GLEngine::mouseDoubleClickEvent(QMouseEvent *event)
 	viewPage(_tree->actualNode());
 }
 
-void GLEngine::mouseMoveEvent(QMouseEvent *event)
+void GraphicEngine::mouseMoveEvent(QMouseEvent *event)
 {
     QPointF pos = event->posF();
 
@@ -117,13 +123,13 @@ void GLEngine::mouseMoveEvent(QMouseEvent *event)
     _lastMouseEvent = pos;
 }
 
-void GLEngine::resizeGL(int width, int height)
+void GraphicEngine::resizeGL(int width, int height)
 {
     _finalWWWidth = width * _pctWWSize;
     _finalWWHeight = height * _pctWWSize;
 }
 
-Vec3f GLEngine::_screen2pic(int x, int y)
+Vec3f GraphicEngine::_screen2pic(int x, int y)
 {
     Vec3f inf = _tree->infPic();
     Vec3f sup = _tree->supPic();
@@ -135,7 +141,7 @@ Vec3f GLEngine::_screen2pic(int x, int y)
 		 inf.y() + desplY);
 }
 
-void GLEngine::_reloadViewport()
+void GraphicEngine::_reloadViewport()
 {
     bool change = false;
 
@@ -152,10 +158,11 @@ void GLEngine::_reloadViewport()
     }
 
     if (change)
-	glViewport(0, 0, _actualWidth, _actualHeight);
+//	glViewport(0, 0, _actualWidth, _actualHeight);
+	_viewing->resizeViewport(_actualWidth, _actualHeight);
 }
 
-void GLEngine::_reloadWebView()
+void GraphicEngine::_reloadWebView()
 {
     bool change = false;
 
@@ -174,7 +181,7 @@ void GLEngine::_reloadWebView()
 	change = true;
     }
 
-    if (true){
+    if (change){
 	_webView.resize(wwWidth, wwHeight);
 
 	_webView.move((width() - wwWidth) / 2,

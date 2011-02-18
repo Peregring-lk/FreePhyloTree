@@ -19,7 +19,7 @@
 
 #include <GL/glu.h>
 
-#include "GLEngine.hpp"
+#include "GraphicEngine/GraphicEngine.hpp"
 #include "PhyloTree.hpp"
 
 using namespace fpt;
@@ -78,7 +78,7 @@ PhyloNode* PhyloTree::actualNode() const
     return _nodeMouse;
 }
 
-void PhyloTree::initSignal(GLEngine *glEngine)
+void PhyloTree::initSignal(GraphicEngine *glEngine)
 {
     _loadTextures(glEngine);
     _coloring->coloring(dynamic_cast<ColorNode*>(_root));
@@ -90,11 +90,12 @@ void PhyloTree::initSignal(GLEngine *glEngine)
     Vec3f inf = infPic();
     Vec3f sup = supPic();
 
+/*
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
     glOrtho(inf.x(), sup.x(), inf.y(), sup.y(), 1, -1);
-
+*/
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
@@ -136,7 +137,7 @@ void PhyloTree::cribNode(const Vec3f& loc)
     _cribNode(node);
 }
 
-void PhyloTree::draw()
+void PhyloTree::draw(Viewing *viewing)
 {
     PhyloNode *root = dynamic_cast<PhyloNode*>(_root);
 
@@ -153,7 +154,7 @@ void PhyloTree::draw()
 
     lookAt(root->loc() - locRoot);
 
-    _reloadCamera();
+    _reloadCamera(viewing);
     _reloadBloom(_radiusBloom, _smoothBloom);
 }
 
@@ -267,7 +268,7 @@ void PhyloTree::_drawText()
     }
 }
 
-void PhyloTree::_reloadCamera()
+void PhyloTree::_reloadCamera(Viewing *viewing)
 {
     Vec3f rel = _relCamera * _restSmoothCamera;
     _restSmoothCamera /= 2;
@@ -278,10 +279,11 @@ void PhyloTree::_reloadCamera()
     Vec3f inf = infPic();
     Vec3f sup = supPic();
 
-    glMatrixMode(GL_PROJECTION);
+    /*  glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
     glOrtho(inf.x(), sup.x(), inf.y(), sup.y(), 1, -1);
+    */
 
     glMatrixMode(GL_MODELVIEW);
 }
@@ -312,7 +314,7 @@ void PhyloTree::_cribNode(PhyloNode *node)
     }
 }
 
-void PhyloTree::_loadTextures(GLEngine *glEngine)
+void PhyloTree::_loadTextures(GraphicEngine *glEngine)
 {
     QImage textureBloom("Resources/bloom.png");
     QImage textureBeam("Resources/beam.png");

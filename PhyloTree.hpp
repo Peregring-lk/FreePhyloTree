@@ -30,7 +30,8 @@
  */
 namespace fpt
 {
-    class GLEngine;
+    class Viewing;
+    class GraphicEngine;
 
     /** @class PhyloTree PhyloTree.hpp PhyloTree.hpp
      * @brief Class of any phylogenetic tree.
@@ -70,7 +71,7 @@ namespace fpt
 	/** Call to prepare the render of the scene.
 	 * @param glEngine Main graphic engine.
 	 */
-	void initSignal(GLEngine *glEngine);
+	void initSignal(GraphicEngine *glEngine);
 
 	/** Situate camera over root node.
 	 */
@@ -92,7 +93,7 @@ namespace fpt
 
 	/** Draws the scene.
 	 */
-	void draw();
+	void draw(Viewing *viewing);
 
     private:
 	/// Texture to use
@@ -128,7 +129,7 @@ namespace fpt
 	/** Load textures.
 	 * @param glEngine Main graphic engine.
 	 */
-	void _loadTextures(GLEngine *glEngine);
+	void _loadTextures(GraphicEngine *glEngine);
 
 	/** Draws a tree by their root node.
 	 * @param node Root node of the tree.
@@ -160,7 +161,7 @@ namespace fpt
 	 * @note This method uses information provided
 	 * by lookat method.
 	 */
-	void _reloadCamera();
+	void _reloadCamera(Viewing *viewing);
 
 	/** Lookfor the node into the provided viewspace coordinates.
 	 * @param Viewspace coordinates where lookfor the node.

@@ -38,7 +38,7 @@ Vec3f LocTree::_rand(LocNode *father)
     ny = 30 * (1 - 2 * ny);
     nz = 30 * (1 - 2 * nz);
 
-    Vec3f loc(nx, ny, nz);
+    Vec3f loc(nx, ny);
 
     if (father != NULL) {
 //    loc *= _root->height() / (father->level() + 1);

@@ -17,27 +17,44 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _FPT_FREE_PHYLO_TREE_
-#define _FPT_FREE_PHYLO_TREE_
+#ifndef _FPT_VIEWING_
+#define _FPT_VIEWING_
 
-#include <QApplication>
-#include <QTimer>
+#include "../PhyloTree.hpp"
 
-#include "GraphicEngine/GraphicEngine.hpp"
+#include <GL/gl.h>
 
 namespace fpt
 {
-  class QFreePhyloTree : public QApplication
-  {
-  public:
-    QFreePhyloTree(PhyloTree *tree, int argc, char **argv);
+    class Viewing
+    {
+    public:
+	Viewing(PhyloTree *tree, GLsizei width, GLsizei height);
 
-    void run();
+	Vec3f aimCamera() const;
+	Vec3f locCamera() const;
 
-  private:
-    GraphicEngine _glEngine;
-    QTimer _qTimer;
-  };
+	Vec3f upVectorCamera() const;
+	Vec3f viewingDirection() const;
+
+	void initSignal();
+	void nextStep();
+
+	void setAimCamera(Vec3f loc);
+	void moveCamera(Vec3f desp);
+
+	void resizeViewport(GLsizei width, GLsizei height);
+
+    private:
+	PhyloTree *_tree;
+
+	Vec3f _aim;
+	Vec3f _loc;
+	Vec3f _up;
+
+	GLsizei _width;
+	GLsizei _height;
+    };
 }
 
 #endif
