@@ -196,7 +196,7 @@ Mat4f Camera::getModelViewProjMatrix() const
                               proj[ 4], proj[ 5], proj[ 6], proj[ 7],
                               proj[ 8], proj[ 9], proj[10], proj[11],
                               proj[12], proj[13], proj[14], proj[15]);
-    return modelViewMatrix*ProjectionMatrix;
+    return ProjectionMatrix*modelViewMatrix;
 }
 
 Mat4f Camera::recalcModelViewProjMatrix() const
@@ -220,7 +220,7 @@ Mat4f Camera::recalcModelViewProjMatrix() const
                 -f.x(), -f.y(), -f.z(), 0.f,
                    0.f,    0.f,    0.f, 1.f);
 
-    Mat4f viewProj = view*proj;
+    Mat4f viewProj = proj*view;
     Vec3f eye = viewProj*_aim;
 
     Mat4f model(  1.f,  0.f,  0.f,  -eye.x(),
@@ -228,7 +228,7 @@ Mat4f Camera::recalcModelViewProjMatrix() const
                   0.f,  0.f,  1.f,  -eye.z(),
                   0.f,  0.f,  0.f,       1.f);
 
-    return model*viewProj;
+    return viewProj*model;
 }
 
 void Camera::reCalcUp()
