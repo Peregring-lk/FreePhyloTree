@@ -25,20 +25,16 @@ using namespace fpt;
 Viewing::Viewing(PhyloTree *tree, GLsizei width, GLsizei height,
 		 float maxRatio)
     : _tree(tree), _width(width), _height(height), _maxRatio(maxRatio)
-{}
+{
+    _border = 30;
+}
 
 void Viewing::init()
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    VecXf center = _tree->locRoot();
-    VecXf distance(_width * 0.5 * _maxRatio, _height * 0.5 * _maxRatio);
-
-    VecXf inf = center - distance;
-    VecXf sup = center + distance;
-
-    glOrtho(inf.x(), sup.x(), inf.y(), sup.y(), -1, 1);
+    _calcOrtho();
     glViewport(0, 0, _width, _height);
 
     glMatrixMode(GL_MODELVIEW);
@@ -55,3 +51,46 @@ void Viewing::sizeViewport(GLsizei width, GLsizei height)
     _height = height;
 }
 
+void Viewing::_calcOrtho()
+{
+    VecXf quad = _tree->convexQuad();
+
+    /*
+     *
+     *  Igualamos ratio de Viewport con quad.
+     *
+     */
+    float vwRatio = _width / _height;
+    float quadRatio = quad.coord(2) / quad.coord(3);
+
+    if (quadRatio < vwRatio)
+	quad.setCoord(2, vwRatio * quad.coord(3));
+    else
+	quad.setCoord(3, quad.coord(2) / vwRatio);
+
+    /*
+     *
+     *  Calculamos el cuadro de proyección.
+     *
+     */
+    VecXf center(quad.x(), quad.y());
+    VecXf distance(quad.coord(2), quad.coord(3));
+
+    /*
+     *
+     *  Reducimos el ratio coordenadas / píxel.
+     *
+     */
+    if (2 * distance.x() / _width < _maxRatio) {
+	distance.setX(_width * _maxRatio * 0.5);
+	distance.setY(distance.x() / vwRatio);
+    }
+
+    distance -= _border;
+
+    VecXf inf = center - distance;
+    VecXf sup = center + distance;
+
+    glOrtho(inf.x(), sup.x(), inf.y(), sup.y(), -1, 1);
+
+}

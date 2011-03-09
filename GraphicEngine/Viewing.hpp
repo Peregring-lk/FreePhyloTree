@@ -43,6 +43,9 @@ namespace fpt
 	GLsizei _width;
 	GLsizei _height;
 	float _maxRatio;
+	float _border;
+
+	void _calcOrtho();
     };
 }
 

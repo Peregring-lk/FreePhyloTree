@@ -43,7 +43,10 @@ Node* Tree::root() const
     return _root;
 }
 
-IteratorTree Tree::begin() const
+IteratorTree Tree::begin(Node *node) const
 {
-    return IteratorTree(_root);
+    if (node == NULL)
+	node = root();
+
+    return IteratorTree(node);
 }

@@ -25,6 +25,7 @@ using namespace fpt;
 IteratorTree::IteratorTree(Node *node)
 {
     _node = node;
+    _top = node->father();
 
     _mem.push(0);
     _index = 0;
@@ -32,7 +33,7 @@ IteratorTree::IteratorTree(Node *node)
 
 bool IteratorTree::end() const
 {
-    return _node == NULL;
+    return _node == _top;
 }
 
 Node* IteratorTree::node() const

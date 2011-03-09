@@ -41,6 +41,8 @@ namespace fpt
 
     private:
 	Node *_node;
+	Node *_top;
+
 	std::stack<unsigned> _mem;
 	unsigned _index;
     };

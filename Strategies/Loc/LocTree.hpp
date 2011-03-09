@@ -36,24 +36,31 @@ namespace fpt
 
 	LocNode* root() const;
 	VecXf locRoot() const;
+	LocNode* farestNode() const;
 
 	void init();
 	void step();
 
-	IteratorLocTree begin();
+	IteratorLocTree begin(LocNode *node = NULL);
+
+	VecXf convexQuad(LocNode *node = NULL);
 
     private:
 	float _c1;
 	float _c2;
 	float _c3;
 	float _c4;
-
 	float _smooth;
+
+	LocNode *_farestNode;
+	float _distFarestNode;
 
 	typedef std::vector<VecXf> _Moves;
 
 	VecXf _fa(LocNode *source, LocNode *target) const;
 	VecXf _fr(LocNode *source, LocNode *target) const;
+
+	void _uploadFarestNode(LocNode *node);
     };
 }
 

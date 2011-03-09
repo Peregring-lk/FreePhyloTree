@@ -176,6 +176,21 @@ namespace fpt
 		_coords[dim] = value;
 	}
 
+	void setX(float value)
+	{
+	    setCoord(0, value);
+	}
+
+	void setY(float value)
+	{
+	    setCoord(1, value);
+	}
+
+	void setZ(float value)
+	{
+	    setCoord(2, value);
+	}
+
     protected:
 	std::vector<float> _coords;
 	Dim _dim;

@@ -56,9 +56,12 @@ void ColorTree::step()
 	i.node()->step();
 }
 
-IteratorColorTree ColorTree::begin()
+IteratorColorTree ColorTree::begin(ColorNode *node)
 {
-    return IteratorColorTree(root());
+    if (node == NULL)
+	node = root();
+
+    return IteratorColorTree(node);
 }
 
 void ColorTree::_initCubes(ColorNode *node, CubeColor cube, TypeC t)

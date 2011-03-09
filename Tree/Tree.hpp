@@ -35,7 +35,7 @@ namespace fpt
 
 	Node* root() const;
 
-	IteratorTree begin() const;
+	IteratorTree begin(Node *node = NULL) const;
 
     protected:
 	Name _name;

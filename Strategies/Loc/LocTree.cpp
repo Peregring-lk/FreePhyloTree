@@ -48,8 +48,16 @@ VecXf LocTree::locRoot() const
 	return root->loc();
 }
 
+LocNode* LocTree::farestNode() const
+{
+    return _farestNode;
+}
+
 void LocTree::init()
 {
+    _farestNode = root();
+    _distFarestNode = 0;
+
     for (auto i = begin(); !i.end(); i.next()) {
 	LocNode *node = i.node();
 	VecXf rand(node->locFather(), 100.0f);
@@ -59,6 +67,8 @@ void LocTree::init()
 	node->changeSmooth(_smooth);
 
 	node->init();
+
+	_uploadFarestNode(node);
     }
 }
 
@@ -83,16 +93,59 @@ void LocTree::step()
 	}
     }
 
-    for (auto i = begin(); !i.end(); i.next())
-	i.node()->moveTargetLoc(moves[i.index()]);
+    for (auto i = begin(); !i.end(); i.next()) {
+	VecXf move = moves[i.index()];
+
+	if (move.norm() > 0.001) {
+	    LocNode *node = i.node();
+
+	    node->moveTargetLoc(moves[i.index()]);
+	    _uploadFarestNode(node);
+	}
+    }
 
     for (auto i = begin(); !i.end(); i.next())
 	i.node()->step();
 }
 
-IteratorLocTree LocTree::begin()
+IteratorLocTree LocTree::begin(LocNode *node)
 {
-    return IteratorLocTree(root());
+    if (node == NULL)
+	node = root();
+
+    return IteratorLocTree(node);
+}
+
+VecXf LocTree::convexQuad(LocNode *node)
+{
+    if (node == NULL)
+	node = root();
+
+    VecXf inf = node->loc();
+    VecXf sup = node->loc();
+
+    for (auto i = begin(node); !i.end(); i.next()) {
+	LocNode *node = i.node();
+
+	if (node->x() < inf.x())
+	    inf.setX(node->x());
+	else if (node->x() > sup.x())
+	    sup.setX(node->x());
+
+	if (node->y() < inf.y())
+	    inf.setY(node->y());
+	else if (node->y() > sup.y())
+	    sup.setY(node->y());
+    }
+
+    VecXf center = (sup + inf) / 2.0f;
+    VecXf toSup = center - sup;
+
+    center.setDim(4);
+    center.setCoord(2, toSup.x());
+    center.setCoord(3, toSup.y());
+
+    return center;
 }
 
 VecXf LocTree::_fa(LocNode *source, LocNode *target) const
@@ -109,4 +162,14 @@ VecXf LocTree::_fr(LocNode *source, LocNode *target) const
     VecXf fr = uv.unit() * (_c3 / pow(uv.norm(), 2));
 
     return fr * _c4;
+}
+
+void LocTree::_uploadFarestNode(LocNode *node)
+{
+    float dist = (node->loc() - locRoot()).norm();
+
+    if (dist > _distFarestNode) {
+	_farestNode = node;
+	_distFarestNode = dist;
+    }
 }

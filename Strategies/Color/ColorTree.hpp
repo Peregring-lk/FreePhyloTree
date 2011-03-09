@@ -36,7 +36,7 @@ namespace fpt
 	void init();
 	void step();
 
-	IteratorColorTree begin();
+	IteratorColorTree begin(ColorNode *node = NULL);
 
     protected:
 	void _initCubes(ColorNode *node, CubeColor cube, TypeC t);
