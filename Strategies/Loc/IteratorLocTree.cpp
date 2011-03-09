@@ -17,38 +17,24 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _FPT_LOC_NODE_
-#define _FPT_LOC_NODE_
+#include "IteratorLocTree.hpp"
 
-#include "Vec3f.hpp"
-#include "../Tree/Node.hpp"
+using namespace fpt;
 
-namespace fpt
+IteratorLocTree::IteratorLocTree(LocNode *node)
+    : IteratorTree(node)
+{}
+
+LocNode* IteratorLocTree::node() const
 {
-    class LocTree;
-
-    class LocNode : virtual public Node
-    {
-    public:
-	LocNode(const Name& name);
-
-	GLfloat x() const;
-	GLfloat y() const;
-
-	const Vec3f& loc() const;
-
-	bool crib() const;
-	bool hide() const;
-
-	void setLoc(const Vec3f& loc);
-	void move(const Vec3f& delta);
-
-	void setCrib(bool crib);
-
-    private:
-	Vec3f _loc;
-	bool _crib;
-    };
+    return dynamic_cast<LocNode*>(IteratorTree::node());
 }
 
-#endif
+IteratorLocTree IteratorLocTree::forward() const
+{
+    IteratorLocTree clone = *this;
+
+    clone.next();
+
+    return clone;
+}

@@ -17,24 +17,44 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _FPT_COLORING_
-#define _FPT_COLORING_
+#ifndef _FPT_LOC_TREE_
+#define _FPT_LOC_TREE_
 
-#include "ColorTree.hpp"
-#include "Interval.hpp"
+#include <vector>
+
+#include "../../Tree/Tree.hpp"
+#include "IteratorLocTree.hpp"
 
 namespace fpt
 {
-  class Coloring
-  {
-  public:
-    void coloring(ColorNode *tree);
+    class LocTree : virtual public Tree
+    {
+    public:
+	LocTree(const Name& name, LocNode *root,
+		float c1, float c2, float c3, float c4,
+		float smooth = 0.05);
 
-  private:
-    TypeColor _actual;
+	LocNode* root() const;
+	VecXf locRoot() const;
 
-    void _coloring(ColorNode *node, Interval interval, TypeColor t);
-  };
-};
+	void init();
+	void step();
+
+	IteratorLocTree begin();
+
+    private:
+	float _c1;
+	float _c2;
+	float _c3;
+	float _c4;
+
+	float _smooth;
+
+	typedef std::vector<VecXf> _Moves;
+
+	VecXf _fa(LocNode *source, LocNode *target) const;
+	VecXf _fr(LocNode *source, LocNode *target) const;
+    };
+}
 
 #endif

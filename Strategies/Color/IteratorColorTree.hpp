@@ -17,22 +17,21 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _FPT_LOC_TREE_
-#define _FPT_LOC_TREE_
+#ifndef _FPT_ITERATOR_COLOR_TREE_
+#define _FPT_ITERATOR_COLOR_TREE_
 
-#include "../Tree/Tree.hpp"
-#include "LocNode.hpp"
+#include "../../Tree/IteratorTree.hpp"
+#include "ColorNode.hpp"
 
 namespace fpt
 {
-    class LocTree : virtual public Tree
+    class IteratorColorTree : public IteratorTree
     {
     public:
-	LocTree(const Name& name);
+	IteratorColorTree(ColorNode *node);
 
-    protected:
-	Vec3f _rand(LocNode *father);
-	void _rebootChildren(LocNode *father);
+	ColorNode* node() const;
+	IteratorColorTree forward() const;
     };
 }
 

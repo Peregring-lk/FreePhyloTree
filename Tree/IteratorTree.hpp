@@ -17,46 +17,33 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "ColorNode.hpp"
+#ifndef _FPT_ITERATOR_TREE_
+#define _FPT_ITERATOR_TREE_
 
-using namespace fpt;
+#include "Node.hpp"
 
-ColorNode::ColorNode(const Name& name) : Node(name)
-{}
+#include <stack>
 
-GLfloat ColorNode::r() const
+namespace fpt
 {
-  return _color.r();
-}
+    class IteratorTree
+    {
+    public:
+	IteratorTree(Node *node);
 
-GLfloat ColorNode::g() const
-{
-  return _color.g();
-}
+	bool end() const;
+	Node* node() const;
 
-GLfloat ColorNode::b() const
-{
-  return _color.b();
-}
+	unsigned index() const;
+	IteratorTree forward() const;
 
-const Color& ColorNode::color() const
-{
-  return _color;
-}
+	void next();
 
-float ColorNode::bloom() const
-{
-  return _bloom;
-}
+    private:
+	Node *_node;
+	std::stack<unsigned> _mem;
+	unsigned _index;
+    };
+};
 
-void ColorNode::setColor(const Color& color)
-{
-  _color = color;
-}
-
-void ColorNode::setBloom(float bloom)
-{
-  _bloom = bloom;
-}
-
-
+#endif

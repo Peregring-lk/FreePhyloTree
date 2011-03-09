@@ -17,33 +17,37 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _FPT_COLOR_NODE_
-#define _FPT_COLOR_NODE_
+#ifndef _FPT_COLOR_TREE_
+#define _FPT_COLOR_TREE_
 
-#include "Color.hpp"
-#include "../Tree/Node.hpp"
+#include "../../Tree/Tree.hpp"
+#include "IteratorColorTree.hpp"
 
 namespace fpt
 {
-    class ColorNode : virtual public Node
+    class ColorTree : virtual public Tree, public Strategy
     {
     public:
-	ColorNode(const Name& name);
+	ColorTree(const Name& name, ColorNode *root,
+		  float smoothColor = 0.01, float smoothGlow = 0.1);
 
-	GLfloat r() const;
-	GLfloat g() const;
-	GLfloat b() const;
+	ColorNode* root() const;
 
-	const Color& color() const;
+	void init();
+	void step();
 
-	float bloom() const;
+	IteratorColorTree begin();
 
-	void setColor(const Color& color);
-	void setBloom(float bloom);
+    protected:
+	void _initCubes(ColorNode *node, CubeColor cube, TypeC t);
 
+/*
+	void _initGlow(float bloom);
+	void _reloadGlow(float bloom, float smooth);
+*/
     private:
-	Color _color;
-	float _bloom;
+	float _smoothColor;
+	float _smoothGlow;
     };
 }
 

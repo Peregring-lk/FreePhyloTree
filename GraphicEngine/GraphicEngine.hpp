@@ -23,55 +23,41 @@
 #include <QGLWidget>
 #include <QMouseEvent>
 #include <QKeyEvent>
-#include <QWebView>
 
 #include <string>
 
 #include "../PhyloTree.hpp"
+#include "Scene.hpp"
 #include "Viewing.hpp"
 
 namespace fpt
 {
-    class GraphicEngine : public QGLWidget
+    class GraphicEngine : public QGLWidget, public Strategy
     {
 	Q_OBJECT
 
-	public:
+    public:
 	GraphicEngine(PhyloTree *tree);
 	~GraphicEngine();
 
-	void viewPage(PhyloNode *node);
+	void init();
 
     public slots:
-	void animate();
+	void step();
 
     private:
 	PhyloTree *_tree;
-	QPointF _lastMouseEvent;
 	Viewing *_viewing;
-
-	QWebView _webView;
-	const std::string _nameWeb;
-	float _pctWWSize;
-	float _finalWWWidth;
-	float _finalWWHeight;
-	float _smoothResizeWW;
-
-	float _actualWidth;
-	float _actualHeight;
-	float _smoothResizeViewport;
+	Scene *_scene;
 
 	void initializeGL();
 	void paintGL();
-	void resizeGL(int width, int height);
+	void resizeGL();
 
 	void keyPressEvent(QKeyEvent *event);
-	void mouseDoubleClickEvent(QMouseEvent *event);
-	void mouseMoveEvent(QMouseEvent *event);
+	void resizeGL(int width, int height);
 
-	Vec3f _screen2pic(int x, int y);
-	void _reloadViewport();
-	void _reloadWebView();
+	void _loadTextures();
     };
 }
 

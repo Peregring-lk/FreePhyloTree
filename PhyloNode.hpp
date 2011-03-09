@@ -20,15 +20,21 @@
 #ifndef _FPT_PHYLO_NODE_
 #define _FPT_PHYLO_NODE_
 
-#include "Strategies/ColorNode.hpp"
-#include "Strategies/LocNode.hpp"
+#include "Strategies/Color/ColorNode.hpp"
+#include "Strategies/Loc/LocNode.hpp"
 
 namespace fpt
 {
     class PhyloNode : public LocNode, public ColorNode
     {
     public:
-	PhyloNode(const Name& name);
+	PhyloNode(const Name& name, PhyloNode *father = NULL);
+
+	PhyloNode* father() const;
+	PhyloNode* child(unsigned i) const;
+
+	void init();
+	void step();
     };
 }
 

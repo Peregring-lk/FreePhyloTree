@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2010 Aarón Bueno Villares <abv150ci@gmail.com>
+  Copyright (C) 2011 Aarón Bueno Villares <abv150ci@gmail.com>
 
   This file is part of FreePhyloTree.
 
@@ -17,22 +17,21 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _FPT_COLOR_TREE_
-#define _FPT_COLOR_TREE_
+#ifndef _FPT_ITERATOR_PHYLO_TREE_
+#define _FPT_ITERATOR_PHYLO_TREE_
 
-#include "../Tree/Tree.hpp"
-#include "ColorNode.hpp"
+#include "Tree/IteratorTree.hpp"
+#include "PhyloNode.hpp"
 
 namespace fpt
 {
-    class ColorTree : virtual public Tree
+    class IteratorPhyloTree : public IteratorTree
     {
     public:
-	ColorTree(const Name& name);
+	IteratorPhyloTree(PhyloNode *node);
 
-    protected:
-	void _initBloom(float bloom);
-	void _reloadBloom(float bloom, float smooth);
+	PhyloNode* node() const;
+	IteratorPhyloTree forward() const;
     };
 }
 

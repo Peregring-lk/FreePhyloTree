@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2010 Aarón Bueno Villares <abv150ci@gmail.com>
+  Copyright (C) 2011 Aarón Bueno Villares <abv150ci@gmail.com>
 
   This file is part of FreePhyloTree.
 
@@ -17,33 +17,48 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _FPT_COLOR_
-#define _FPT_COLOR_
+#ifndef _FPT_SCENE_
+#define _FPT_SCENE_
 
 #include <GL/gl.h>
 
+#include "../PhyloTree.hpp"
+
 namespace fpt
 {
-    enum TypeColor { R, G, B };
-
-    class Color
+    class Scene : public Strategy
     {
     public:
-	Color();
-	Color(GLfloat r, GLfloat g, GLfloat b);
-	Color(const Color& color);
+	Scene(PhyloTree *tree);
 
-	GLfloat r() const;
-	GLfloat g() const;
-	GLfloat b() const;
+	void init();
+	void step();
 
-	GLfloat color(TypeColor t) const;
-
-	void setColor(GLfloat r, GLfloat g, GLfloat b);
-	void setColor(TypeColor t, GLfloat value);
+	void setTextureNode(GLuint id);
+	void setTextureGlow(GLuint id);
+	void setTextureEdge(GLuint id);
 
     private:
-	GLfloat _color[3];
+	PhyloTree *_tree;
+
+	GLuint _textureIDnode;
+	GLuint _textureIDglow;
+	GLuint _textureIDedge;
+
+	bool _initTexNode;
+	bool _initTexGlow;
+	bool _initTexEdge;
+
+	float _radiusNode;
+	float _weightEdge;
+
+	void _drawTree();
+	void _drawNode(PhyloNode *node);
+	void _drawGlow(PhyloNode *node);
+	void _drawEdge(PhyloNode *source, PhyloNode *target);
+
+	void _drawSquare(PhyloNode *node, float side, GLuint tex);
+	void _setColor(PhyloNode *node);
     };
 }
 

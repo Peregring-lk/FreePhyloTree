@@ -18,59 +18,60 @@
 */
 
 #include <iostream>
-#include "Node.hpp"
+#include "IteratorTree.hpp"
 
 using namespace fpt;
 
-Node::Node(const Name& name, Node *father)
-    : _name(name), _father(father)
+IteratorTree::IteratorTree(Node *node)
 {
-    _order = 1;
+    _node = node;
 
-    if (_father != NULL)
-	_father->addChild(this);
+    _mem.push(0);
+    _index = 0;
 }
 
-const Name& Node::name() const
+bool IteratorTree::end() const
 {
-    return _name;
+    return _node == NULL;
 }
 
-unsigned Node::degree() const
+Node* IteratorTree::node() const
 {
-    return _children.size();
+    return _node;
 }
 
-unsigned Node::order() const
+unsigned IteratorTree::index() const
 {
-    return _order;
+    return _index;
 }
 
-Node* Node::father() const
+IteratorTree IteratorTree::forward() const
 {
-  return _father;
+    IteratorTree clone = *this;
+
+    clone.next();
+
+    return clone;
 }
 
-Node* Node::child(unsigned i) const
+void IteratorTree::next()
 {
-    if (i < _children.size())
-	return _children[i];
-    else
-	return NULL;
-}
+    if (_node == NULL)
+	return;
 
-void Node::addChild(Node *node)
-{
-    _children.push_back(node);
-    _updateOrder();
-}
+    if (_mem.top() < _node->degree()) {
+	_node = _node->child(_mem.top());
+	_mem.push(0);
 
-void Node::_updateOrder()
-{
-    _order += 1;
+	++_index;
+    }
+    else {
+	_mem.pop();
 
-    Node *father = Node::father();
+	if (!_mem.empty())
+	    ++_mem.top();
 
-    if (father != NULL)
-	father->_updateOrder();
+	_node = _node->father();
+	next();
+    }
 }

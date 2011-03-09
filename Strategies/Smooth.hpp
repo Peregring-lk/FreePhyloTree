@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2010 Aarón Bueno Villares <abv150ci@gmail.com>
+  Copyright (C) 2011 Aarón Bueno Villares <abv150ci@gmail.com>
 
   This file is part of FreePhyloTree.
 
@@ -17,32 +17,44 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _FPT_SPRING_LOC_
-#define _FPT_SPRING_LOC_
+#ifndef _FPT_SMOOTH_
+#define _FPT_SMOOTH_
 
-#include "LocTree.hpp"
+#include "Strategy.hpp"
+#include "../VecXf/VecXf.hpp"
 
 namespace fpt
 {
-    class SpringLoc
+    class Smooth : public Strategy
     {
     public:
-	SpringLoc(float c1, float c2, float c3, float c4);
+	Smooth();
+	Smooth(float smooth, float ssmoth = 1);
 
-	void initLoc(LocTree *tree);
-	void reLoc(LocTree *tree);
+	VecXf source() const;
+	VecXf target() const;
+
+	float originalSmooth() const;
+	float actualSmooth() const;
+
+	void init();
+	void step();
+
+	void changeSource(const VecXf& source);
+	void changeTarget(const VecXf& target);
+	void changeSmooth(float smooth);
 
     private:
-	float _c1;
-	float _c2;
-	float _c3;
-	float _c4;
+	VecXf _source;
+	VecXf _target;
 
-	typedef std::vector<Vec3f> _Moves;
-	_Moves _moves;
+	VecXf _dir;
 
-	void _fa(LocNode *source, LocNode *target, int _weight);
-	void _fr(LocNode *source, LocNode *target);
+	float _originalSmooth;
+	float _smooth;
+	float _ssmooth;
+
+	bool _initialized;
     };
 }
 

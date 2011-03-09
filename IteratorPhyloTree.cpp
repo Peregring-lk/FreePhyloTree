@@ -17,58 +17,24 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "LocNode.hpp"
+#include "IteratorPhyloTree.hpp"
 
 using namespace fpt;
 
-LocNode::LocNode(const Name& name) : Node(name)
+IteratorPhyloTree::IteratorPhyloTree(PhyloNode *node)
+    : IteratorTree(node)
+{}
+
+PhyloNode* IteratorPhyloTree::node() const
 {
-    _crib = false;
+    return dynamic_cast<PhyloNode*>(IteratorTree::node());
 }
 
-GLfloat LocNode::x() const
+IteratorPhyloTree IteratorPhyloTree::forward() const
 {
-    return _loc.x();
-}
+    IteratorPhyloTree clone = *this;
 
-GLfloat LocNode::y() const
-{
-    return _loc.y();
-}
+    clone.next();
 
-const Vec3f& LocNode::loc() const
-{
-    return _loc;
-}
-
-bool LocNode::crib() const
-{
-    return _crib;
-}
-
-bool LocNode::hide() const
-{
-    LocNode *father = dynamic_cast<LocNode*>(_father);
-
-    if (_father == NULL)
-	return false;
-    else if (father->crib())
-	return true;
-    else
-	return father->hide();
-}
-
-void LocNode::setLoc(const Vec3f& loc)
-{
-    _loc = loc;
-}
-
-void LocNode::move(const Vec3f& desp)
-{
-    _loc += desp;
-}
-
-void LocNode::setCrib(bool crib)
-{
-    _crib = crib;
+    return clone;
 }

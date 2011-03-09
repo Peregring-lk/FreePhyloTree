@@ -27,66 +27,30 @@ namespace fpt
 {
     typedef std::string Name;
 
-    class Node;
-
-    typedef int Label;
-    typedef std::vector<Node*> Nodes;
-
-    class Edge
-    {
-    public:
-	Edge(Node *source, Node *target, int weight);
-
-	Node* source() const;
-	Node *target() const;
-	int weight() const;
-
-    private:
-	Node *_source;
-	Node *_target;
-
-	int _weight;
-    };
-
-    //  typedef std::pair<Node*, Node*> Edge;
-    typedef std::vector<Edge> Edges;
-
-    //class Tree;
-
     class Node
     {
     public:
-	Node(const Name& name);
+	Node(const Name& name, Node *father = NULL);
 
 	const Name& name() const;
-	Label label() const;
 
-	Node* father() const;
-	const Nodes& children() const;
+	unsigned degree() const;
+	unsigned order() const;
 
-	virtual unsigned nodes() const;
+	virtual Node* father() const;
+	virtual Node* child(unsigned i) const;
 
-/*
-  unsigned degree() const;
-  unsigned level() const;
-  unsigned height() const;
-*/
-
-	Node* root();
-
-	friend class Tree;
+	void addChild(Node *node);
 
     protected:
 	Name _name;
-	Label _label;
 
 	Node *_father;
-	Nodes _children;
+	std::vector<Node*> _children;
 
-//    unsigned _level;
-//    unsigned _height;
+	unsigned _order;
 
-//    void _uploadHeight(Node *node);
+	void _updateOrder();
     };
 }
 

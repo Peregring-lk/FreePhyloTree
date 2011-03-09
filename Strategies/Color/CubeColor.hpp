@@ -17,29 +17,35 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "Coloring.hpp"
+#include "../../VecXf/VecXf.hpp"
 
-using namespace fpt;
+#ifndef _FPT_CUBE_COLOR_
+#define _FPT_CUBE_COLOR_
 
-void Coloring::coloring(ColorNode *node)
+namespace fpt
 {
-  _coloring(node, Interval(), R);
+    typedef VecXf VecColor;
+    typedef unsigned TypeC;
+
+    class CubeColor
+    {
+    public:
+	CubeColor();
+	CubeColor(float r1, float g1, float b1,
+		  float r2, float g2, float b2);
+	CubeColor(const VecColor& inf, const VecColor& sup);
+
+	const VecColor& inf() const;
+	const VecColor& sup() const;
+
+	VecColor center() const;
+
+	void cut(TypeC color, unsigned pieces, unsigned n);
+
+    private:
+	VecColor _inf;
+	VecColor _sup;
+    };
 }
 
-void Coloring::_coloring(ColorNode *node, Interval interval, TypeColor t)
-{
-    TypeColor newt = (TypeColor)((t + 1) % 3);
-    const Nodes& nodes = node->children();
-
-    node->setColor(interval.center());
-
-    for (int i = 0; i < nodes.size(); ++i) {
-
-	Interval newInterval(interval);
-	newInterval.cut(t, nodes.size(), i);
-
-	ColorNode *node = dynamic_cast<ColorNode*>(nodes[i]);
-
-	_coloring(node, newInterval, newt);
-  }
-}
+#endif

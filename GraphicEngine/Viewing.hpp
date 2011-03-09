@@ -26,34 +26,23 @@
 
 namespace fpt
 {
-    class Viewing
+    class Viewing : public Strategy
     {
     public:
-	Viewing(PhyloTree *tree, GLsizei width, GLsizei height);
+	Viewing(PhyloTree *tree, GLsizei width, GLsizei height,
+		float maxRatio = 10.0f / 12);
 
-	Vec3f aimCamera() const;
-	Vec3f locCamera() const;
+	void init();
+	void step();
 
-	Vec3f upVectorCamera() const;
-	Vec3f viewingDirection() const;
-
-	void initSignal();
-	void nextStep();
-
-	void setAimCamera(Vec3f loc);
-	void moveCamera(Vec3f desp);
-
-	void resizeViewport(GLsizei width, GLsizei height);
+	void sizeViewport(GLsizei width, GLsizei height);
 
     private:
 	PhyloTree *_tree;
 
-	Vec3f _aim;
-	Vec3f _loc;
-	Vec3f _up;
-
 	GLsizei _width;
 	GLsizei _height;
+	float _maxRatio;
     };
 }
 

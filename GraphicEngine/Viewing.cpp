@@ -17,80 +17,39 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
 #include "Viewing.hpp"
-
-#include <GL/glu.h>
 
 using namespace fpt;
 
-Viewing::Viewing(PhyloTree *tree, GLsizei width, GLsizei height)
-    : _tree(tree), _loc(0, 0, -1), _up(0, 1, 0),
-      _width(width), _height(height)
+Viewing::Viewing(PhyloTree *tree, GLsizei width, GLsizei height,
+		 float maxRatio)
+    : _tree(tree), _width(width), _height(height), _maxRatio(maxRatio)
 {}
 
-Vec3f Viewing::aimCamera() const
-{
-    return _aim;
-}
-
-Vec3f Viewing::locCamera() const
-{
-    return _loc;
-}
-
-Vec3f Viewing::upVectorCamera() const
-{
-    return _up;
-}
-
-void Viewing::initSignal()
+void Viewing::init()
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    _aim = dynamic_cast<LocNode*>(_tree->root())->loc();
+    VecXf center = _tree->locRoot();
+    VecXf distance(_width * 0.5 * _maxRatio, _height * 0.5 * _maxRatio);
 
-    /*
-     *  Cámara
-     */
-    gluLookAt(_loc.x(), _loc.y(), _loc.z(),
-	      _aim.x(), _aim.y(), _aim.z(),
-	      _up.x(), _up.y(), _up.z());
-
-    /*
-     *  Perspectiva ortogonal
-     */
-    Vec3f distance(_width / 2.0f, _height / 2.0f);
-
-    Vec3f inf = _aim - distance;
-    Vec3f sup = _aim + distance;
+    VecXf inf = center - distance;
+    VecXf sup = center + distance;
 
     glOrtho(inf.x(), sup.x(), inf.y(), sup.y(), -1, 1);
-
-    /*
-     * Viewport
-     */
     glViewport(0, 0, _width, _height);
 
     glMatrixMode(GL_MODELVIEW);
 }
 
-void Viewing::nextStep()
+void Viewing::step()
 {
-    initSignal();
+    init();
 }
 
-void Viewing::setAimCamera(Vec3f loc)
-{
-    _aim = loc;
-}
-
-void Viewing::moveCamera(Vec3f desp)
-{
-    _loc += desp;
-}
-
-void Viewing::resizeViewport(GLsizei width, GLsizei height)
+void Viewing::sizeViewport(GLsizei width, GLsizei height)
 {
     _width = width;
     _height = height;

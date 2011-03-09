@@ -17,30 +17,22 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _FPT_INTERVAL_
-#define _FPT_INTERVAL_
+#ifndef _FPT_ITERATOR_LOC_TREE_
+#define _FPT_ITERATOR_LOC_TREE_
 
-#include "Color.hpp"
+#include "../../Tree/IteratorTree.hpp"
+#include "LocNode.hpp"
 
 namespace fpt
 {
-  class Interval
-  {
-  public:
-    Interval();
-    Interval(const Color& inf, const Color& sup);
+    class IteratorLocTree : public IteratorTree
+    {
+    public:
+	IteratorLocTree(LocNode *node);
 
-    Color inf() const;
-    Color sup() const;
-
-    Color center() const;
-
-    void cut(TypeColor t, unsigned pieces, unsigned n);
-
-  private:
-    Color _inf;
-    Color _sup;
-  };
+	LocNode* node() const;
+	IteratorLocTree forward() const;
+    };
 }
 
 #endif

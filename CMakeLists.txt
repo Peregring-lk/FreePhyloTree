@@ -8,6 +8,8 @@ INCLUDE_DIRECTORIES(/usr/include/freetype2/)
 
 AUX_SOURCE_DIRECTORY(Tree TREE)
 AUX_SOURCE_DIRECTORY(Strategies STRGY)
+AUX_SOURCE_DIRECTORY(Strategies/Color COLOR)
+AUX_SOURCE_DIRECTORY(Strategies/Loc LOC)
 AUX_SOURCE_DIRECTORY(GraphicEngine GRAPHIC)
 
 SET(QT_USE_QTOPENGL TRUE)
@@ -17,8 +19,13 @@ ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 QT4_WRAP_CPP(MOC_HEADERS GraphicEngine/GraphicEngine.hpp)
 
-SET(TREES PhyloTree PhyloNode ${TREE} ${STRGY})
-SET(SRC FreePhyloTree ${TREES} ${GRAPHIC} program)
+SET(PHYLOTREE PhyloTree PhyloNode IteratorPhyloTree)
+SET(TREES ${TREE} ${STRGY} ${COLOR} ${LOC} ${PHYLOTREE})
+SET(SRC ${TREES} ${GRAPHIC} FreePhyloTree program)
+
+IF(CMAKE_COMPILER_IS_GNUCXX)
+    SET(CMAKE_CXX_FLAGS "-std=c++0x")        ## c++0x
+ENDIF()
 
 ADD_EXECUTABLE(FreePhyloTree ${SRC} ${MOC_HEADERS})
 

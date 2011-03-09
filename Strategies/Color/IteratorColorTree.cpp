@@ -17,31 +17,24 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "ColorTree.hpp"
+#include "IteratorColorTree.hpp"
 
 using namespace fpt;
 
-ColorTree::ColorTree(const Name& name) : Tree(name)
+IteratorColorTree::IteratorColorTree(ColorNode *node)
+    : IteratorTree(node)
 {}
 
-void ColorTree::_initBloom(float bloom)
+ColorNode* IteratorColorTree::node() const
 {
-    for (int i = 0; i < _nodes.size(); ++i) {
-	ColorNode *node = dynamic_cast<ColorNode*>(_nodes[i]);
-
-	node->setBloom(bloom);
-    }
+    return dynamic_cast<ColorNode*>(IteratorTree::node());
 }
 
-void ColorTree::_reloadBloom(float bloom, float smooth)
+IteratorColorTree IteratorColorTree::forward() const
 {
-    for (int i = 0; i < _nodes.size(); ++i) {
-	ColorNode *node = dynamic_cast<ColorNode*>(_nodes[i]);
+    IteratorColorTree clone = *this;
 
-	float nodeBloom = node->bloom();
-	float difBloom = nodeBloom - bloom;
+    clone.next();
 
-	node->setBloom(nodeBloom - difBloom * smooth);
-    }
+    return clone;
 }
-

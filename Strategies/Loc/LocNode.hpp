@@ -17,45 +17,45 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "Interval.hpp"
+#ifndef _FPT_LOC_NODE_
+#define _FPT_LOC_NODE_
 
-using namespace fpt;
+#include "../../Tree/Node.hpp"
 
-Interval::Interval() : _inf(0, 0, 0), _sup(1, 1, 1)
-{}
+#include "../Strategy.hpp"
+#include "../Smooth.hpp"
 
-Interval::Interval(const Color& inf, const Color& sup)
-  : _inf(inf), _sup(sup)
-{}
-
-Color Interval::inf() const
+namespace fpt
 {
-  return _inf;
+    typedef Smooth Loc;
+
+    class LocNode : virtual public Node, public Strategy
+    {
+    public:
+	LocNode(const Name& name, LocNode *father = NULL);
+
+	LocNode* father() const;
+	LocNode* child(unsigned i) const;
+
+	float x() const;
+	float y() const;
+	float z() const;
+
+	VecXf loc() const;
+	VecXf locFather() const;
+	const Loc& smoothLoc() const;
+
+	void init();
+	void step();
+
+	void setSourceLoc(const VecXf& loc);
+	void setTargetLoc(const VecXf& loc);
+	void moveTargetLoc(const VecXf& delta);
+	void changeSmooth(float smooth);
+
+    private:
+	Loc _loc;
+    };
 }
 
-Color Interval::sup() const
-{
-  return _sup;
-}
-
-Color Interval::center() const
-{
-  return Color((_inf.r() + _sup.r()) / 2,
-	       (_inf.g() + _sup.g()) / 2,
-	       (_inf.b() + _sup.b()) / 2);
-}
-
-void Interval::cut(TypeColor t, unsigned pieces, unsigned n)
-{
-  GLfloat infT = _inf.color(t);
-  GLfloat supT = _sup.color(t);
-
-  GLfloat intervalT = supT - infT;
-  GLfloat step = intervalT / pieces;
-
-  infT += n * step;
-  supT = infT + step;
-
-  _inf.setColor(t, infT);
-  _sup.setColor(t, supT);
-}
+#endif

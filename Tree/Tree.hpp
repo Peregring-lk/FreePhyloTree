@@ -21,42 +21,27 @@
 #define _FPT_TREE_
 
 #include "Node.hpp"
+#include "IteratorTree.hpp"
 
 namespace fpt
 {
     class Tree
     {
     public:
-	Tree(const Name& name);
+	Tree(const Name& name, Node *root);
 
 	Name name() const;
-
-	const Nodes& nodes() const;
-	const Edges& edges() const;
-	const Edges& noAdjs() const;
-
-	Node* root() const;
-	Node* node(Label label) const;
-
-//    unsigned height() const;
 	unsigned order() const;
 
-	void setRoot(Node *root);
-	void setChild(Node *father, Node *child);
+	Node* root() const;
+
+	IteratorTree begin() const;
 
     protected:
 	Name _name;
 	Node *_root;
 
-	Nodes _nodes;
-	Edges _edges;
-	Edges _noAdjs;
-
-	int _weight;
-
-	void _newNode(Node *node, Node *father);
-	void _moveEdge(Node *source, Node *target);
-	bool _isNew(Node *node);
+	void _checkRoot();
     };
 }
 

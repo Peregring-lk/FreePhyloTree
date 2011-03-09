@@ -21,6 +21,28 @@
 
 using namespace fpt;
 
-PhyloNode::PhyloNode(const Name& name)
-    : LocNode(name), ColorNode(name), Node(name)
+PhyloNode::PhyloNode(const Name& name, PhyloNode *father)
+    : LocNode(name, father), ColorNode(name, father), Node(name, father)
 {}
+
+PhyloNode* PhyloNode::father() const
+{
+    return dynamic_cast<PhyloNode*>(Node::father());
+}
+
+PhyloNode* PhyloNode::child(unsigned i) const
+{
+    return dynamic_cast<PhyloNode*>(Node::child(i));
+}
+
+void PhyloNode::init()
+{
+    ColorNode::init();
+    LocNode::init();
+}
+
+void PhyloNode::step()
+{
+    ColorNode::step();
+    LocNode::step();
+}
