@@ -17,52 +17,28 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _FPT_SMOOTH_
-#define _FPT_SMOOTH_
-
-#include "Strategy.hpp"
 #include "../VecXf/VecXf.hpp"
+#include "../PhyloTree.hpp"
 
 namespace fpt
 {
-    class Smooth : public Strategy
+    class Mouse
     {
     public:
-	Smooth();
-	Smooth(float smooth, float ssmoth = 1);
+	Mouse(PhyloTree *tree);
 
-	float x() const;
-	float y() const;
-	float z() const;
-	float w() const;
+	VecXf pos() const;
+	VecXf mov() const;
 
-	VecXf source() const;
-	VecXf target() const;
+	PhyloNode* searchNode() const;
 
-	float originalSmooth() const;
-	float actualSmooth() const;
-
-	bool changed() const;
-
-	void changeSource(const VecXf& source);
-	void changeTarget(const VecXf& target);
-	void changeSmooth(float smooth);
-
-    protected:
-	void _step();
+	void setPos(VecXf pos);
+	void move(VecXf delta);
 
     private:
-	VecXf _source;
-	VecXf _target;
+	PhyloTree *_tree;
 
-	VecXf _dir;
-
-	float _originalSmooth;
-	float _smooth;
-	float _ssmooth;
-
-	bool _changed;
+	VecXf _pos;
+	VecXf _mov;
     };
 }
-
-#endif

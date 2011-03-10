@@ -45,6 +45,8 @@ namespace fpt
 	VecXf locFather() const;
 	const Loc& smoothLoc() const;
 
+	bool changed() const;
+
 	void setSourceLoc(const VecXf& loc);
 	void setTargetLoc(const VecXf& loc);
 	void moveTargetLoc(const VecXf& delta);

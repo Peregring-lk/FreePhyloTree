@@ -17,52 +17,41 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _FPT_SMOOTH_
-#define _FPT_SMOOTH_
+#include "Mouse.hpp"
 
-#include "Strategy.hpp"
-#include "../VecXf/VecXf.hpp"
+using namespace fpt;
 
-namespace fpt
+Mouse::Mouse(PhyloTree *tree) : _tree(tree), _pos(2u), _mov(2u)
+{}
+
+VecXf Mouse::pos() const
 {
-    class Smooth : public Strategy
-    {
-    public:
-	Smooth();
-	Smooth(float smooth, float ssmoth = 1);
-
-	float x() const;
-	float y() const;
-	float z() const;
-	float w() const;
-
-	VecXf source() const;
-	VecXf target() const;
-
-	float originalSmooth() const;
-	float actualSmooth() const;
-
-	bool changed() const;
-
-	void changeSource(const VecXf& source);
-	void changeTarget(const VecXf& target);
-	void changeSmooth(float smooth);
-
-    protected:
-	void _step();
-
-    private:
-	VecXf _source;
-	VecXf _target;
-
-	VecXf _dir;
-
-	float _originalSmooth;
-	float _smooth;
-	float _ssmooth;
-
-	bool _changed;
-    };
+    return _pos;
 }
 
-#endif
+VecXf Mouse::mov() const
+{
+    return _mov;
+}
+
+PhyloNode* Mouse::searchNode() const
+{
+    for (auto i = _tree->begin(); !i.end(); i.next()) {
+	PhyloNode *node = i.node();
+
+	if ((node->proj() - _pos).norm() < 10)
+	    return node;
+    }
+}
+
+void Mouse::setPos(VecXf pos)
+{
+    _mov = pos - _pos;
+    _pos = pos;
+}
+
+void Mouse::move(VecXf delta)
+{
+    _mov = delta;
+    _pos += delta;
+}

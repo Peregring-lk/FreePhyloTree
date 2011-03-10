@@ -17,6 +17,9 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <GL/gl.h>
+#include <GL/glu.h>
+
 #include "PhyloNode.hpp"
 
 using namespace fpt;
@@ -35,14 +38,42 @@ PhyloNode* PhyloNode::child(unsigned i) const
     return dynamic_cast<PhyloNode*>(Node::child(i));
 }
 
+VecXf PhyloNode::proj() const
+{
+    return _proj;
+}
+
 void PhyloNode::_init()
 {
     ColorNode::_init();
     LocNode::_init();
+
+    _uploadProj();
 }
 
 void PhyloNode::_step()
 {
     ColorNode::_step();
     LocNode::_step();
+
+    if (changed())
+	_uploadProj();
+}
+
+void PhyloNode::_uploadProj()
+{
+    GLdouble model[16];
+    GLdouble proj[16];
+    GLint viewport[4];
+    GLdouble cx;
+    GLdouble cy;
+    GLdouble cz;
+
+    glGetDoublev(GL_MODELVIEW_MATRIX, model);
+    glGetDoublev(GL_PROJECTION_MATRIX, proj);
+    glGetIntegerv(GL_VIEWPORT, viewport);
+
+    gluUnProject(x(), y(), z(), model, proj, viewport, &cx, &cy, &cz);
+
+    _proj = VecXf(cx, cy, cz);
 }

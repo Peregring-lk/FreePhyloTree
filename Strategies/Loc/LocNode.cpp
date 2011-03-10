@@ -60,7 +60,7 @@ VecXf LocNode::locFather() const
     LocNode *father = this->father();
 
     if (father == NULL) {
-	VecXf vec(2u);
+	VecXf vec(3u);
 
 	return vec;
     }
@@ -71,6 +71,11 @@ VecXf LocNode::locFather() const
 const Loc& LocNode::smoothLoc() const
 {
     return _loc;
+}
+
+bool LocNode::changed() const
+{
+    return _loc.changed();
 }
 
 void LocNode::setSourceLoc(const VecXf& loc)

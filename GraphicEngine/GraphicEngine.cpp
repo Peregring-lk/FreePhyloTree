@@ -32,6 +32,7 @@ GraphicEngine::GraphicEngine(PhyloTree *tree)
 {
     _viewing = new Viewing(_tree, width(), height());
     _scene = new Scene(_tree);
+    _mouse = new Mouse(_tree);
 
     setMouseTracking(true);
 }
@@ -40,6 +41,7 @@ GraphicEngine::~GraphicEngine()
 {
     delete _viewing;
     delete _scene;
+    delete _mouse;
 }
 
 void GraphicEngine::animate()
@@ -82,6 +84,23 @@ void GraphicEngine::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape)
 	QApplication::quit();
+}
+
+void GraphicEngine::mouseMoveEvent(QMouseEvent *event)
+{
+    QPointF pos = event->posF();
+
+    if (event->buttons() == Qt::LeftButton) {
+	_mouse->setPos(VecXf(pos.x(), pos.y()));
+//	_tree->lookAt(vec);
+    }
+
+/*    else {
+	Vec2f loc = _screen2pic(event->x(), event->y());
+	_tree->locMouse(loc);
+    }
+
+    _lastMouseEvent = pos;*/
 }
 
 void GraphicEngine::resizeGL(int width, int height)

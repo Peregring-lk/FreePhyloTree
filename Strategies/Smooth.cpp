@@ -30,6 +30,7 @@ Smooth::Smooth(float smooth, float ssmooth)
     : _smooth(smooth), _ssmooth(ssmooth)
 {
     _originalSmooth = _smooth;
+    _changed = false;
 }
 
 float Smooth::x() const
@@ -72,6 +73,11 @@ float Smooth::actualSmooth() const
     return _smooth;
 }
 
+bool Smooth::changed() const
+{
+    return _changed;
+}
+
 void Smooth::changeSource(const VecXf& source)
 {
     _source = source;
@@ -98,9 +104,15 @@ void Smooth::changeSmooth(float smooth)
 
 void Smooth::_step()
 {
-    _source += _dir.unit() * _dir.norm() * _smooth;
+    _changed = false;
 
-    _dir = _target - _source;
+    if (_dir.norm() > 0.05) {
+	_source += _dir.unit() * _dir.norm() * _smooth;
 
-    _smooth *= _ssmooth;
+	_dir = _target - _source;
+
+	_smooth *= _ssmooth;
+
+	_changed = true;
+    }
 }

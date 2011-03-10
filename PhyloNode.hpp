@@ -33,9 +33,16 @@ namespace fpt
 	PhyloNode* father() const;
 	PhyloNode* child(unsigned i) const;
 
+	VecXf proj() const;
+
     protected:
 	void _init();
 	void _step();
+
+    private:
+	VecXf _proj;
+
+	void _uploadProj();
     };
 }
 

@@ -29,6 +29,7 @@
 #include "../PhyloTree.hpp"
 #include "Scene.hpp"
 #include "Viewing.hpp"
+#include "Mouse.hpp"
 
 namespace fpt
 {
@@ -51,12 +52,14 @@ namespace fpt
 	PhyloTree *_tree;
 	Viewing *_viewing;
 	Scene *_scene;
+	Mouse *_mouse;
 
 	void initializeGL();
 	void paintGL();
 	void resizeGL();
 
 	void keyPressEvent(QKeyEvent *event);
+	void mouseMoveEvent(QMouseEvent *event);
 	void resizeGL(int width, int height);
 
 	void _loadTextures();

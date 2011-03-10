@@ -130,7 +130,7 @@ void LocTree::_step()
     if (changed()) {
 	_changed = false;
 
-	_Moves moves(order(), VecXf(2u));
+	_Moves moves(order(), VecXf(3u));
 
 	for (auto i = begin(); !i.end(); i.next()) {
 	    LocNode *source = i.node();
