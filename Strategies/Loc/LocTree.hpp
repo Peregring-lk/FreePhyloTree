@@ -27,7 +27,7 @@
 
 namespace fpt
 {
-    class LocTree : virtual public Tree
+    class LocTree : virtual public Tree, virtual public Strategy
     {
     public:
 	LocTree(const Name& name, LocNode *root,
@@ -37,20 +37,26 @@ namespace fpt
 	LocNode* root() const;
 	VecXf locRoot() const;
 	LocNode* farestNode() const;
-
-	void init();
-	void step();
+	bool changed() const;
 
 	IteratorLocTree begin(LocNode *node = NULL);
 
 	VecXf convexQuad(LocNode *node = NULL);
 
+    protected:
+	void _init();
+	void _step();
+
     private:
+	float _smooth;
+
 	float _c1;
 	float _c2;
 	float _c3;
 	float _c4;
-	float _smooth;
+
+	bool _changed;
+	mutable VecXf _quad;
 
 	LocNode *_farestNode;
 	float _distFarestNode;

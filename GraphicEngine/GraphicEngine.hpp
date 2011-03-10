@@ -40,10 +40,12 @@ namespace fpt
 	GraphicEngine(PhyloTree *tree);
 	~GraphicEngine();
 
-	void init();
-
     public slots:
-	void step();
+	void animate();
+
+    protected:
+	void _init();
+	void _step();
 
     private:
 	PhyloTree *_tree;

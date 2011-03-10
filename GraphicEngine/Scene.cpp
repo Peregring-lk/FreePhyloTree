@@ -31,27 +31,6 @@ Scene::Scene(PhyloTree *tree) : _tree(tree)
     _weightEdge = 2;
 }
 
-void Scene::init()
-{
-    glEnable(GL_TEXTURE_2D);
-
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-
-void Scene::step()
-{
-    bool _init = _initTexNode && _initTexGlow && _initTexEdge;
-
-    if (_init) {
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	glPushMatrix();
-	_drawTree();
-	glPopMatrix();
-    }
-}
-
 void Scene::setTextureNode(GLuint id)
 {
     _textureIDnode = id;
@@ -68,6 +47,27 @@ void Scene::setTextureEdge(GLuint id)
 {
     _textureIDedge = id;
     _initTexEdge = true;
+}
+
+void Scene::_init()
+{
+    glEnable(GL_TEXTURE_2D);
+
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+void Scene::_step()
+{
+    bool init = _initTexNode && _initTexGlow && _initTexEdge;
+
+    if (init) {
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	glPushMatrix();
+	_drawTree();
+	glPopMatrix();
+    }
 }
 
 void Scene::_drawTree()

@@ -27,17 +27,18 @@
 
 namespace fpt
 {
-  class QFreePhyloTree : public QApplication
-  {
-  public:
-    QFreePhyloTree(PhyloTree *tree, int argc, char **argv);
+    class QFreePhyloTree : public QApplication
+    {
+    public:
+	QFreePhyloTree(PhyloTree *tree, int argc, char **argv);
+	~QFreePhyloTree();
 
-    void run();
+	void run();
 
-  private:
-    GraphicEngine _glEngine;
-    QTimer _qTimer;
-  };
+    private:
+	GraphicEngine *_glEngine;
+	QTimer _qTimer;
+    };
 }
 
 #endif

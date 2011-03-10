@@ -31,12 +31,13 @@ namespace fpt
     public:
 	Scene(PhyloTree *tree);
 
-	void init();
-	void step();
-
 	void setTextureNode(GLuint id);
 	void setTextureGlow(GLuint id);
 	void setTextureEdge(GLuint id);
+
+    protected:
+	void _init();
+	void _step();
 
     private:
 	PhyloTree *_tree;

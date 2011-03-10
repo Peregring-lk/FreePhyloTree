@@ -24,31 +24,39 @@ using namespace fpt;
 
 Viewing::Viewing(PhyloTree *tree, GLsizei width, GLsizei height,
 		 float maxRatio)
-    : _tree(tree), _width(width), _height(height), _maxRatio(maxRatio)
+    : _tree(tree), _maxRatio(maxRatio)
 {
     _border = 30;
+
+    _resolution.changeSource(VecXf(width, height));
 }
 
-void Viewing::init()
+void Viewing::sizeViewport(GLsizei width, GLsizei height)
+{
+    _resolution.changeTarget(VecXf(width, height));
+}
+
+void Viewing::_init()
+{
+    sizeViewport(_resolution.x(), _resolution.y());
+
+    _resolution.changeSmooth(0.1);
+
+    _resolution.init();
+}
+
+void Viewing::_step()
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
     _calcOrtho();
-    glViewport(0, 0, _width, _height);
+
+    _resolution.step();
+
+    glViewport(0, 0, _resolution.x(), _resolution.y());
 
     glMatrixMode(GL_MODELVIEW);
-}
-
-void Viewing::step()
-{
-    init();
-}
-
-void Viewing::sizeViewport(GLsizei width, GLsizei height)
-{
-    _width = width;
-    _height = height;
 }
 
 void Viewing::_calcOrtho()
@@ -60,7 +68,7 @@ void Viewing::_calcOrtho()
      *  Igualamos ratio de Viewport con quad.
      *
      */
-    float vwRatio = _width / _height;
+    float vwRatio = _resolution.x() / _resolution.y();
     float quadRatio = quad.coord(2) / quad.coord(3);
 
     if (quadRatio < vwRatio)
@@ -81,8 +89,8 @@ void Viewing::_calcOrtho()
      *  Reducimos el ratio coordenadas / píxel.
      *
      */
-    if (2 * distance.x() / _width < _maxRatio) {
-	distance.setX(_width * _maxRatio * 0.5);
+    if (2 * distance.x() / _resolution.x() < _maxRatio) {
+	distance.setX(_resolution.x() * _maxRatio * 0.5);
 	distance.setY(distance.x() / vwRatio);
     }
 
@@ -92,5 +100,4 @@ void Viewing::_calcOrtho()
     VecXf sup = center + distance;
 
     glOrtho(inf.x(), sup.x(), inf.y(), sup.y(), -1, 1);
-
 }

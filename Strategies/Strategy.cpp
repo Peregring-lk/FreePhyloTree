@@ -17,32 +17,36 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "PhyloNode.hpp"
+#include "Strategy.hpp"
 
 using namespace fpt;
 
-PhyloNode::PhyloNode(const Name& name, PhyloNode *father)
-    : LocNode(name, father), ColorNode(name, father), Node(name, father)
+Strategy::Strategy() : _initialized(false)
 {}
 
-PhyloNode* PhyloNode::father() const
+Strategy::~Strategy()
+{}
+
+bool Strategy::initialized() const
 {
-    return dynamic_cast<PhyloNode*>(Node::father());
+    return _initialized;
 }
 
-PhyloNode* PhyloNode::child(unsigned i) const
+void Strategy::init()
 {
-    return dynamic_cast<PhyloNode*>(Node::child(i));
+    _init();
+
+    _initialized = true;
 }
 
-void PhyloNode::_init()
+void Strategy::step()
 {
-    ColorNode::_init();
-    LocNode::_init();
+    if (initialized())
+	_step();
 }
 
-void PhyloNode::_step()
-{
-    ColorNode::_step();
-    LocNode::_step();
-}
+void Strategy::_init()
+{}
+
+void Strategy::_step()
+{}

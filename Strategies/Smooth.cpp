@@ -21,7 +21,7 @@
 
 using namespace fpt;
 
-Smooth::Smooth()
+Smooth::Smooth() : Strategy()
 {
     *this = Smooth(1);
 }
@@ -30,8 +30,26 @@ Smooth::Smooth(float smooth, float ssmooth)
     : _smooth(smooth), _ssmooth(ssmooth)
 {
     _originalSmooth = _smooth;
+}
 
-    _initialized = false;
+float Smooth::x() const
+{
+    return _source.x();
+}
+
+float Smooth::y() const
+{
+    return _source.y();
+}
+
+float Smooth::z() const
+{
+    return _source.z();
+}
+
+float Smooth::w() const
+{
+    return _source.w();
 }
 
 VecXf Smooth::source() const
@@ -52,22 +70,6 @@ float Smooth::originalSmooth() const
 float Smooth::actualSmooth() const
 {
     return _smooth;
-}
-
-void Smooth::init()
-{
-    _initialized = true;
-}
-
-void Smooth::step()
-{
-    if (_initialized) {
-	_source += _dir.unit() * _dir.norm() * _smooth;
-
-	_dir = _target - _source;
-
-	_smooth *= _ssmooth;
-    }
 }
 
 void Smooth::changeSource(const VecXf& source)
@@ -92,4 +94,13 @@ void Smooth::changeSmooth(float smooth)
 {
     _originalSmooth = smooth;
     _smooth = _originalSmooth;
+}
+
+void Smooth::_step()
+{
+    _source += _dir.unit() * _dir.norm() * _smooth;
+
+    _dir = _target - _source;
+
+    _smooth *= _ssmooth;
 }

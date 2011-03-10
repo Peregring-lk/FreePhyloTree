@@ -33,8 +33,9 @@ namespace fpt
 	PhyloNode* father() const;
 	PhyloNode* child(unsigned i) const;
 
-	void init();
-	void step();
+    protected:
+	void _init();
+	void _step();
     };
 }
 

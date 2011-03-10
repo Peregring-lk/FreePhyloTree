@@ -78,20 +78,11 @@ CubeColor ColorNode::cubeColor() const
     return _cube;
 }
 
-void ColorNode::init()
-{
-    _color.init();
-    _glow.init();
-}
-
-void ColorNode::step()
-{
-    _color.step();
-    _glow.step();
-}
-
 void ColorNode::randSourceGlow(float center, float radius)
 {
+    if (radius == 0)
+	radius = center * 0.3;
+
     VecXf rand(VecXf(center), radius);
 
     setSourceGlow(rand.x());
@@ -126,4 +117,16 @@ void ColorNode::changeSmoothColor(float smooth)
 void ColorNode::changeSmoothGlow(float smooth)
 {
     _glow.changeSmooth(smooth);
+}
+
+void ColorNode::_init()
+{
+    _color.init();
+    _glow.init();
+}
+
+void ColorNode::_step()
+{
+    _color.step();
+    _glow.step();
 }

@@ -29,7 +29,7 @@ namespace fpt
 {
     typedef Smooth Loc;
 
-    class LocNode : virtual public Node, public Strategy
+    class LocNode : virtual public Node, virtual public Strategy
     {
     public:
 	LocNode(const Name& name, LocNode *father = NULL);
@@ -45,13 +45,14 @@ namespace fpt
 	VecXf locFather() const;
 	const Loc& smoothLoc() const;
 
-	void init();
-	void step();
-
 	void setSourceLoc(const VecXf& loc);
 	void setTargetLoc(const VecXf& loc);
 	void moveTargetLoc(const VecXf& delta);
 	void changeSmooth(float smooth);
+
+    protected:
+	void _init();
+	void _step();
 
     private:
 	Loc _loc;

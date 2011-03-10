@@ -31,7 +31,7 @@ namespace fpt
     typedef Smooth Color;
     typedef Smooth Glow;
 
-    class ColorNode : virtual public Node, public Strategy
+    class ColorNode : virtual public Node, virtual public Strategy
     {
     public:
 	ColorNode(const Name& name, ColorNode *father = NULL);
@@ -50,10 +50,7 @@ namespace fpt
 	CubeColor fatherCubeColor() const;
 	CubeColor cubeColor() const;
 
-	void init();
-	void step();
-
-	void randSourceGlow(float center, float radius = 5);
+	void randSourceGlow(float center, float radius = 0);
 
 	void setSourceColor(float r, float g, float b);
 	void setCubeColor(const CubeColor& cube);
@@ -63,6 +60,10 @@ namespace fpt
 
 	void changeSmoothColor(float smooth);
 	void changeSmoothGlow(float smooth);
+
+    protected:
+	void _init();
+	void _step();
 
     private:
 	Color _color;

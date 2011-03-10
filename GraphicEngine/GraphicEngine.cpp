@@ -28,7 +28,7 @@ using namespace std;
 using namespace fpt;
 
 GraphicEngine::GraphicEngine(PhyloTree *tree)
-    : _tree(tree)
+    : Strategy(), _tree(tree)
 {
     _viewing = new Viewing(_tree, width(), height());
     _scene = new Scene(_tree);
@@ -42,16 +42,21 @@ GraphicEngine::~GraphicEngine()
     delete _scene;
 }
 
-void GraphicEngine::init()
+void GraphicEngine::animate()
+{
+    step();
+}
+
+void GraphicEngine::_init()
 {
     _loadTextures();
 
-    _scene->init();
     _tree->init();
+    _scene->init();
     _viewing->init();
 }
 
-void GraphicEngine::step()
+void GraphicEngine::_step()
 {
     repaint();
 }
@@ -63,9 +68,9 @@ void GraphicEngine::initializeGL()
 
 void GraphicEngine::paintGL()
 {
-    _viewing->step();
-    _scene->step();
     _tree->step();
+    _scene->step();
+    _viewing->step();
 }
 
 void GraphicEngine::resizeGL()

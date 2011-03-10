@@ -25,8 +25,20 @@ namespace fpt
     class Strategy
     {
     public:
-	virtual void init() = 0;
-	virtual void step() = 0;
+	Strategy();
+	virtual ~Strategy();
+
+	bool initialized() const;
+
+	void init();
+	void step();
+
+    protected:
+	virtual void _init();
+	virtual void _step();
+
+    private:
+	bool _initialized;
     };
 }
 

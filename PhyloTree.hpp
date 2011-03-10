@@ -34,10 +34,11 @@ namespace fpt
 
 	PhyloNode* root() const;
 
-	void init();
-	void step();
-
 	IteratorPhyloTree begin();
+
+    protected:
+	void _init();
+	void _step();
 
     private:
 	float _radiusNode;

@@ -24,36 +24,13 @@ using namespace fpt;
 
 ColorTree::ColorTree(const Name& name, ColorNode *root,
 		     float smoothColor, float smoothGlow)
-    : Tree(name, root), _smoothColor(smoothColor), _smoothGlow(smoothGlow)
+    : Tree(name, root), _smoothColor(smoothColor),
+      _smoothGlow(smoothGlow)
 {}
 
 ColorNode* ColorTree::root() const
 {
     return dynamic_cast<ColorNode*>(Tree::root());
-}
-
-void ColorTree::init()
-{
-    _initCubes(root(), CubeColor(0, 0, 0, 1, 1, 1), 0);
-
-    for (auto i = begin(); !i.end(); i.next()) {
-	ColorNode *node = i.node();
-	VecXf color(node->fatherCubeColor().center(), 0.5f);
-	node->setSourceColor(color.x(), color.y(), color.z());
-
-	node->randSourceGlow(20);
-	node->setTargetGlow(10 * node->order());
-	node->changeSmoothColor(_smoothColor);
-	node->changeSmoothGlow(_smoothGlow);
-
-	node->init();
-    }
-}
-
-void ColorTree::step()
-{
-    for (auto i = begin(); !i.end(); i.next())
-	i.node()->step();
 }
 
 IteratorColorTree ColorTree::begin(ColorNode *node)
@@ -62,6 +39,30 @@ IteratorColorTree ColorTree::begin(ColorNode *node)
 	node = root();
 
     return IteratorColorTree(node);
+}
+
+void ColorTree::_init()
+{
+    _initCubes(root(), CubeColor(0, 0, 0, 1, 1, 1), 0);
+
+    for (auto i = begin(); !i.end(); i.next()) {
+	ColorNode *node = i.node();
+	VecXf color(node->fatherCubeColor().center(), 0.5f);
+	node->setSourceColor(color.x(), color.y(), color.z());
+
+	node->randSourceGlow(500 * node->order());
+	node->setTargetGlow(70 * node->order());
+	node->changeSmoothColor(_smoothColor);
+	node->changeSmoothGlow(_smoothGlow);
+
+	node->init();
+    }
+}
+
+void ColorTree::_step()
+{
+    for (auto i = begin(); !i.end(); i.next())
+	i.node()->step();
 }
 
 void ColorTree::_initCubes(ColorNode *node, CubeColor cube, TypeC t)

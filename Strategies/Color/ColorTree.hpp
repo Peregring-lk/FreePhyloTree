@@ -25,26 +25,22 @@
 
 namespace fpt
 {
-    class ColorTree : virtual public Tree, public Strategy
+    class ColorTree : virtual public Tree, virtual public Strategy
     {
     public:
 	ColorTree(const Name& name, ColorNode *root,
-		  float smoothColor = 0.01, float smoothGlow = 0.1);
+		  float smoothColor = 0.01, float smoothGlow = 0.01);
 
 	ColorNode* root() const;
-
-	void init();
-	void step();
 
 	IteratorColorTree begin(ColorNode *node = NULL);
 
     protected:
+	void _init();
+	void _step();
+
 	void _initCubes(ColorNode *node, CubeColor cube, TypeC t);
 
-/*
-	void _initGlow(float bloom);
-	void _reloadGlow(float bloom, float smooth);
-*/
     private:
 	float _smoothColor;
 	float _smoothGlow;

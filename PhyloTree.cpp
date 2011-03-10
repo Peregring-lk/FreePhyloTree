@@ -37,19 +37,19 @@ PhyloNode* PhyloTree::root() const
     return dynamic_cast<PhyloNode*>(Tree::root());
 }
 
-void PhyloTree::init()
-{
-    ColorTree::init();
-    LocTree::init();
-}
-
-void PhyloTree::step()
-{
-    ColorTree::step();
-    LocTree::step();
-}
-
 IteratorPhyloTree PhyloTree::begin()
 {
     return IteratorPhyloTree(root());
+}
+
+void PhyloTree::_init()
+{
+    ColorTree::_init();
+    LocTree::_init();
+}
+
+void PhyloTree::_step()
+{
+    ColorTree::_step();
+    LocTree::_step();
 }

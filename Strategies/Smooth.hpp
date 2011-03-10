@@ -31,18 +31,23 @@ namespace fpt
 	Smooth();
 	Smooth(float smooth, float ssmoth = 1);
 
+	float x() const;
+	float y() const;
+	float z() const;
+	float w() const;
+
 	VecXf source() const;
 	VecXf target() const;
 
 	float originalSmooth() const;
 	float actualSmooth() const;
 
-	void init();
-	void step();
-
 	void changeSource(const VecXf& source);
 	void changeTarget(const VecXf& target);
 	void changeSmooth(float smooth);
+
+    protected:
+	void _step();
 
     private:
 	VecXf _source;
@@ -53,8 +58,6 @@ namespace fpt
 	float _originalSmooth;
 	float _smooth;
 	float _ssmooth;
-
-	bool _initialized;
     };
 }
 

@@ -32,16 +32,18 @@ namespace fpt
 	Viewing(PhyloTree *tree, GLsizei width, GLsizei height,
 		float maxRatio = 10.0f / 12);
 
-	void init();
-	void step();
-
 	void sizeViewport(GLsizei width, GLsizei height);
+
+    protected:
+	void _init();
+	void _step();
 
     private:
 	PhyloTree *_tree;
 
-	GLsizei _width;
-	GLsizei _height;
+	VecXf _convexQuad;
+	Smooth _resolution;
+
 	float _maxRatio;
 	float _border;
 

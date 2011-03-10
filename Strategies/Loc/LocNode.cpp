@@ -73,16 +73,6 @@ const Loc& LocNode::smoothLoc() const
     return _loc;
 }
 
-void LocNode::init()
-{
-    _loc.init();
-}
-
-void LocNode::step()
-{
-    _loc.step();
-}
-
 void LocNode::setSourceLoc(const VecXf& loc)
 {
     _loc.changeSource(loc);
@@ -101,4 +91,14 @@ void LocNode::moveTargetLoc(const VecXf& delta)
 void LocNode::changeSmooth(float smooth)
 {
     _loc.changeSmooth(smooth);
+}
+
+void LocNode::_init()
+{
+    _loc.init();
+}
+
+void LocNode::_step()
+{
+    _loc.step();
 }

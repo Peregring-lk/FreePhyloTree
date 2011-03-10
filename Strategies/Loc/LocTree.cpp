@@ -27,9 +27,11 @@ using namespace fpt;
 LocTree::LocTree(const Name& name, LocNode *root,
 		 float c1, float c2, float c3, float c4,
 		 float smooth)
-    : Tree(name, root), _c1(c1), _c2(c2), _c3(c3), _c4(c4),
-      _smooth(smooth)
+    : Tree(name, root), _smooth(smooth),
+      _c1(c1), _c2(c2), _c3(c3), _c4(c4)
 {
+    _changed = false;
+
     srand(time(NULL));
 }
 
@@ -53,7 +55,56 @@ LocNode* LocTree::farestNode() const
     return _farestNode;
 }
 
-void LocTree::init()
+bool LocTree::changed() const
+{
+    return _changed;
+}
+
+IteratorLocTree LocTree::begin(LocNode *node)
+{
+    if (node == NULL)
+	node = root();
+
+    return IteratorLocTree(node);
+}
+
+VecXf LocTree::convexQuad(LocNode *node)
+{
+    if (node == NULL)
+	if (changed())
+	    return convexQuad(root());
+	else
+	    return _quad;
+    else {
+	VecXf inf = node->loc();
+	VecXf sup = node->loc();
+
+	for (auto i = begin(node); !i.end(); i.next()) {
+	    LocNode *node = i.node();
+
+	    if (node->x() < inf.x())
+		inf.setX(node->x());
+	    else if (node->x() > sup.x())
+		sup.setX(node->x());
+
+	    if (node->y() < inf.y())
+		inf.setY(node->y());
+	    else if (node->y() > sup.y())
+		sup.setY(node->y());
+	}
+
+	_quad = (sup + inf) / 2.0f;
+	VecXf toSup = _quad - sup;
+
+	_quad.setDim(4);
+	_quad.setCoord(2, toSup.x());
+	_quad.setCoord(3, toSup.y());
+
+	return _quad;
+    }
+}
+
+void LocTree::_init()
 {
     _farestNode = root();
     _distFarestNode = 0;
@@ -70,82 +121,49 @@ void LocTree::init()
 
 	_uploadFarestNode(node);
     }
+
+    _changed = true;
 }
 
-void LocTree::step()
+void LocTree::_step()
 {
-    _Moves moves(order(), VecXf(2u));
+    if (changed()) {
+	_changed = false;
 
-    for (auto i = begin(); !i.end(); i.next()) {
-	LocNode *source = i.node();
+	_Moves moves(order(), VecXf(2u));
 
-	for (auto j = i.forward(); !j.end(); j.next()) {
-	    LocNode *target = j.node();
+	for (auto i = begin(); !i.end(); i.next()) {
+	    LocNode *source = i.node();
 
-	    if (source == target->father()) {
-		moves[j.index()] += _fa(source, target);
-		moves[i.index()] += _fa(target, source);
-	    }
-	    else {
-		moves[j.index()] += _fr(source, target);
-		moves[i.index()] += _fr(target, source);
+	    for (auto j = i.forward(); !j.end(); j.next()) {
+		LocNode *target = j.node();
+
+		if (source == target->father()) {
+		    moves[j.index()] += _fa(source, target);
+		    moves[i.index()] += _fa(target, source);
+		}
+		else {
+		    moves[j.index()] += _fr(source, target);
+		    moves[i.index()] += _fr(target, source);
+		}
 	    }
 	}
-    }
 
-    for (auto i = begin(); !i.end(); i.next()) {
-	VecXf move = moves[i.index()];
+	for (auto i = begin(); !i.end(); i.next()) {
+	    VecXf move = moves[i.index()];
 
-	if (move.norm() > 0.001) {
-	    LocNode *node = i.node();
+	    if (move.norm() > 0.1) {
+		LocNode *node = i.node();
 
-	    node->moveTargetLoc(moves[i.index()]);
-	    _uploadFarestNode(node);
+		node->moveTargetLoc(moves[i.index()]);
+		_uploadFarestNode(node);
+		_changed = true;
+	    }
 	}
     }
 
     for (auto i = begin(); !i.end(); i.next())
 	i.node()->step();
-}
-
-IteratorLocTree LocTree::begin(LocNode *node)
-{
-    if (node == NULL)
-	node = root();
-
-    return IteratorLocTree(node);
-}
-
-VecXf LocTree::convexQuad(LocNode *node)
-{
-    if (node == NULL)
-	node = root();
-
-    VecXf inf = node->loc();
-    VecXf sup = node->loc();
-
-    for (auto i = begin(node); !i.end(); i.next()) {
-	LocNode *node = i.node();
-
-	if (node->x() < inf.x())
-	    inf.setX(node->x());
-	else if (node->x() > sup.x())
-	    sup.setX(node->x());
-
-	if (node->y() < inf.y())
-	    inf.setY(node->y());
-	else if (node->y() > sup.y())
-	    sup.setY(node->y());
-    }
-
-    VecXf center = (sup + inf) / 2.0f;
-    VecXf toSup = center - sup;
-
-    center.setDim(4);
-    center.setCoord(2, toSup.x());
-    center.setCoord(3, toSup.y());
-
-    return center;
 }
 
 VecXf LocTree::_fa(LocNode *source, LocNode *target) const
