@@ -36,12 +36,10 @@ namespace fpt
 
 	LocNode* root() const;
 	VecXf locRoot() const;
-	LocNode* farestNode() const;
-	bool changed() const;
+
+	VecXf convexQuad() const;
 
 	IteratorLocTree begin(LocNode *node = NULL);
-
-	VecXf convexQuad(LocNode *node = NULL);
 
     protected:
 	void _init();
@@ -56,17 +54,14 @@ namespace fpt
 	float _c4;
 
 	bool _changed;
-	mutable VecXf _quad;
-
-	LocNode *_farestNode;
-	float _distFarestNode;
+	VecXf _quad;
 
 	typedef std::vector<VecXf> _Moves;
 
 	VecXf _fa(LocNode *source, LocNode *target) const;
 	VecXf _fr(LocNode *source, LocNode *target) const;
 
-	void _uploadFarestNode(LocNode *node);
+	void _calcConvexQuad();
     };
 }
 

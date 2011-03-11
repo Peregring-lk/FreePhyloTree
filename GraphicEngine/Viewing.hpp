@@ -32,7 +32,11 @@ namespace fpt
 	Viewing(PhyloTree *tree, GLsizei width, GLsizei height,
 		float maxRatio = 10.0f / 12);
 
+	bool changed() const;
+
 	void sizeViewport(GLsizei width, GLsizei height);
+	void moveCamera(const VecXf& delta);
+	void centering();
 
     protected:
 	void _init();
@@ -42,12 +46,21 @@ namespace fpt
 	PhyloTree *_tree;
 
 	VecXf _convexQuad;
-	Smooth _resolution;
+	GLsizei _width;
+	GLsizei _height;
+
+	VecXf _delta;
+	Smooth _center;
+	Smooth _distance;
 
 	float _maxRatio;
 	float _border;
 
+	bool _changeViewport;
+
 	void _calcOrtho();
+	void _project();
+	void _uploadProj();
     };
 }
 

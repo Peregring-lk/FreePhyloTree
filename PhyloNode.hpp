@@ -34,6 +34,12 @@ namespace fpt
 	PhyloNode* child(unsigned i) const;
 
 	VecXf proj() const;
+	float projX() const;
+	float projY() const;
+
+	bool changed() const;
+
+	void setProj(VecXf proj);
 
     protected:
 	void _init();

@@ -18,7 +18,7 @@
 */
 
 #include <iostream>
-#include "Node.hpp"
+#include "Tree.hpp"
 
 using namespace fpt;
 
@@ -63,6 +63,17 @@ void Node::addChild(Node *node)
 {
     _children.push_back(node);
     _updateOrder();
+
+    if (_tree != NULL)
+	node->setTree(_tree);
+}
+
+void Node::setTree(Tree *tree)
+{
+    _tree = tree;
+
+    for (int i = 0; i < _children.size(); ++i)
+	_children[i]->setTree(_tree);
 }
 
 void Node::_updateOrder()

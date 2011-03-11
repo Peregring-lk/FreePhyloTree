@@ -34,8 +34,8 @@ namespace fpt
     public:
 	LocNode(const Name& name, LocNode *father = NULL);
 
-	LocNode* father() const;
 	LocNode* child(unsigned i) const;
+	LocNode* father() const;
 
 	float x() const;
 	float y() const;

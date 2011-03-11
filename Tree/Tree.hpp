@@ -33,7 +33,7 @@ namespace fpt
 	Name name() const;
 	unsigned order() const;
 
-	Node* root() const;
+	virtual Node* root() const;
 
 	IteratorTree begin(Node *node = NULL) const;
 

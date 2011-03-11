@@ -60,7 +60,7 @@ VecXf LocNode::locFather() const
     LocNode *father = this->father();
 
     if (father == NULL) {
-	VecXf vec(3u);
+	VecXf vec(2u);
 
 	return vec;
     }

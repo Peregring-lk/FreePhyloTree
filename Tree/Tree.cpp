@@ -23,7 +23,10 @@ using namespace std;
 using namespace fpt;
 
 Tree::Tree(const Name& name, Node *root) : _name(name), _root(root)
-{}
+{
+    if (_root != NULL)
+	_root->setTree(this);
+}
 
 Name Tree::name() const
 {

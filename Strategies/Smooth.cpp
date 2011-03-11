@@ -73,11 +73,6 @@ float Smooth::actualSmooth() const
     return _smooth;
 }
 
-bool Smooth::changed() const
-{
-    return _changed;
-}
-
 void Smooth::changeSource(const VecXf& source)
 {
     _source = source;

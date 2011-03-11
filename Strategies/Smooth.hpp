@@ -42,8 +42,6 @@ namespace fpt
 	float originalSmooth() const;
 	float actualSmooth() const;
 
-	bool changed() const;
-
 	void changeSource(const VecXf& source);
 	void changeTarget(const VecXf& target);
 	void changeSmooth(float smooth);
@@ -60,8 +58,6 @@ namespace fpt
 	float _originalSmooth;
 	float _smooth;
 	float _ssmooth;
-
-	bool _changed;
     };
 }
 

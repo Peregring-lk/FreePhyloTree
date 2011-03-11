@@ -29,6 +29,7 @@ namespace fpt
 	virtual ~Strategy();
 
 	bool initialized() const;
+	virtual bool changed() const;
 
 	void init();
 	void step();
@@ -36,6 +37,8 @@ namespace fpt
     protected:
 	virtual void _init();
 	virtual void _step();
+
+	mutable bool _changed;
 
     private:
 	bool _initialized;

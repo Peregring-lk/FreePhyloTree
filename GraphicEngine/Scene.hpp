@@ -21,15 +21,19 @@
 #define _FPT_SCENE_
 
 #include <GL/gl.h>
+#include <FTGL/ftgl.h>
 
 #include "../PhyloTree.hpp"
+#include "Mouse.hpp"
 
 namespace fpt
 {
     class Scene : public Strategy
     {
     public:
-	Scene(PhyloTree *tree);
+	Scene(PhyloTree *tree, Mouse *_mouse);
+
+	bool changed() const;
 
 	void setTextureNode(GLuint id);
 	void setTextureGlow(GLuint id);
@@ -41,6 +45,9 @@ namespace fpt
 
     private:
 	PhyloTree *_tree;
+	Mouse *_mouse;
+
+	FTFont *_font;
 
 	GLuint _textureIDnode;
 	GLuint _textureIDglow;
@@ -60,6 +67,8 @@ namespace fpt
 
 	void _drawSquare(PhyloNode *node, float side, GLuint tex);
 	void _setColor(PhyloNode *node);
+
+	void _drawText();
     };
 }
 

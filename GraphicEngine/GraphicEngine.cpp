@@ -31,8 +31,8 @@ GraphicEngine::GraphicEngine(PhyloTree *tree)
     : Strategy(), _tree(tree)
 {
     _viewing = new Viewing(_tree, width(), height());
-    _scene = new Scene(_tree);
-    _mouse = new Mouse(_tree);
+    _mouse = new Mouse(_tree, _viewing);
+    _scene = new Scene(_tree, _mouse);
 
     setMouseTracking(true);
 }
@@ -56,6 +56,7 @@ void GraphicEngine::_init()
     _tree->init();
     _scene->init();
     _viewing->init();
+    _mouse->init();
 }
 
 void GraphicEngine::_step()
@@ -71,8 +72,18 @@ void GraphicEngine::initializeGL()
 void GraphicEngine::paintGL()
 {
     _tree->step();
-    _scene->step();
+
+    if (_mouse->leftClick()) {
+	VecXf move = _mouse->mov();
+	move.setY(-move.y());
+
+	_viewing->moveCamera(move);
+    }
+
     _viewing->step();
+    _mouse->step();
+
+    _scene->step();
 }
 
 void GraphicEngine::resizeGL()
@@ -84,16 +95,20 @@ void GraphicEngine::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape)
 	QApplication::quit();
+    else if (event->key() == Qt::Key_Space)
+	_viewing->centering();
 }
 
 void GraphicEngine::mouseMoveEvent(QMouseEvent *event)
 {
     QPointF pos = event->posF();
 
-    if (event->buttons() == Qt::LeftButton) {
-	_mouse->setPos(VecXf(pos.x(), pos.y()));
+    _mouse->setPos(VecXf(pos.x(), pos.y()));
+    _mouse->setLeftClick(event->buttons() == Qt::LeftButton);
+
+//    if (event->buttons() == Qt::LeftButton) {
 //	_tree->lookAt(vec);
-    }
+//    }
 
 /*    else {
 	Vec2f loc = _screen2pic(event->x(), event->y());

@@ -50,6 +50,8 @@ namespace fpt
 	CubeColor fatherCubeColor() const;
 	CubeColor cubeColor() const;
 
+	bool changed() const;
+
 	void randSourceGlow(float center, float radius = 0);
 
 	void setSourceColor(float r, float g, float b);

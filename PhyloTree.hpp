@@ -34,6 +34,8 @@ namespace fpt
 
 	PhyloNode* root() const;
 
+	bool changed() const;
+
 	IteratorPhyloTree begin();
 
     protected:

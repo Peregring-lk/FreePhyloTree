@@ -21,7 +21,8 @@
 
 using namespace fpt;
 
-Scene::Scene(PhyloTree *tree) : _tree(tree)
+Scene::Scene(PhyloTree *tree, Mouse *mouse)
+    : _tree(tree), _mouse(mouse)
 {
     _initTexNode = false;
     _initTexGlow = false;
@@ -29,6 +30,14 @@ Scene::Scene(PhyloTree *tree) : _tree(tree)
 
     _radiusNode = 5;
     _weightEdge = 2;
+
+    _font = new FTGLTextureFont("Resources/FreeSans.ttf");
+    _font->FaceSize(12);
+}
+
+bool Scene::changed() const
+{
+    return _tree->changed();
 }
 
 void Scene::setTextureNode(GLuint id)
@@ -66,6 +75,7 @@ void Scene::_step()
 
 	glPushMatrix();
 	_drawTree();
+	_drawText();
 	glPopMatrix();
     }
 }
@@ -154,4 +164,28 @@ void Scene::_drawSquare(PhyloNode *node, float side, GLuint tex)
 void Scene::_setColor(PhyloNode *node)
 {
     glColor3f(node->r(), node->g(), node->b());
+}
+
+void Scene::_drawText()
+{
+    if (_mouse->changedActualNode()) {
+	PhyloNode *node = _mouse->actualNode();
+
+	if (node != NULL) {
+	    FTBBox box = _font->BBox(node->name().c_str());
+	    float heightBox = box.Upper().Y() - box.Lower().Y();
+
+	    VecXf pos = node->loc() + VecXf(7.0f, - heightBox / 2);
+
+	    glColor3f(1, 1, 0);
+
+	    //_setColor(_nodeMouse);
+
+	    glTranslatef(pos.x(), pos.y(), 0);
+
+	    _font->Render(node->name().c_str());
+
+	    glTranslatef(-pos.x(), -pos.y(), 0);
+	}
+    }
 }

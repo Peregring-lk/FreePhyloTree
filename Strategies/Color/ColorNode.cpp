@@ -78,6 +78,11 @@ CubeColor ColorNode::cubeColor() const
     return _cube;
 }
 
+bool ColorNode::changed() const
+{
+    return _color.changed() || _glow.changed();
+}
+
 void ColorNode::randSourceGlow(float center, float radius)
 {
     if (radius == 0)

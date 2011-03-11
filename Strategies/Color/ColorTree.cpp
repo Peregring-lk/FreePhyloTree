@@ -57,12 +57,18 @@ void ColorTree::_init()
 
 	node->init();
     }
+
+    _changed = true;
 }
 
 void ColorTree::_step()
 {
-    for (auto i = begin(); !i.end(); i.next())
+    for (auto i = begin(); !i.end(); i.next()) {
 	i.node()->step();
+
+	if (i.node()->changed())
+	    _changed = true;
+    }
 }
 
 void ColorTree::_initCubes(ColorNode *node, CubeColor cube, TypeC t)

@@ -96,6 +96,11 @@ namespace fpt
 	VecXf operator+ (const VecXf& vec) const
 	{ return VecXf(*this) += vec; }
 
+	VecXf operator- () const
+	{
+	    return *this * -1;
+	}
+
 	VecXf operator- (const VecXf& vec) const
 	{ return VecXf(*this) -= vec; }
 
@@ -170,6 +175,11 @@ namespace fpt
 
 	void resetDim() { _dim = totalDim(); }
 
+	void clear()
+	{
+	    *this = VecXf((Dim)_dim);
+	}
+
 	void setCoord(Dim dim, float value)
 	{
 	    if (dim < this->dim())
@@ -189,6 +199,11 @@ namespace fpt
 	void setZ(float value)
 	{
 	    setCoord(2, value);
+	}
+
+	void setW(float value)
+	{
+	    setCoord(3, value);
 	}
 
     protected:

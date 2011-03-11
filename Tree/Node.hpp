@@ -25,6 +25,7 @@
 
 namespace fpt
 {
+    class Tree;
     typedef std::string Name;
 
     class Node
@@ -41,9 +42,11 @@ namespace fpt
 	virtual Node* child(unsigned i) const;
 
 	void addChild(Node *node);
+	void setTree(Tree *_tree);
 
     protected:
 	Name _name;
+	Tree *_tree;
 
 	Node *_father;
 	std::vector<Node*> _children;

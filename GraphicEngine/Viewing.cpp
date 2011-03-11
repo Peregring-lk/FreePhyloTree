@@ -18,86 +18,159 @@
 */
 
 #include <iostream>
+#include <GL/glu.h>
+
 #include "Viewing.hpp"
 
 using namespace fpt;
 
 Viewing::Viewing(PhyloTree *tree, GLsizei width, GLsizei height,
 		 float maxRatio)
-    : _tree(tree), _maxRatio(maxRatio)
+    : _tree(tree), _maxRatio(maxRatio), _delta(2u)
 {
-    _border = 30;
+    sizeViewport(width, height);
+    _border = 1.2;
+}
 
-    _resolution.changeSource(VecXf(width, height));
+bool Viewing::changed() const
+{
+    return _center.changed() || _distance.changed();
 }
 
 void Viewing::sizeViewport(GLsizei width, GLsizei height)
 {
-    _resolution.changeTarget(VecXf(width, height));
+    _width = width;
+    _height = height;
+
+    _changeViewport = true;
+}
+
+void Viewing::moveCamera(const VecXf& delta)
+{
+    _delta += delta;
+    _center.changeTarget(_center.target() + delta);
+}
+
+void Viewing::centering()
+{
+    moveCamera(-_delta);
 }
 
 void Viewing::_init()
 {
-    sizeViewport(_resolution.x(), _resolution.y());
+    VecXf quad = _tree->convexQuad();
+    VecXf center = VecXf((quad.x() + quad.z()) / 2,
+			 (quad.y() + quad.w()) / 2);
+    VecXf distance = center - VecXf(quad.x(), quad.y());
 
-    _resolution.changeSmooth(0.1);
+    _center.changeSource(center);
+    _distance.changeSource(distance);
 
-    _resolution.init();
+    _center.changeSmooth(0.05);
+    _distance.changeSmooth(0.05);
+
+    _center.init();
+    _distance.init();
 }
 
 void Viewing::_step()
 {
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
+    if (_tree->changed() || _changeViewport)
+	_calcOrtho();
 
-    _calcOrtho();
+    _center.step();
+    _distance.step();
 
-    _resolution.step();
+    if (changed()) {
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
 
-    glViewport(0, 0, _resolution.x(), _resolution.y());
+	_project();
 
-    glMatrixMode(GL_MODELVIEW);
+	if (_changeViewport) {
+	    glViewport(0, 0, _width, _height);
+	    _changeViewport = false;
+	}
+
+	glMatrixMode(GL_MODELVIEW);
+
+	_uploadProj();
+    }
 }
 
 void Viewing::_calcOrtho()
 {
     VecXf quad = _tree->convexQuad();
+    VecXf center = VecXf((quad.x() + quad.z()) / 2,
+			 (quad.y() + quad.w()) / 2);
+    VecXf distance = (center - VecXf(quad.x(), quad.y())) * _border;
 
     /*
      *
      *  Igualamos ratio de Viewport con quad.
      *
      */
-    float vwRatio = _resolution.x() / _resolution.y();
-    float quadRatio = quad.coord(2) / quad.coord(3);
+    float vwRatio = (float)_width / _height;
+    float lambda = vwRatio * distance.y();
 
-    if (quadRatio < vwRatio)
-	quad.setCoord(2, vwRatio * quad.coord(3));
+    if (lambda > distance.x())
+	distance.setX(lambda);
     else
-	quad.setCoord(3, quad.coord(2) / vwRatio);
-
-    /*
-     *
-     *  Calculamos el cuadro de proyección.
-     *
-     */
-    VecXf center(quad.x(), quad.y());
-    VecXf distance(quad.coord(2), quad.coord(3));
+	distance.setY(distance.x() / vwRatio);
 
     /*
      *
      *  Reducimos el ratio coordenadas / píxel.
      *
      */
-    if (2 * distance.x() / _resolution.x() < _maxRatio) {
-	distance.setX(_resolution.x() * _maxRatio * 0.5);
+    if (2 * distance.x() / _width < _maxRatio) {
+	distance.setX(_width * _maxRatio * 0.5);
 	distance.setY(distance.x() / vwRatio);
     }
 
-    distance -= _border;
+    /*
+     *
+     *  Desplazamos el centro
+     *
+     */
+    center += _delta;
 
     VecXf inf = center - distance;
     VecXf sup = center + distance;
 
+    _center.changeTarget(center);
+    _distance.changeTarget(distance);
+
+    _changed = true;
+}
+
+void Viewing::_project()
+{
+    VecXf inf = _center.source() -  _distance.source();
+    VecXf sup = _center.source() +  _distance.source();
+
     glOrtho(inf.x(), sup.x(), inf.y(), sup.y(), -1, 1);
+}
+
+void Viewing::_uploadProj()
+{
+    GLdouble model[16];
+    GLdouble proj[16];
+    GLint viewport[4];
+    GLdouble cx;
+    GLdouble cy;
+    GLdouble cz;
+
+    glGetDoublev(GL_MODELVIEW_MATRIX, model);
+    glGetDoublev(GL_PROJECTION_MATRIX, proj);
+    glGetIntegerv(GL_VIEWPORT, viewport);
+
+    for (auto i = _tree->begin(); !i.end(); i.next()) {
+	PhyloNode *node = i.node();
+
+	gluProject(node->x(), node->y(), 0, model, proj, viewport,
+		       &cx, &cy, &cz);
+
+	node->setProj(VecXf(cx, viewport[3] - cy));
+    }
 }

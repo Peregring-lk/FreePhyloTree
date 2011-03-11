@@ -20,7 +20,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
-#include "PhyloNode.hpp"
+#include "PhyloTree.hpp"
 
 using namespace fpt;
 
@@ -43,37 +43,34 @@ VecXf PhyloNode::proj() const
     return _proj;
 }
 
+float PhyloNode::projX() const
+{
+    return _proj.x();
+}
+
+float PhyloNode::projY() const
+{
+    return _proj.y();
+}
+
+bool PhyloNode::changed() const
+{
+    return ColorNode::changed() || LocNode::changed();
+}
+
+void PhyloNode::setProj(VecXf proj)
+{
+    _proj = proj;
+}
+
 void PhyloNode::_init()
 {
     ColorNode::_init();
     LocNode::_init();
-
-    _uploadProj();
 }
 
 void PhyloNode::_step()
 {
     ColorNode::_step();
     LocNode::_step();
-
-    if (changed())
-	_uploadProj();
-}
-
-void PhyloNode::_uploadProj()
-{
-    GLdouble model[16];
-    GLdouble proj[16];
-    GLint viewport[4];
-    GLdouble cx;
-    GLdouble cy;
-    GLdouble cz;
-
-    glGetDoublev(GL_MODELVIEW_MATRIX, model);
-    glGetDoublev(GL_PROJECTION_MATRIX, proj);
-    glGetIntegerv(GL_VIEWPORT, viewport);
-
-    gluUnProject(x(), y(), z(), model, proj, viewport, &cx, &cy, &cz);
-
-    _proj = VecXf(cx, cy, cz);
 }

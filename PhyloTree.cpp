@@ -18,7 +18,6 @@
 */
 
 #include <iostream>
-#include <GL/glu.h>
 
 #include "GraphicEngine/GraphicEngine.hpp"
 #include "PhyloTree.hpp"
@@ -35,6 +34,11 @@ PhyloTree::PhyloTree(Name name, PhyloNode *root,
 PhyloNode* PhyloTree::root() const
 {
     return dynamic_cast<PhyloNode*>(Tree::root());
+}
+
+bool PhyloTree::changed() const
+{
+    return ColorTree::changed() || LocTree::changed();
 }
 
 IteratorPhyloTree PhyloTree::begin()

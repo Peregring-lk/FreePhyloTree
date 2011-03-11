@@ -21,7 +21,8 @@
 
 using namespace fpt;
 
-Mouse::Mouse(PhyloTree *tree) : _tree(tree), _pos(2u), _mov(2u)
+Mouse::Mouse(PhyloTree *tree, Viewing *viewing)
+    : _viewing(viewing), _tree(tree), _pos(2u), _mov(2u)
 {}
 
 VecXf Mouse::pos() const
@@ -34,24 +35,69 @@ VecXf Mouse::mov() const
     return _mov;
 }
 
-PhyloNode* Mouse::searchNode() const
+bool Mouse::leftClick() const
 {
-    for (auto i = _tree->begin(); !i.end(); i.next()) {
-	PhyloNode *node = i.node();
+    return _leftClick;
+}
 
-	if ((node->proj() - _pos).norm() < 10)
-	    return node;
-    }
+bool Mouse::changedActualNode() const
+{
+    return _changedActual;
+}
+
+PhyloNode* Mouse::actualNode()
+{
+    return _actual;
+}
+
+void Mouse::setLeftClick(bool click)
+{
+    _leftClick = click;
+    _changed = true;
 }
 
 void Mouse::setPos(VecXf pos)
 {
     _mov = pos - _pos;
     _pos = pos;
+
+    _changed = true;
 }
 
 void Mouse::move(VecXf delta)
 {
     _mov = delta;
     _pos += delta;
+
+    _changed = true;
+}
+
+void Mouse::_init()
+{
+    _actual = NULL;
+    _changedActual = false;
+    _changed = false;
+    _leftClick = false;
+}
+
+void Mouse::_step()
+{
+    PhyloNode *actual = NULL;
+
+    if (_tree->changed() || _viewing->changed() || _changed)
+	for (auto i = _tree->begin(); !i.end(); i.next()) {
+	    PhyloNode *node = i.node();
+
+	    if ((node->proj() - _pos).norm() < 10) {
+		actual = node;
+		break;
+	    }
+	}
+
+    if (actual != _actual)
+	_changedActual = true;
+
+    _actual = actual;
+    _changed = false;
+    _mov = VecXf(0.0f, 0.0f);
 }

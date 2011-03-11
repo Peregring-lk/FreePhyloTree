@@ -17,28 +17,46 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef _FPT_MOUSE_
+#define _FPT_MOUSE_
+
 #include "../VecXf/VecXf.hpp"
 #include "../PhyloTree.hpp"
+#include "Viewing.hpp"
 
 namespace fpt
 {
-    class Mouse
+    class Mouse : public Strategy
     {
     public:
-	Mouse(PhyloTree *tree);
+	Mouse(PhyloTree *tree, Viewing *viewing);
 
 	VecXf pos() const;
 	VecXf mov() const;
 
-	PhyloNode* searchNode() const;
+	bool leftClick() const;
+	bool changedActualNode() const;
+	PhyloNode* actualNode();
 
+	void setLeftClick(bool click);
 	void setPos(VecXf pos);
 	void move(VecXf delta);
 
+    protected:
+	void _init();
+	void _step();
+
     private:
+	Viewing *_viewing;
 	PhyloTree *_tree;
 
+	bool _leftClick;
 	VecXf _pos;
 	VecXf _mov;
+
+	PhyloNode *_actual;
+	bool _changedActual;
     };
 }
+
+#endif
