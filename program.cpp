@@ -90,7 +90,7 @@ PhyloTree* createClade()
     homo);
 
     PhyloTree *tree = new PhyloTree("Hominina", hominina,
-				    3, 40, 200, 5);
+				    3, 40, 200, 6);
 
     return (tree);
 }

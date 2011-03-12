@@ -27,7 +27,7 @@ using namespace fpt;
 LocTree::LocTree(const Name& name, LocNode *root,
 		 float c1, float c2, float c3, float c4,
 		 float smooth)
-    : Tree(name, root), _smooth(smooth), _quad(4u),
+    : Tree(name, root), _smooth(smooth),
       _c1(c1), _c2(c2), _c3(c3), _c4(c4)
 {
     srand(time(NULL));
@@ -48,9 +48,14 @@ VecXf LocTree::locRoot() const
 	return root->loc();
 }
 
-VecXf LocTree::convexQuad() const
+VecXf LocTree::center() const
 {
-    return _quad;
+    return _center;
+}
+
+float LocTree::radius() const
+{
+    return _radius;
 }
 
 IteratorLocTree LocTree::begin(LocNode *node)
@@ -74,7 +79,7 @@ void LocTree::_init()
 	node->init();
     }
 
-    _calcConvexQuad();
+    _calcConvexSphere();
     _changed = true;
 }
 
@@ -114,7 +119,7 @@ void LocTree::_step()
     }
 
     if (changed())
-	_calcConvexQuad();
+	_calcConvexSphere();
 }
 
 VecXf LocTree::_fa(LocNode *source, LocNode *target) const
@@ -133,21 +138,33 @@ VecXf LocTree::_fr(LocNode *source, LocNode *target) const
     return fr * _c4;
 }
 
-void LocTree::_calcConvexQuad()
+void LocTree::_calcConvexSphere()
 {
-    _quad = VecXf(4u);
+    VecXf inf(2u);
+    VecXf sup(2u);
 
     for (auto i = begin(); !i.end(); i.next()) {
 	LocNode *node = i.node();
 
-	if (node->x() < _quad.x())
-	    _quad.setX(node->x());
-	else if (node->x() > _quad.z())
-	    _quad.setZ(node->x());
+	inf.setX(_min(node->x(), inf.x()));
+	inf.setY(_min(node->y(), inf.y()));
+	inf.setZ(_min(node->z(), inf.z()));
 
-	if (node->y() < _quad.y())
-	    _quad.setY(node->y());
-	else if (node->y() > _quad.w())
-	    _quad.setW(node->y());
+	sup.setX(_max(node->x(), sup.x()));
+	sup.setY(_max(node->y(), sup.y()));
+	sup.setZ(_max(node->z(), sup.z()));
     }
+
+    _center = (inf + sup) / 2;
+    _radius = (_center - inf).norm();
+}
+
+float LocTree::_min(float a, float b)
+{
+    return a < b ? a : b;
+}
+
+float LocTree::_max(float a, float b)
+{
+    return a > b ? a : b;
 }

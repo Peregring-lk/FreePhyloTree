@@ -29,7 +29,7 @@ Scene::Scene(PhyloTree *tree, Mouse *mouse)
     _initTexEdge = false;
 
     _radiusNode = 5;
-    _weightEdge = 2;
+    _weightEdge = 1.5;
 
     _font = new FTGLTextureFont("Resources/FreeSans.ttf");
     _font->FaceSize(12);
@@ -114,26 +114,27 @@ void Scene::_drawEdge(PhyloNode *source, PhyloNode *target)
 
     glColor3f(.5, .5, .5);
 
-    float xs = source->x();
-    float ys = source->y();
+    VecXf dir = target->loc() - source->loc();
+    VecXf weight = VecXf(-dir.y(), dir.x()).unit() * _weightEdge;
 
-    float xt = target->x();
-    float yt = target->y();
+    VecXf point;
 
     glBegin(GL_QUADS); {
-
+	point = source->loc() + weight;
 	glTexCoord2f(1, 0);
-	glVertex2f(xs, ys - _weightEdge);
+	glVertex2f(point.x(), point.y());
 
+	point = source->loc() - weight;
 	glTexCoord2f(0, 0);
-	glVertex2f(xs, ys + _weightEdge);
+	glVertex2f(point.x(), point.y());
 
+	point = target->loc() - weight;
 	glTexCoord2f(0, 0);
-	glVertex2f(xt, yt + _weightEdge);
+	glVertex2f(point.x(), point.y());
 
+	point = target->loc() + weight;
 	glTexCoord2f(1, 0);
-	glVertex2f(xt, yt - _weightEdge);
-
+	glVertex2f(point.x(), point.y());
     } glEnd();
 }
 

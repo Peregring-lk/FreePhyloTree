@@ -58,13 +58,8 @@ void Viewing::centering()
 
 void Viewing::_init()
 {
-    VecXf quad = _tree->convexQuad();
-    VecXf center = VecXf((quad.x() + quad.z()) / 2,
-			 (quad.y() + quad.w()) / 2);
-    VecXf distance = center - VecXf(quad.x(), quad.y());
-
-    _center.changeSource(center);
-    _distance.changeSource(distance);
+    _center.changeSource(_tree->center());
+    _distance.changeSource(VecXf(2u, _tree->radius()));
 
     _center.changeSmooth(0.05);
     _distance.changeSmooth(0.05);
@@ -100,10 +95,9 @@ void Viewing::_step()
 
 void Viewing::_calcOrtho()
 {
-    VecXf quad = _tree->convexQuad();
-    VecXf center = VecXf((quad.x() + quad.z()) / 2,
-			 (quad.y() + quad.w()) / 2);
-    VecXf distance = (center - VecXf(quad.x(), quad.y())) * _border;
+    VecXf center = _tree->center();
+    float radius = _tree->radius();
+    VecXf distance = VecXf(2u, radius);
 
     /*
      *
@@ -111,12 +105,12 @@ void Viewing::_calcOrtho()
      *
      */
     float vwRatio = (float)_width / _height;
-    float lambda = vwRatio * distance.y();
+    float lambda = vwRatio * radius;
 
-    if (lambda > distance.x())
+    if (lambda > radius)
 	distance.setX(lambda);
     else
-	distance.setY(distance.x() / vwRatio);
+	distance.setY(radius / vwRatio);
 
     /*
      *
@@ -134,9 +128,6 @@ void Viewing::_calcOrtho()
      *
      */
     center += _delta;
-
-    VecXf inf = center - distance;
-    VecXf sup = center + distance;
 
     _center.changeTarget(center);
     _distance.changeTarget(distance);

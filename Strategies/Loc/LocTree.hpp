@@ -37,7 +37,8 @@ namespace fpt
 	LocNode* root() const;
 	VecXf locRoot() const;
 
-	VecXf convexQuad() const;
+	VecXf center() const;
+	float radius() const;
 
 	IteratorLocTree begin(LocNode *node = NULL);
 
@@ -54,14 +55,17 @@ namespace fpt
 	float _c4;
 
 	bool _changed;
-	VecXf _quad;
+	VecXf _center;
+	float _radius;
 
 	typedef std::vector<VecXf> _Moves;
 
 	VecXf _fa(LocNode *source, LocNode *target) const;
 	VecXf _fr(LocNode *source, LocNode *target) const;
 
-	void _calcConvexQuad();
+	void _calcConvexSphere();
+	float _min(float a, float b);
+	float _max(float a, float b);
     };
 }
 
