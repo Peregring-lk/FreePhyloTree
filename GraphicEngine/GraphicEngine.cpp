@@ -19,6 +19,7 @@
 
 #include <iostream>
 #include <QApplication>
+#include <QWebFrame>
 #include "GraphicEngine.hpp"
 
 #include "Scene.hpp"
@@ -27,14 +28,13 @@
 using namespace std;
 using namespace fpt;
 
-GraphicEngine::GraphicEngine(PhyloTree *tree)
-    : Strategy(), _tree(tree)
+GraphicEngine::GraphicEngine()
+    : Strategy(), _webView(this), _nameWeb("http://es.wikipedia.org/")
 {
-    _viewing = new Viewing(_tree, width(), height());
-    _mouse = new Mouse(_tree, _viewing);
-    _scene = new Scene(_tree, _mouse);
+    _parser = new ParserTree(_nameWeb);
 
     setMouseTracking(true);
+    _webView.hide();
 }
 
 GraphicEngine::~GraphicEngine()
@@ -51,6 +51,13 @@ void GraphicEngine::animate()
 
 void GraphicEngine::_init()
 {
+    _parser->init();
+
+    _tree = _parser->tree();
+    _viewing = new Viewing(_tree, width(), height());
+    _mouse = new Mouse(_tree, _viewing);
+    _scene = new Scene(_tree, _mouse);
+
     _loadTextures();
 
     _tree->init();
@@ -105,17 +112,6 @@ void GraphicEngine::mouseMoveEvent(QMouseEvent *event)
 
     _mouse->setPos(VecXf(pos.x(), pos.y()));
     _mouse->setLeftClick(event->buttons() == Qt::LeftButton);
-
-//    if (event->buttons() == Qt::LeftButton) {
-//	_tree->lookAt(vec);
-//    }
-
-/*    else {
-	Vec2f loc = _screen2pic(event->x(), event->y());
-	_tree->locMouse(loc);
-    }
-
-    _lastMouseEvent = pos;*/
 }
 
 void GraphicEngine::resizeGL(int width, int height)

@@ -30,7 +30,7 @@ namespace fpt
     class QFreePhyloTree : public QApplication
     {
     public:
-	QFreePhyloTree(PhyloTree *tree, int argc, char **argv);
+	QFreePhyloTree(int argc, char **argv);
 	~QFreePhyloTree();
 
 	void run();

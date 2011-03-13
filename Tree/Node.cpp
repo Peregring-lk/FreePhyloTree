@@ -26,9 +26,12 @@ Node::Node(const Name& name, Node *father)
     : _name(name), _father(father)
 {
     _order = 1;
+}
 
-    if (_father != NULL)
-	_father->addChild(this);
+Node::~Node()
+{
+    for (int i = 0; i < degree(); ++i)
+	delete child(i);
 }
 
 const Name& Node::name() const
@@ -53,7 +56,7 @@ Node* Node::father() const
 
 Node* Node::child(unsigned i) const
 {
-    if (i < _children.size())
+    if (i < degree())
 	return _children[i];
     else
 	return NULL;
@@ -63,17 +66,6 @@ void Node::addChild(Node *node)
 {
     _children.push_back(node);
     _updateOrder();
-
-    if (_tree != NULL)
-	node->setTree(_tree);
-}
-
-void Node::setTree(Tree *tree)
-{
-    _tree = tree;
-
-    for (int i = 0; i < _children.size(); ++i)
-	_children[i]->setTree(_tree);
 }
 
 void Node::_updateOrder()

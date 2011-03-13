@@ -32,6 +32,7 @@ namespace fpt
     {
     public:
 	Node(const Name& name, Node *father = NULL);
+	~Node();
 
 	const Name& name() const;
 
@@ -42,11 +43,9 @@ namespace fpt
 	virtual Node* child(unsigned i) const;
 
 	void addChild(Node *node);
-	void setTree(Tree *_tree);
 
     protected:
 	Name _name;
-	Tree *_tree;
 
 	Node *_father;
 	std::vector<Node*> _children;

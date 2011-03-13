@@ -17,57 +17,44 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _FPT_GRAPHIC_ENGINE_
-#define _FPT_GRAPHIC_ENGINE_
+#ifndef _FPT_PARSER_TREE_
+#define _FPT_PARSER_TREE_
 
-#include <QGLWidget>
-#include <QMouseEvent>
-#include <QKeyEvent>
-#include <QWebView>
+#include <curl/curl.h>
+#include "../PhyloTree.hpp"
 
-#include <string>
-
-#include "ParserTree.hpp"
-#include "Scene.hpp"
-#include "Viewing.hpp"
-#include "Mouse.hpp"
+size_t _saveQuery(void *txt, size_t size, size_t mem, FILE *file);
+void _redirect();
 
 namespace fpt
 {
-    class GraphicEngine : public QGLWidget, public Strategy
+    class ParserTree : public Strategy
     {
-	Q_OBJECT
-
     public:
-	GraphicEngine();
-	~GraphicEngine();
-
-    public slots:
-	void animate();
+	ParserTree(std::string wikiPath);
+	PhyloTree* tree() const;
 
     protected:
 	void _init();
 	void _step();
 
     private:
+	CURL *_curl;
 	PhyloTree *_tree;
-	ParserTree *_parser;
-	Viewing *_viewing;
-	Scene *_scene;
-	Mouse *_mouse;
 
-	QWebView _webView;
-	std::string _nameWeb;
+	struct curl_slist *_headerlist;
 
-	void initializeGL();
-	void paintGL();
-	void resizeGL();
+	std::string _wikiPath;
+	std::string _query;
+	std::string _rootClade;
 
-	void keyPressEvent(QKeyEvent *event);
-	void mouseMoveEvent(QMouseEvent *event);
-	void resizeGL(int width, int height);
+	void _configQuery(std::string url, PhyloNode *node);
+	void _searchSubclades(PhyloNode *node);
 
-	void _loadTextures();
+	std::string _fix(std::string& name);
+	void _compound(std::string& name);
+	void _quitBrackets(std::string& name);
+	void _quitSpaces(std::string& name);
     };
 }
 

@@ -21,10 +21,10 @@
 
 using namespace fpt;
 
-QFreePhyloTree::QFreePhyloTree(PhyloTree *tree, int argc, char **argv)
+QFreePhyloTree::QFreePhyloTree(int argc, char **argv)
     : QApplication(argc, argv), _qTimer(this)
 {
-    _glEngine = new GraphicEngine(tree);
+    _glEngine = new GraphicEngine();
 }
 
 QFreePhyloTree::~QFreePhyloTree()

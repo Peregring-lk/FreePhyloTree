@@ -29,6 +29,7 @@ namespace fpt
     {
     public:
 	Tree(const Name& name, Node *root);
+	~Tree();
 
 	Name name() const;
 	unsigned order() const;
