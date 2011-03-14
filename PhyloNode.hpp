@@ -28,7 +28,10 @@ namespace fpt
     class PhyloNode : public LocNode, public ColorNode
     {
     public:
-	PhyloNode(const Name& name, PhyloNode *father = NULL);
+	PhyloNode(const Name& name, const Name& url,
+		  PhyloNode *father = NULL);
+
+	const Name& url() const;
 
 	PhyloNode* father() const;
 	PhyloNode* child(unsigned i) const;
@@ -40,12 +43,14 @@ namespace fpt
 	bool changed() const;
 
 	void setProj(VecXf proj);
+	void setUrl(const Name& url);
 
     protected:
 	void _init();
 	void _step();
 
     private:
+	Name _url;
 	VecXf _proj;
 
 	void _uploadProj();

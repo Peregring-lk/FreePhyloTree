@@ -22,7 +22,7 @@
 using namespace fpt;
 
 Mouse::Mouse(PhyloTree *tree, Viewing *viewing)
-    : _viewing(viewing), _tree(tree), _pos(2u), _mov(2u)
+    : _viewing(viewing), _tree(tree)
 {}
 
 VecXf Mouse::pos() const

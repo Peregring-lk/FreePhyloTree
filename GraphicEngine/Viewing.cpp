@@ -26,7 +26,7 @@ using namespace fpt;
 
 Viewing::Viewing(PhyloTree *tree, GLsizei width, GLsizei height,
 		 float maxRatio)
-    : _tree(tree), _maxRatio(maxRatio), _delta(2u)
+    : _tree(tree), _maxRatio(maxRatio)
 {
     sizeViewport(width, height);
     _border = 1.2;
@@ -97,7 +97,7 @@ void Viewing::_calcOrtho()
 {
     VecXf center = _tree->center();
     float radius = _tree->radius();
-    VecXf distance = VecXf(2u, radius);
+    VecXf distance = VecXf(radius, radius);
 
     /*
      *

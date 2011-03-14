@@ -30,7 +30,6 @@ bool _bredirect;
 
 ParserTree::ParserTree(string wikiPath) : _wikiPath(wikiPath)
 {
-    _tree = NULL;
     _headerlist = NULL;
 
     _query = _wikiPath + "w/api.php?";
@@ -38,37 +37,26 @@ ParserTree::ParserTree(string wikiPath) : _wikiPath(wikiPath)
     _query += "&prop=revisions&rvprop=content&rvsection=0";
     _query += "&titles=";
 
-    _rootClade = "Haplorrhini";
-}
-
-PhyloTree* ParserTree::tree() const
-{
-    return _tree;
-}
-
-void ParserTree::_init()
-{
     _curl = curl_easy_init();
     _headerlist = curl_slist_append(_headerlist, "User-Agent:");
-
-    PhyloNode *node = new PhyloNode(_rootClade);
-
-    if (_curl)
-	_configQuery(_rootClade, node);
-
-    curl_easy_cleanup(_curl);
-
-    _tree = new PhyloTree(_rootClade, node, 3, 40, 200, 6);
 }
 
-void ParserTree::_step()
-{}
+ParserTree::~ParserTree()
+{
+    curl_easy_cleanup(_curl);
+}
 
-void ParserTree::_configQuery(Name url, PhyloNode *node)
+void ParserTree::expand(PhyloNode *node)
+{
+    if (_curl)
+	_configQuery(node);
+}
+
+void ParserTree::_configQuery(PhyloNode *node)
 {
     CURLcode res;
 
-    string query = _query + url;
+    string query = _query + node->url();
 
     curl_easy_reset(_curl);
     curl_easy_setopt(_curl, CURLOPT_URL, query.c_str());
@@ -82,8 +70,12 @@ void ParserTree::_configQuery(Name url, PhyloNode *node)
     res = curl_easy_perform(_curl);
 
     if (res == CURLE_OK)
-	if (_bredirect)
-	    _configQuery(_buffer, node);
+	if (_bredirect) {
+	    node->setUrl(_buffer);
+	    _buffer.clear();
+
+	    _configQuery(node);
+	}
 	else
 	    _searchSubclades(node);
 }
@@ -142,8 +134,6 @@ void _redirect()
 
 void ParserTree::_searchSubclades(PhyloNode *node)
 {
-    vector<string> urls;
-
     /*
      *
      *  Extraemos clados.
@@ -160,13 +150,14 @@ void ParserTree::_searchSubclades(PhyloNode *node)
 
 	if (end != string::npos) {
 	    string cladeName = str.substr(begin, end - begin - 1);
-	    urls.push_back(_fix(cladeName));
-	    node->addChild(new PhyloNode(cladeName, node));
+	    string url = _fix(cladeName);
+
+	    node->addChild(new PhyloNode(cladeName, url, node));
 	}
     }
 
     for (int i = 0; i < node->degree(); ++i)
-	_configQuery(urls[i], node->child(i));
+	_configQuery(node->child(i));
 }
 
 string ParserTree::_fix(string& name)

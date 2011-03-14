@@ -34,7 +34,6 @@ namespace fpt
 	float x() const;
 	float y() const;
 	float z() const;
-	float w() const;
 
 	VecXf source() const;
 	VecXf target() const;

@@ -21,7 +21,7 @@
 
 using namespace fpt;
 
-CubeColor::CubeColor() : _inf(3), _sup(1.0f, 1.0f, 1.0f)
+CubeColor::CubeColor() : _sup(1.0f, 1.0f, 1.0f)
 {}
 
 CubeColor::CubeColor(float r1, float g1, float b1,

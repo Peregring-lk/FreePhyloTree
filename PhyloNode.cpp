@@ -24,9 +24,15 @@
 
 using namespace fpt;
 
-PhyloNode::PhyloNode(const Name& name, PhyloNode *father)
-    : LocNode(name, father), ColorNode(name, father), Node(name, father)
+PhyloNode::PhyloNode(const Name& name, const Name& url, PhyloNode *father)
+    : LocNode(name, father), ColorNode(name, father),
+      Node(name, father), _url(url)
 {}
+
+const Name& PhyloNode::url() const
+{
+    return _url;
+}
 
 PhyloNode* PhyloNode::father() const
 {
@@ -61,6 +67,11 @@ bool PhyloNode::changed() const
 void PhyloNode::setProj(VecXf proj)
 {
     _proj = proj;
+}
+
+void PhyloNode::setUrl(const Name& url)
+{
+    _url = url;
 }
 
 void PhyloNode::_init()

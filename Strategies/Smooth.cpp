@@ -48,11 +48,6 @@ float Smooth::z() const
     return _source.z();
 }
 
-float Smooth::w() const
-{
-    return _source.w();
-}
-
 VecXf Smooth::source() const
 {
     return _source;

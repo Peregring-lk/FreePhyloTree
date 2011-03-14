@@ -28,19 +28,16 @@ void _redirect();
 
 namespace fpt
 {
-    class ParserTree : public Strategy
+    class ParserTree
     {
     public:
 	ParserTree(std::string wikiPath);
-	PhyloTree* tree() const;
+	~ParserTree();
 
-    protected:
-	void _init();
-	void _step();
+	void expand(PhyloNode *node);
 
     private:
 	CURL *_curl;
-	PhyloTree *_tree;
 
 	struct curl_slist *_headerlist;
 
@@ -48,13 +45,13 @@ namespace fpt
 	std::string _query;
 	std::string _rootClade;
 
-	void _configQuery(std::string url, PhyloNode *node);
+	void _configQuery(PhyloNode *node);
 	void _searchSubclades(PhyloNode *node);
 
-	std::string _fix(std::string& name);
-	void _compound(std::string& name);
-	void _quitBrackets(std::string& name);
-	void _quitSpaces(std::string& name);
+	std::string _fix(Name& name);
+	void _compound(Name& name);
+	void _quitBrackets(Name& name);
+	void _quitSpaces(Name& name);
     };
 }
 

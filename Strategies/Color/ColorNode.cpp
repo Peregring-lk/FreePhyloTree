@@ -22,7 +22,7 @@
 using namespace fpt;
 
 ColorNode::ColorNode(const Name& name, ColorNode *father)
-    : Node(name, father), _color(3), _glow(1)
+    : Node(name, father)
 {}
 
 ColorNode* ColorNode::father() const
@@ -37,22 +37,22 @@ ColorNode* ColorNode::child(unsigned i) const
 
 float ColorNode::r() const
 {
-    return _color.source().coord(0);
+    return _color.source().x();
 }
 
 float ColorNode::g() const
 {
-    return _color.source().coord(1);
+    return _color.source().y();
 }
 
 float ColorNode::b() const
 {
-    return _color.source().coord(2);
+    return _color.source().z();
 }
 
 float ColorNode::glow() const
 {
-    return _glow.source().coord(0);
+    return _glow.source().x();
 }
 
 const Color& ColorNode::smoothColor() const

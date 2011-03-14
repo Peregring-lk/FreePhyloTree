@@ -20,52 +20,24 @@
 #include <cstdlib>
 #include <cmath>
 
+#include "VecXf.hpp"
+
 using namespace fpt;
-
-VecXf::VecXf(Dim dim)
-{
-    VecXf(dim, 0);
-}
-
-VecXf::VecXf(Dim dim, float k)
-{
-    for (Dim i = 0; i < dim; ++i)
-	_coords.push_back(k);
-
-    _dim = dim;
-}
 
 VecXf::VecXf(const VecXf& center, float radius)
 {
-    for (Dim i = 0; i < center.dim(); ++i) {
-	float r = radius * (2 * rand() / RAND_MAX - 1);
+    float x = radius * (2.0f * rand() / RAND_MAX - 1);
+    float y = radius * (2.0f * rand() / RAND_MAX - 1);
+    float z = radius * (2.0f * rand() / RAND_MAX - 1);
 
-	_coords.push_back(center.coord(i) + r);
-    }
-
-    _dim = center.dim();
+    *this = VecXf(center.x() + x,
+		  center.y() + y,
+		  center.z() + z);
 }
 
-template<typename... Coords>
-VecXf::VecXf(Dim dim, Coords... coords)
+VecXf::VecXf(float x, float y, float z) : _x(x), _y(y), _z(z)
 {
-    _build(dim, coords...);
-}
-
-template<typename... Coords>
-VecXf::VecXf(Coords... coords)
-{
-    _build(0, coords...);
-}
-
-Dim VecXf::dim() const
-{
-    return _dim;
-}
-
-Dim VecXf::totalDim() const
-{
-    return _coords.size();
+    _upToDateNorm = false;
 }
 
 float VecXf::norm() const
@@ -89,35 +61,42 @@ VecXf VecXf::unit() const
 
 float VecXf::coord(Dim dim) const
 {
-    if (dim < this->dim())
-	return _coords[dim];
-    else
+    switch(dim)
+    {
+    case 0:
+	return _x;
+    case 1:
+	return _y;
+    case 2:
+	return _z;
+    default:
 	return 0;
+    }
 }
 
 float VecXf::x() const
 {
-    return coord(0);
+    return _x;
 }
 
 float VecXf::y() const
 {
-    return coord(1);
+    return _y;
 }
 
 float VecXf::z() const
 {
-    return coord(2);
-}
-
-float VecXf::w() const
-{
-    return coord(3);
+    return _z;
 }
 
 VecXf VecXf::operator+ (const VecXf& vec) const
 {
     return VecXf(*this) += vec;
+}
+
+VecXf VecXf::operator- () const
+{
+    return *this * -1;
 }
 
 VecXf VecXf::operator- (const VecXf& vec) const
@@ -152,8 +131,9 @@ bool VecXf::inRadius(const VecXf& vec, float radius) const
 
 VecXf& VecXf::operator+= (const VecXf& vec)
 {
-    for (Dim i = 0; i < _dim; ++i)
-	_coords[i] += vec.coord(i);
+    _x += vec.x();
+    _y += vec.y();
+    _z += vec.z();
 
     _upToDateNorm = false;
 
@@ -162,8 +142,9 @@ VecXf& VecXf::operator+= (const VecXf& vec)
 
 VecXf& VecXf::operator-= (const VecXf& vec)
 {
-    for (Dim i = 0; i < _dim; ++i)
-	_coords[i] -= vec.coord(i);
+    _x -= vec.x();
+    _y -= vec.y();
+    _z -= vec.z();
 
     _upToDateNorm = false;
 
@@ -172,18 +153,31 @@ VecXf& VecXf::operator-= (const VecXf& vec)
 
 VecXf& VecXf::operator+= (float k)
 {
-    return *this += VecXf(_dim, k);
+    _x += k;
+    _y += k;
+    _z += k;
+
+    _upToDateNorm = false;
+
+    return *this;
 }
 
 VecXf& VecXf::operator-= (float k)
 {
-    return *this -= VecXf(_dim, k);
+    _x -= k;
+    _y -= k;
+    _z -= k;
+
+    _upToDateNorm = false;
+
+    return *this;
 }
 
 VecXf& VecXf::operator*= (float k)
 {
-    for (Dim i = 0; i < _dim; ++i)
-	_coords[i] *= k;
+    _x *= k;
+    _y *= k;
+    _z *= k;
 
     _upToDateNorm = false;
 
@@ -192,66 +186,63 @@ VecXf& VecXf::operator*= (float k)
 
 VecXf& VecXf::operator/= (float k)
 {
-    for (Dim i = 0; i < _dim; ++i)
-	_coords[i] /= k;
+    _x /= k;
+    _y /= k;
+    _z /= k;
 
     _upToDateNorm = false;
 
     return *this;
 }
 
-void VecXf::setDim(Dim dim)
+void VecXf::clear()
 {
-    if (dim < totalDim())
-	_dim = dim;
-    else {
-	_coords.push_back(0);
-	++_dim;
+    *this = VecXf();
 
-	setDim(dim);
-    }
+    _upToDateNorm = false;
 }
 
-void VecXf::resetDim()
+void VecXf::setX(float value)
 {
-    _dim = totalDim();
+    _x = value;
+
+    _upToDateNorm = false;
+}
+
+void VecXf::setY(float value)
+{
+    _y = value;
+
+    _upToDateNorm = false;
+}
+
+void VecXf::setZ(float value)
+{
+    _z = value;
+
+    _upToDateNorm = false;
 }
 
 void VecXf::setCoord(Dim dim, float value)
 {
-    if (dim < this->dim())
-	_coords[dim] = value;
+    switch(dim)
+    {
+    case 0:
+	setX(value);
+	break;
+    case 1:
+	setY(value);
+	break;
+    case 2:
+	setZ(value);
+    default:
+	break;
+    }
 }
 
 void VecXf::_calcNorm() const
 {
-    _norm = 0;
-
-    for (Dim i = 0; i < _dim; ++i)
-	_norm += pow(_coords[i], 2);
-
-    _norm = sqrt(_norm);
+    _norm = sqrt(pow(_x, 2) + pow(_y, 2) + pow(_z, 2));
 
     _upToDateNorm = true;
-}
-
-void VecXf::_build(Dim dim)
-{
-    _upToDateNorm = false;
-
-    if (dim == 0)
-	_dim = _coords.size();
-    else
-	_dim = dim;
-}
-
-template<typename... Coords>
-void VecXf::_build(Dim dim, float value, Coords... coords)
-{
-    if (dim == 0 || _coords.size() < dim) {
-	_coords.push_back(value);
-	_build(dim, coords...);
-    }
-    else
-	_build(dim);
 }

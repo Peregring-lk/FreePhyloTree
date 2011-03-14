@@ -48,6 +48,7 @@ void ColorTree::_init()
     for (auto i = begin(); !i.end(); i.next()) {
 	ColorNode *node = i.node();
 	VecXf color(node->fatherCubeColor().center(), 0.5f);
+
 	node->setSourceColor(color.x(), color.y(), color.z());
 
 	node->randSourceGlow(500 * node->order());

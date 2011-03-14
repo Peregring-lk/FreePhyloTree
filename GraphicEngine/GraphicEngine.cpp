@@ -28,10 +28,17 @@
 using namespace std;
 using namespace fpt;
 
-GraphicEngine::GraphicEngine()
+GraphicEngine::GraphicEngine(const Name& root)
     : Strategy(), _webView(this), _nameWeb("http://es.wikipedia.org/")
 {
     _parser = new ParserTree(_nameWeb);
+
+    PhyloNode *node = new PhyloNode(root, root);
+    _tree = new PhyloTree(root, node, 3, 40, 200, 6);
+
+    _viewing = new Viewing(_tree, width(), height());
+    _mouse = new Mouse(_tree, _viewing);
+    _scene = new Scene(_tree, _mouse);
 
     setMouseTracking(true);
     _webView.hide();
@@ -51,12 +58,7 @@ void GraphicEngine::animate()
 
 void GraphicEngine::_init()
 {
-    _parser->init();
-
-    _tree = _parser->tree();
-    _viewing = new Viewing(_tree, width(), height());
-    _mouse = new Mouse(_tree, _viewing);
-    _scene = new Scene(_tree, _mouse);
+    _parser->expand(_tree->root());
 
     _loadTextures();
 

@@ -39,7 +39,7 @@ namespace fpt
 	Q_OBJECT
 
     public:
-	GraphicEngine();
+	GraphicEngine(const Name& root);
 	~GraphicEngine();
 
     public slots:

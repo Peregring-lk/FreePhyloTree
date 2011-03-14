@@ -59,11 +59,8 @@ VecXf LocNode::locFather() const
 {
     LocNode *father = this->father();
 
-    if (father == NULL) {
-	VecXf vec(2u);
-
-	return vec;
-    }
+    if (father == NULL)
+	return VecXf();
     else
 	return father->loc();
 }

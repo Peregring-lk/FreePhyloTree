@@ -32,224 +32,58 @@ namespace fpt
     class VecXf
     {
     public:
-	VecXf(Dim dim, float k = 0)
-	{
-	    for (Dim i = 0; i < dim; ++i)
-		_coords.push_back(k);
+	VecXf(const VecXf& center, float radius);
+	VecXf(float x = 0, float y = 0, float z = 0);
 
-	    _dim = dim;
-	}
+	float norm() const;
+	VecXf unit() const;
 
-	VecXf(const VecXf& center, float radius)
-	{
-	    for (Dim i = 0; i < center.dim(); ++i) {
-		float r = radius * (2.0f * rand() / RAND_MAX - 1);
+	float coord(Dim dim) const;
 
-		_coords.push_back(center.coord(i) + r);
-	    }
+	float x() const;
+	float y() const;
+	float z() const;
 
-	    _dim = center.dim();
-	}
+	VecXf operator- () const;
 
-	template<typename... Coords>
-	VecXf(Coords... coords) { _build(0, coords...); }
+	VecXf operator+ (const VecXf& vec) const;
+	VecXf operator- (const VecXf& vec) const;
 
-	template<typename... Coords>
-	VecXf(Dim dim, Coords... coords) { _build(dim, coords...); }
+	VecXf operator+ (float k) const;
+	VecXf operator- (float k) const;
+	VecXf operator* (float k) const;
+	VecXf operator/ (float k) const;
 
-	Dim dim() const	{ return _dim; }
+	bool inRadius(const VecXf& vec, float radius) const;
 
-	Dim totalDim() const { return _coords.size(); }
+	VecXf& operator+= (const VecXf& vec);
+	VecXf& operator-= (const VecXf& vec);
 
-	float norm() const
-	{
-	    if (!_upToDateNorm)
-		_calcNorm();
+	VecXf& operator+= (float k);
+	VecXf& operator-= (float k);
+	VecXf& operator*= (float k);
+	VecXf& operator/= (float k);
 
-	    return _norm;
-	}
+	void clear();
 
-	VecXf unit() const
-	{
-	    if (!_upToDateNorm)
-		_calcNorm();
+	void setX(float value);
+	void setY(float value);
+	void setZ(float value);
 
-	    if (_norm < 0.00001)
-		return *this;
-	    else
-		return *this / _norm;
-	}
-
-	float coord(Dim dim) const
-	{
-	    if (dim < this->dim())
-		return _coords[dim];
-	    else
-		return 0;
-	}
-
-	float x() const { return coord(0); }
-	float y() const { return coord(1); }
-	float z() const { return coord(2); }
-	float w() const { return coord(3); }
-
-	VecXf operator+ (const VecXf& vec) const
-	{ return VecXf(*this) += vec; }
-
-	VecXf operator- () const
-	{
-	    return *this * -1;
-	}
-
-	VecXf operator- (const VecXf& vec) const
-	{ return VecXf(*this) -= vec; }
-
-	VecXf operator+ (float k) const { return VecXf(*this) += k; }
-
-	VecXf operator- (float k) const { return VecXf(*this) -= k; }
-
-	VecXf operator* (float k) const { return VecXf(*this) *= k; }
-
-	VecXf operator/ (float k) const { return VecXf(*this) /= k; }
-
-	bool inRadius(const VecXf& vec, float radius) const
-	{ return (*this - vec).norm() < radius;	}
-
-	VecXf& operator+= (const VecXf& vec)
-	{
-	    for (Dim i = 0; i < _dim; ++i)
-		_coords[i] += vec.coord(i);
-
-	    _upToDateNorm = false;
-
-	    return *this;
-	}
-
-	VecXf& operator-= (const VecXf& vec)
-	{
-	    for (Dim i = 0; i < _dim; ++i)
-		_coords[i] -= vec.coord(i);
-
-	    _upToDateNorm = false;
-
-	    return *this;
-	}
-
-	VecXf& operator+= (float k)
-	{ return *this += VecXf(_dim, k); }
-
-	VecXf& operator-= (float k)
-	{ return *this -= VecXf(_dim, k); }
-
-	VecXf& operator*= (float k)
-	{
-	    for (Dim i = 0; i < _dim; ++i)
-		_coords[i] *= k;
-
-	    _upToDateNorm = false;
-
-	    return *this;
-	}
-
-	VecXf& operator/= (float k)
-	{
-	    for (Dim i = 0; i < _dim; ++i)
-		_coords[i] /= k;
-
-	    _upToDateNorm = false;
-
-	    return *this;
-	}
-
-	void setDim(Dim dim)
-	{
-	    if (dim < totalDim())
-		_dim = dim;
-	    else {
-		_coords.push_back(0);
-		++_dim;
-
-		setDim(dim);
-	    }
-	}
-
-	void resetDim() { _dim = totalDim(); }
-
-	void clear()
-	{
-	    *this = VecXf((Dim)_dim);
-	}
-
-	void setCoord(Dim dim, float value)
-	{
-	    if (dim < this->dim())
-		_coords[dim] = value;
-	}
-
-	void setX(float value)
-	{
-	    setCoord(0, value);
-	}
-
-	void setY(float value)
-	{
-	    setCoord(1, value);
-	}
-
-	void setZ(float value)
-	{
-	    setCoord(2, value);
-	}
-
-	void setW(float value)
-	{
-	    setCoord(3, value);
-	}
+	void setCoord(Dim dim, float value);
 
     protected:
-	std::vector<float> _coords;
-	Dim _dim;
+	float _x;
+	float _y;
+	float _z;
 
 	mutable float _norm;
 
     private:
 	mutable bool _upToDateNorm;
 
-	void _calcNorm() const
-	{
-	    _norm = 0;
-
-	    for (Dim i = 0; i < _dim; ++i)
-		_norm += pow(_coords[i], 2);
-
-	    _norm = sqrt(_norm);
-
-	    _upToDateNorm = true;
-	}
-
-	void _build(Dim dim)
-	{
-	    _upToDateNorm = false;
-
-	    if (dim == 0)
-		_dim = _coords.size();
-	    else
-		_dim = dim;
-	}
-
-	template<typename... Coords>
-	void _build(Dim dim, float value, Coords... coords)
-	{
-	    if (dim == 0 || _coords.size() < dim) {
-		_coords.push_back(value);
-		_build(dim, coords...);
-	    }
-	    else
-		_build(dim);
-	}
+	void _calcNorm() const;
     };
 }
-
-// #include "VecXf.cpp"
 
 #endif

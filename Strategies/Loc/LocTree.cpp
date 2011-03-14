@@ -70,7 +70,9 @@ void LocTree::_init()
 {
     for (auto i = begin(); !i.end(); i.next()) {
 	LocNode *node = i.node();
+
 	VecXf rand(node->locFather(), 100.0f);
+	rand.setZ(0);
 
 	node->setSourceLoc(rand);
 	node->setTargetLoc(rand);
@@ -88,7 +90,7 @@ void LocTree::_step()
     if (changed()) {
 	_changed = false;
 
-	_Moves moves(order(), VecXf(2u));
+	_Moves moves(order(), VecXf());
 
 	for (auto i = begin(); !i.end(); i.next()) {
 	    LocNode *source = i.node();
@@ -140,19 +142,16 @@ VecXf LocTree::_fr(LocNode *source, LocNode *target) const
 
 void LocTree::_calcConvexSphere()
 {
-    VecXf inf(2u);
-    VecXf sup(2u);
+    VecXf inf, sup;
 
     for (auto i = begin(); !i.end(); i.next()) {
 	LocNode *node = i.node();
 
 	inf.setX(_min(node->x(), inf.x()));
 	inf.setY(_min(node->y(), inf.y()));
-	inf.setZ(_min(node->z(), inf.z()));
 
 	sup.setX(_max(node->x(), sup.x()));
 	sup.setY(_max(node->y(), sup.y()));
-	sup.setZ(_max(node->z(), sup.z()));
     }
 
     _center = (inf + sup) / 2;
