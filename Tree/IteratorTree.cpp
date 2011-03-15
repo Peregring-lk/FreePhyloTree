@@ -57,7 +57,7 @@ IteratorTree IteratorTree::forward() const
 
 void IteratorTree::next()
 {
-    if (_node == NULL)
+    if (end())
 	return;
 
     if (_mem.top() < _node->degree()) {

@@ -35,11 +35,13 @@ namespace fpt
 
 	IteratorColorTree begin(ColorNode *node = NULL);
 
+	void prepareColor(ColorNode *node);
+
     protected:
 	void _init();
 	void _step();
 
-	void _initCubes(ColorNode *node, CubeColor cube, TypeC t);
+	void _initCubes(ColorNode *node, CubeColor& cube, TypeC t);
 
     private:
 	float _smoothColor;

@@ -42,6 +42,8 @@ namespace fpt
 
 	IteratorLocTree begin(LocNode *node = NULL);
 
+	void prepareLoc(LocNode *node = NULL);
+
     protected:
 	void _init();
 	void _step();

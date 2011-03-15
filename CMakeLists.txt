@@ -6,6 +6,13 @@ FIND_PACKAGE(Qt4 REQUIRED)
 
 INCLUDE_DIRECTORIES(/usr/include/freetype2/)
 
+SET(FLEXSRC GraphicEngine/LexerWiki.l)
+SET(FLEXOUT GraphicEngine/LexerWiki.cpp)
+
+FIND_PACKAGE(FLEX)
+
+FLEX_TARGET(Scanner ${FLEXSRC} ${FLEXOUT})
+
 AUX_SOURCE_DIRECTORY(Tree TREE)
 AUX_SOURCE_DIRECTORY(VecXf VEC)
 AUX_SOURCE_DIRECTORY(Strategies STRGY)
@@ -22,7 +29,7 @@ QT4_WRAP_CPP(MOC_HEADERS GraphicEngine/GraphicEngine.hpp)
 
 SET(PHYLOTREE PhyloTree PhyloNode IteratorPhyloTree)
 SET(TREES ${VEC} ${TREE} ${STRGY} ${COLOR} ${LOC} ${PHYLOTREE})
-SET(SRC ${TREES} ${GRAPHIC} FreePhyloTree program)
+SET(SRC ${TREES} ${GRAPHIC} ${FLEX_Scanner_OUTPUTS} FreePhyloTree program)
 
 IF(CMAKE_COMPILER_IS_GNUCXX)
     SET(CMAKE_CXX_FLAGS "-std=c++0x")        ## c++0x

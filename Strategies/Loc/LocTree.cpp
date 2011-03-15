@@ -66,9 +66,9 @@ IteratorLocTree LocTree::begin(LocNode *node)
     return IteratorLocTree(node);
 }
 
-void LocTree::_init()
+void LocTree::prepareLoc(LocNode *node)
 {
-    for (auto i = begin(); !i.end(); i.next()) {
+    for (auto i = begin(node).forward(); !i.end(); i.next()) {
 	LocNode *node = i.node();
 
 	VecXf rand(node->locFather(), 100.0f);
@@ -83,6 +83,11 @@ void LocTree::_init()
 
     _calcConvexSphere();
     _changed = true;
+}
+
+void LocTree::_init()
+{
+    prepareLoc(root());
 }
 
 void LocTree::_step()

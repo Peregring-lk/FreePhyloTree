@@ -68,7 +68,7 @@ const Glow& ColorNode::smoothGlow() const
 CubeColor ColorNode::fatherCubeColor() const
 {
     if (father() == NULL)
-	return CubeColor();
+	return CubeColor(0, 0, 0, 1, 1, 1);
     else
 	return father()->cubeColor();
 }
@@ -122,6 +122,13 @@ void ColorNode::changeSmoothColor(float smooth)
 void ColorNode::changeSmoothGlow(float smooth)
 {
     _glow.changeSmooth(smooth);
+}
+
+void ColorNode::clear()
+{
+    setTargetGlow(10 * order());
+
+    Node::clear();
 }
 
 void ColorNode::_init()

@@ -30,7 +30,7 @@ Node::Node(const Name& name, Node *father)
 
 Node::~Node()
 {
-    for (int i = 0; i < degree(); ++i)
+    for (unsigned i = 0; i < degree(); ++i)
 	delete child(i);
 }
 
@@ -47,6 +47,14 @@ unsigned Node::degree() const
 unsigned Node::order() const
 {
     return _order;
+}
+
+unsigned Node::level() const
+{
+    if (father() == NULL)
+	return 0;
+    else
+	return 1 + father()->level();
 }
 
 Node* Node::father() const
@@ -68,12 +76,21 @@ void Node::addChild(Node *node)
     _updateOrder();
 }
 
-void Node::_updateOrder()
+void Node::clear()
 {
-    _order += 1;
+    for (unsigned i = 0; i < degree(); ++i)
+	delete child(i);
+
+    _updateOrder(-degree());
+    _children.clear();
+}
+
+void Node::_updateOrder(int f)
+{
+    _order += f * 1;
 
     Node *father = Node::father();
 
     if (father != NULL)
-	father->_updateOrder();
+	father->_updateOrder(f);
 }

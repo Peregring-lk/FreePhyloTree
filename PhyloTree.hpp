@@ -36,7 +36,7 @@ namespace fpt
 
 	bool changed() const;
 
-	IteratorPhyloTree begin();
+	IteratorPhyloTree begin(PhyloNode *node = NULL);
 
     protected:
 	void _init();

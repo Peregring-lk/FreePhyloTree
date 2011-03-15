@@ -63,6 +63,8 @@ namespace fpt
 	void changeSmoothColor(float smooth);
 	void changeSmoothGlow(float smooth);
 
+	void clear();
+
     protected:
 	void _init();
 	void _step();

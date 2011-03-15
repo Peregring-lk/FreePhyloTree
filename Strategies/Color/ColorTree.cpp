@@ -41,25 +41,38 @@ IteratorColorTree ColorTree::begin(ColorNode *node)
     return IteratorColorTree(node);
 }
 
-void ColorTree::_init()
+void ColorTree::prepareColor(ColorNode *node)
 {
-    _initCubes(root(), CubeColor(0, 0, 0, 1, 1, 1), 0);
+    CubeColor init;
 
-    for (auto i = begin(); !i.end(); i.next()) {
-	ColorNode *node = i.node();
-	VecXf color(node->fatherCubeColor().center(), 0.5f);
+    if (node == NULL)
+	init = CubeColor(0, 0, 0, 1, 1, 1);
+    else
+	init = node->cubeColor();
 
-	node->setSourceColor(color.x(), color.y(), color.z());
+    _initCubes(node, init, 0);
 
-	node->randSourceGlow(500 * node->order());
-	node->setTargetGlow(70 * node->order());
-	node->changeSmoothColor(_smoothColor);
-	node->changeSmoothGlow(_smoothGlow);
+    for (auto i = begin(node); !i.end(); i.next()) {
+	ColorNode *next = i.node();
+	VecXf color(next->fatherCubeColor().center(), 0.5f);
 
-	node->init();
+	next->setSourceColor(color.x(), color.y(), color.z());
+
+	next->randSourceGlow(200 * node->order());
+	next->setTargetGlow(20 * node->order());
+	next->changeSmoothColor(_smoothColor);
+	next->changeSmoothGlow(_smoothGlow);
+
+	next->init();
     }
 
     _changed = true;
+
+}
+
+void ColorTree::_init()
+{
+    prepareColor(root());
 }
 
 void ColorTree::_step()
@@ -72,7 +85,7 @@ void ColorTree::_step()
     }
 }
 
-void ColorTree::_initCubes(ColorNode *node, CubeColor cube, TypeC t)
+void ColorTree::_initCubes(ColorNode *node, CubeColor& cube, TypeC t)
 {
     TypeC newt = (t + 1) % 3;
 

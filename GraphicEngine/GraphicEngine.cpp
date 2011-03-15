@@ -20,6 +20,7 @@
 #include <iostream>
 #include <QApplication>
 #include <QWebFrame>
+
 #include "GraphicEngine.hpp"
 
 #include "Scene.hpp"
@@ -29,7 +30,7 @@ using namespace std;
 using namespace fpt;
 
 GraphicEngine::GraphicEngine(const Name& root)
-    : Strategy(), _webView(this), _nameWeb("http://es.wikipedia.org/")
+    : Strategy(), _webView(this), _nameWeb("http://species.wikimedia.org/")
 {
     _parser = new ParserTree(_nameWeb);
 
@@ -49,6 +50,8 @@ GraphicEngine::~GraphicEngine()
     delete _viewing;
     delete _scene;
     delete _mouse;
+    delete _parser;
+    delete _tree;
 }
 
 void GraphicEngine::animate()
@@ -106,6 +109,23 @@ void GraphicEngine::keyPressEvent(QKeyEvent *event)
 	QApplication::quit();
     else if (event->key() == Qt::Key_Space)
 	_viewing->centering();
+}
+
+void GraphicEngine::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+	PhyloNode *node = _mouse->actualNode();
+
+	if (node != NULL) {
+	    if (node->degree() == 0) {
+		_parser->expand(node);
+		_tree->prepareLoc(node);
+		_tree->prepareColor(node);
+	    }
+	    else
+		node->clear();
+	}
+    }
 }
 
 void GraphicEngine::mouseMoveEvent(QMouseEvent *event)

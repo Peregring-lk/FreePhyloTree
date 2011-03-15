@@ -32,17 +32,19 @@ namespace fpt
     {
     public:
 	Node(const Name& name, Node *father = NULL);
-	~Node();
+	virtual ~Node();
 
 	const Name& name() const;
 
 	unsigned degree() const;
 	unsigned order() const;
+	unsigned level() const;
 
 	virtual Node* father() const;
 	virtual Node* child(unsigned i) const;
 
 	void addChild(Node *node);
+	virtual void clear();
 
     protected:
 	Name _name;
@@ -52,7 +54,7 @@ namespace fpt
 
 	unsigned _order;
 
-	void _updateOrder();
+	void _updateOrder(int f = 1);
     };
 }
 

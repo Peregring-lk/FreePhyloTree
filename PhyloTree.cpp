@@ -41,9 +41,12 @@ bool PhyloTree::changed() const
     return ColorTree::changed() || LocTree::changed();
 }
 
-IteratorPhyloTree PhyloTree::begin()
+IteratorPhyloTree PhyloTree::begin(PhyloNode *node)
 {
-    return IteratorPhyloTree(root());
+    if (node == NULL)
+	node = root();
+
+    return IteratorPhyloTree(node);
 }
 
 void PhyloTree::_init()

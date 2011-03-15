@@ -64,6 +64,7 @@ namespace fpt
 	void resizeGL();
 
 	void keyPressEvent(QKeyEvent *event);
+	void mouseDoubleClickEvent(QMouseEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);
 	void resizeGL(int width, int height);
 

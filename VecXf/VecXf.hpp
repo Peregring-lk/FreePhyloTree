@@ -21,9 +21,6 @@
 #define _FPT_VECXF_
 
 #include <iostream>
-#include <vector>
-#include <cmath>
-#include <cstdlib>
 
 namespace fpt
 {

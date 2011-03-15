@@ -23,21 +23,22 @@
 #include <curl/curl.h>
 #include "../PhyloTree.hpp"
 
-size_t _saveQuery(void *txt, size_t size, size_t mem, FILE *file);
-void _redirect();
+int input(void);
 
 namespace fpt
 {
     class ParserTree
     {
     public:
-	ParserTree(std::string wikiPath);
+	ParserTree(std::string wikiPath, unsigned levelsStep = 3);
 	~ParserTree();
 
 	void expand(PhyloNode *node);
 
     private:
 	CURL *_curl;
+	Node *_actualNode;
+	unsigned _levelsStep;
 
 	struct curl_slist *_headerlist;
 
@@ -46,12 +47,10 @@ namespace fpt
 	std::string _rootClade;
 
 	void _configQuery(PhyloNode *node);
-	void _searchSubclades(PhyloNode *node);
-
-	std::string _fix(Name& name);
-	void _compound(Name& name);
-	void _quitBrackets(Name& name);
-	void _quitSpaces(Name& name);
+	void _subclades(PhyloNode *node);
+	std::string _fix(std::string& name);
+	std::string _fixLink(std::string& name);
+	std::string _fixTemplate(std::string& name);
     };
 }
 
