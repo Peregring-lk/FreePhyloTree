@@ -68,20 +68,36 @@ IteratorLocTree LocTree::begin(LocNode *node)
 
 void LocTree::prepareLoc(LocNode *node)
 {
-    for (auto i = begin(node).forward(); !i.end(); i.next()) {
+    for (auto i = begin(node); !i.end(); i.next()) {
 	LocNode *node = i.node();
+	LocNode *father = node->father();
 
-	VecXf rand(node->locFather(), 100.0f);
-	rand.setZ(0);
+	float factor;
 
-	node->setSourceLoc(rand);
-	node->setTargetLoc(rand);
+	if (father != NULL)
+	    factor = father->degree();
+
+	factor += node->degree();
+
+	VecXf rand1(node->locFather(), factor * _c2 / 4);
+	VecXf rand2(node->locFather(), factor * _c2 / 4);
+
+	rand1.setZ(0);
+	rand2.setZ(0);
+
+	node->setSourceLoc(rand1);
+	node->setTargetLoc(rand2);
 	node->changeSmooth(_smooth);
 
 	node->init();
     }
 
     _calcConvexSphere();
+    _changed = true;
+}
+
+void LocTree::clearNode(LocNode *node)
+{
     _changed = true;
 }
 

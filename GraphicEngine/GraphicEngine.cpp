@@ -30,18 +30,20 @@ using namespace std;
 using namespace fpt;
 
 GraphicEngine::GraphicEngine(const Name& root)
-    : Strategy(), _webView(this), _nameWeb("http://species.wikimedia.org/")
+    : Strategy(), _webView(this), _nameWeb("http://es.wikipedia.org/wiki/")
 {
-    _parser = new ParserTree(_nameWeb);
+    _parser = new ParserTree("http://species.wikimedia.org/");
 
     PhyloNode *node = new PhyloNode(root, root);
-    _tree = new PhyloTree(root, node, 3, 40, 200, 6);
+    _tree = new PhyloTree(root, node, 3, 40, 200, 2);
 
     _viewing = new Viewing(_tree, width(), height());
     _mouse = new Mouse(_tree, _viewing);
     _scene = new Scene(_tree, _mouse);
 
     setMouseTracking(true);
+    setFocus(Qt::MouseFocusReason);
+
     _webView.hide();
 }
 
@@ -61,6 +63,9 @@ void GraphicEngine::animate()
 
 void GraphicEngine::_init()
 {
+    _ratioKey = 10;
+    _controlKey = false;
+
     _parser->expand(_tree->root());
 
     _loadTextures();
@@ -69,11 +74,39 @@ void GraphicEngine::_init()
     _scene->init();
     _viewing->init();
     _mouse->init();
+
+    _resizeWebView();
 }
 
 void GraphicEngine::_step()
 {
     repaint();
+    _resizeWebView();
+}
+
+void GraphicEngine::_viewPage(PhyloNode *node)
+{
+    if (node != NULL) {
+	string url = _nameWeb + node->url();
+	_webView.load(QUrl(url.c_str()));
+
+	if (_webView.isHidden())
+	    _webView.show();
+    }
+    else if (_webView.isVisible()) {
+	_webView.hide();
+	_webView.clearFocus();
+    }
+}
+
+void GraphicEngine::_resizeWebView()
+{
+    int w = 0.9 * width();
+    int h = 0.9 * height();
+
+    _webView.resize(w, h);
+    _webView.move((width() - w) / 2,
+		  (height() - h) / 2);
 }
 
 void GraphicEngine::initializeGL()
@@ -109,6 +142,22 @@ void GraphicEngine::keyPressEvent(QKeyEvent *event)
 	QApplication::quit();
     else if (event->key() == Qt::Key_Space)
 	_viewing->centering();
+    else if (event->key() == Qt::Key_Up)
+	_viewing->moveCamera(VecXf(0, _ratioKey));
+    else if (event->key() == Qt::Key_Down)
+	_viewing->moveCamera(VecXf(0, -_ratioKey));
+    else if (event->key() == Qt::Key_Right)
+	_viewing->moveCamera(VecXf(_ratioKey, 0));
+    else if (event->key() == Qt::Key_Left)
+	_viewing->moveCamera(VecXf(-_ratioKey, 0));
+    else if (event->key() == Qt::Key_Control)
+	_controlKey = true;
+}
+
+void GraphicEngine::keyReleaseEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Control)
+	_controlKey = false;
 }
 
 void GraphicEngine::mouseDoubleClickEvent(QMouseEvent *event)
@@ -117,15 +166,21 @@ void GraphicEngine::mouseDoubleClickEvent(QMouseEvent *event)
 	PhyloNode *node = _mouse->actualNode();
 
 	if (node != NULL) {
-	    if (node->degree() == 0) {
+	    if (_controlKey)
+		_tree->crib(node);
+	    else if (node->degree() == 0) {
 		_parser->expand(node);
 		_tree->prepareLoc(node);
 		_tree->prepareColor(node);
 	    }
-	    else
+	    else {
 		node->clear();
+		_tree->clearNode(node);
+	    }
 	}
     }
+    else if (event->button() == Qt::RightButton)
+	_viewPage(_mouse->actualNode());
 }
 
 void GraphicEngine::mouseMoveEvent(QMouseEvent *event)

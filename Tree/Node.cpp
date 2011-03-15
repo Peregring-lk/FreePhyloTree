@@ -70,10 +70,27 @@ Node* Node::child(unsigned i) const
 	return NULL;
 }
 
+void Node::changeFather(Node *node)
+{
+    _father = node;
+}
+
 void Node::addChild(Node *node)
 {
     _children.push_back(node);
     _updateOrder();
+}
+
+void Node::quitChild(Node *node)
+{
+    for (unsigned i = 0; i < degree(); ++i)
+	if (child(i) == node) {
+	    _children.erase(_children.begin() + i);
+
+	    return;
+	}
+
+    _updateOrder(-node->order());
 }
 
 void Node::clear()

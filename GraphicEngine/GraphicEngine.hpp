@@ -56,19 +56,25 @@ namespace fpt
 	Scene *_scene;
 	Mouse *_mouse;
 
+	bool _controlKey;
+
 	QWebView _webView;
 	std::string _nameWeb;
+	float _ratioKey;
 
 	void initializeGL();
 	void paintGL();
 	void resizeGL();
 
 	void keyPressEvent(QKeyEvent *event);
+	void keyReleaseEvent(QKeyEvent *event);
 	void mouseDoubleClickEvent(QMouseEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);
 	void resizeGL(int width, int height);
 
 	void _loadTextures();
+	void _viewPage(PhyloNode *node);
+	void _resizeWebView();
     };
 }
 

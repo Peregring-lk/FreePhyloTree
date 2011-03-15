@@ -30,6 +30,7 @@ namespace fpt
     {
     public:
 	Viewing(PhyloTree *tree, GLsizei width, GLsizei height,
+		float minRatio = 10.0f / 7,
 		float maxRatio = 10.0f / 12);
 
 	bool changed() const;
@@ -53,6 +54,7 @@ namespace fpt
 	Smooth _center;
 	Smooth _distance;
 
+	float _minRatio;
 	float _maxRatio;
 	float _border;
 

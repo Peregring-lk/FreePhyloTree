@@ -25,8 +25,8 @@
 using namespace fpt;
 
 Viewing::Viewing(PhyloTree *tree, GLsizei width, GLsizei height,
-		 float maxRatio)
-    : _tree(tree), _maxRatio(maxRatio)
+		 float minRatio, float maxRatio)
+    : _tree(tree), _minRatio(maxRatio), _maxRatio(maxRatio)
 {
     sizeViewport(width, height);
     _border = 1.2;
@@ -117,8 +117,14 @@ void Viewing::_calcOrtho()
      *  Reducimos el ratio coordenadas / píxel.
      *
      */
-    if (2 * distance.x() / _width < _maxRatio) {
+    float actualRatio = 2 * distance.x() / _width;
+
+    if (actualRatio < _maxRatio) {
 	distance.setX(_width * _maxRatio * 0.5);
+	distance.setY(distance.x() / vwRatio);
+    }
+    else if (actualRatio > _minRatio)  {
+	distance.setX(_width * _minRatio * 0.5);
 	distance.setY(distance.x() / vwRatio);
     }
 

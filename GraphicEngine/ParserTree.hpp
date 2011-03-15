@@ -30,7 +30,8 @@ namespace fpt
     class ParserTree
     {
     public:
-	ParserTree(std::string wikiPath, unsigned levelsStep = 3);
+	ParserTree(std::string wikiPath,
+		   unsigned levelsStep = 2, unsigned maxSons = 20);
 	~ParserTree();
 
 	void expand(PhyloNode *node);
@@ -39,6 +40,7 @@ namespace fpt
 	CURL *_curl;
 	Node *_actualNode;
 	unsigned _levelsStep;
+	unsigned _maxSons;
 
 	struct curl_slist *_headerlist;
 

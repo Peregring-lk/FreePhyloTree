@@ -55,3 +55,17 @@ IteratorTree Tree::begin(Node *node) const
 
     return IteratorTree(node);
 }
+
+void Tree::crib(Node *node)
+{
+    if (node != root())
+    {
+	node->father()->quitChild(node);
+
+	delete root();
+
+	node->changeFather(NULL);
+
+	_root = node;
+    }
+}

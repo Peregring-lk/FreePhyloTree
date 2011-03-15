@@ -24,7 +24,7 @@ using namespace fpt;
 QFreePhyloTree::QFreePhyloTree(int argc, char **argv)
     : QApplication(argc, argv), _qTimer(this)
 {
-    _glEngine = new GraphicEngine("Amniota");
+    _glEngine = new GraphicEngine("Neomura");
 }
 
 QFreePhyloTree::~QFreePhyloTree()

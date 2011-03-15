@@ -32,7 +32,7 @@ namespace fpt
     public:
 	LocTree(const Name& name, LocNode *root,
 		float c1, float c2, float c3, float c4,
-		float smooth = 0.05);
+		float smooth = 0.15);
 
 	LocNode* root() const;
 	VecXf locRoot() const;
@@ -43,6 +43,7 @@ namespace fpt
 	IteratorLocTree begin(LocNode *node = NULL);
 
 	void prepareLoc(LocNode *node = NULL);
+	void clearNode(LocNode *node);
 
     protected:
 	void _init();

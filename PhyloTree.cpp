@@ -49,6 +49,12 @@ IteratorPhyloTree PhyloTree::begin(PhyloNode *node)
     return IteratorPhyloTree(node);
 }
 
+void PhyloTree::clearNode(PhyloNode *node)
+{
+    LocTree::clearNode(node);
+    ColorTree::clearNode(node);
+}
+
 void PhyloTree::_init()
 {
     ColorTree::_init();

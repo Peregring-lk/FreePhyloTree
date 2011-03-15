@@ -29,13 +29,14 @@ namespace fpt
     {
     public:
 	ColorTree(const Name& name, ColorNode *root,
-		  float smoothColor = 0.01, float smoothGlow = 0.01);
+		  float smoothColor = 0.01, float smoothGlow = 0.1);
 
 	ColorNode* root() const;
 
 	IteratorColorTree begin(ColorNode *node = NULL);
 
 	void prepareColor(ColorNode *node);
+	void clearNode(ColorNode *node);
 
     protected:
 	void _init();

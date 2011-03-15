@@ -94,10 +94,11 @@ void Mouse::_step()
 	    }
 	}
 
-    if (actual != _actual)
+    if (actual != _actual) {
 	_changedActual = true;
+	_actual = actual;
+    }
 
-    _actual = actual;
     _changed = false;
     _mov = VecXf(0.0f, 0.0f);
 }

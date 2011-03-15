@@ -43,7 +43,10 @@ namespace fpt
 	virtual Node* father() const;
 	virtual Node* child(unsigned i) const;
 
+	void changeFather(Node *node);
+
 	void addChild(Node *node);
+	void quitChild(Node *node);
 	virtual void clear();
 
     protected:

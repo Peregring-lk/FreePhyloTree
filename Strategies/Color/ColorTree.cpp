@@ -70,6 +70,14 @@ void ColorTree::prepareColor(ColorNode *node)
 
 }
 
+void ColorTree::clearNode(ColorNode *node)
+{
+    node->randSourceGlow(200 * node->order());
+    node->setTargetGlow(20 * node->order());
+
+    _changed = true;
+}
+
 void ColorTree::_init()
 {
     prepareColor(root());

@@ -37,6 +37,7 @@ namespace fpt
 	virtual Node* root() const;
 
 	IteratorTree begin(Node *node = NULL) const;
+	void crib(Node *node);
 
     protected:
 	Name _name;

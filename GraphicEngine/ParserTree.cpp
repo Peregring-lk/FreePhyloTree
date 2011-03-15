@@ -40,8 +40,9 @@ size_t _setBuffer(void *ptr, size_t size, size_t nmemb, void *stream)
     return size * nmemb;
 }
 
-ParserTree::ParserTree(string wikiPath, unsigned levelsStep)
-    : _wikiPath(wikiPath), _levelsStep(levelsStep)
+ParserTree::ParserTree(string wikiPath, unsigned levelsStep,
+		       unsigned maxSons)
+    : _wikiPath(wikiPath), _levelsStep(levelsStep), _maxSons(maxSons)
 {
     _headerlist = NULL;
 
@@ -108,8 +109,9 @@ void ParserTree::_subclades(PhyloNode *node)
     _clades.clear();
 
     if ((node->level() - _actualNode->level()) < _levelsStep - 1)
-	for (int i = 0; i < node->degree(); ++i)
-	_configQuery(node->child(i));
+	if (node->degree() < _maxSons)
+	    for (int i = 0; i < node->degree(); ++i)
+		_configQuery(node->child(i));
 }
 
 string ParserTree::_fix(string& name)
