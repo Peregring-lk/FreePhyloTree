@@ -25,6 +25,14 @@
 
 namespace fpt
 {
+    /*! \class IteratorColorTree
+     *  \brief Especialización de \c IteratorTree para \c ColorTree.
+     *
+     *  Ésta clase es un «wrapper» de \c IteratorTree para hacer
+     *  transparente al usuario el tipado dinámico, desde \c Node a \c
+     *  ColorNode.
+     *
+     */
     class IteratorColorTree : public IteratorTree
     {
     public:

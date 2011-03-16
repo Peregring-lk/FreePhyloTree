@@ -26,6 +26,16 @@
 
 namespace fpt
 {
+    /*! \class Viewing
+     *  \brief Clase de visionado de la aplicación.
+     *
+     *  Ésta clase se encarga de controlar el cuadro de visionado y
+     *  los movimientos de la cámara.
+     *
+     *  \note No la he llamado clase \c Camera, porque no solo trata
+     *  la cámara, sino también el \a viewport.
+     *
+     */
     class Viewing : public Strategy
     {
     public:

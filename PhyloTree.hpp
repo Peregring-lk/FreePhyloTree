@@ -26,6 +26,12 @@
 
 namespace fpt
 {
+    /*! \class PhyloTree
+     *  \brief Árbol principal del juego.
+     *
+     *  \c PhyloTree es, a su vez, un árbol coloreable, \c ColorTree,
+     *  y un árbol posicionable, \c LocTree.
+     */
     class PhyloTree : public LocTree, public ColorTree
     {
     public:

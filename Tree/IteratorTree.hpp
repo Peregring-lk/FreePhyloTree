@@ -26,6 +26,17 @@
 
 namespace fpt
 {
+    /*! \class IteratorTree
+     *  \brief Iterator para recorrer un árbol.
+     *
+     *  Iterador que permite recorrer en preorden un árbol, y que sea
+     *  tratado sin más como un vector de nodos.
+     *
+     *  \note Evidentemente, heredando y sobrecargando se pueden
+     *  especificar otros recorridos: inorden, postorden, anchura,
+     *  etcétera.
+     *
+     */
     class IteratorTree
     {
     public:

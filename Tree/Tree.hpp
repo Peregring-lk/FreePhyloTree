@@ -25,6 +25,16 @@
 
 namespace fpt
 {
+    /*! \class Tree
+     *  \brief Tipo árbol
+     *
+     *  La clase \c Tree es una clase sencilla para manejar árboles y
+     *  obtener algunas propiedades básicas del mismo árbol. Es
+     *  identificado por un nombre.
+     *
+     *  \sa IteratorTree
+     *
+     */
     class Tree
     {
     public:

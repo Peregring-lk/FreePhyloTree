@@ -25,6 +25,20 @@
 
 namespace fpt
 {
+    /*! \class ColorTree
+     *  \brief Clase árbol coloreable.
+     *
+     *  Ésta clase es un tipo \c Tree cuyos nodos son nodos
+     *  coloreables, \c ColorNode. Ésta clase se encarga de inicializar a
+     *  cada uno de sus nodos y de calcular sus colores haciendo
+     *  uso de un algoritmo de la familia de los kd-tree, que divide
+     *  el cubo cromático en regiones, asignándole a cada nodo una.
+     *
+     *  Al igual que con \c LocTree, \c ColorTree se encarga de
+     *  controlar los colores y el brillo de cada uno de sus nodos
+     *  durante toda la ejecución de la aplicación.
+     *
+     */
     class ColorTree : virtual public Tree, virtual public Strategy
     {
     public:

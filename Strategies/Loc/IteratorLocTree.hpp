@@ -25,6 +25,14 @@
 
 namespace fpt
 {
+    /*! \class IteratorLocTree
+     *  \brief Especialización de \c IteratorTree para \c LocTree.
+     *
+     *  Ésta clase es un «wrapper» de \c IteratorTree para hacer
+     *  transparente al usuario el tipado dinámico, desde \c Node a \c
+     *  LocNode.
+     *
+     */
     class IteratorLocTree : public IteratorTree
     {
     public:

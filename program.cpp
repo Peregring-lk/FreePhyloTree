@@ -17,16 +17,51 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// This lines is only for Doxygen documentation
-/** @mainpage
- * FreePhyloTree by Aarón Bueno Villares <abv150ci@gmail.com>.\n
- * A free phylogenetic trees editor. Please, visit the
- * <a href="http://freephylotree.blogspot.com/" >blog (Spanish)</a>
- * to learn more about FreePhyloTree.
- * This web page contains the developers info.\n
- * The entry point of the program is the main.cpp,
- * but this function just boots the application object,
- * QFreePhyloTree.\n
+/*! \mainpage
+ * \a FreePhyloTree, proyecto llevado a cabo por Aarón Bueno Villares
+ * <abv150ci@gmail.com>, en colaboración con Pepe Cullera.
+ *
+ * \a FreePhyloTree es un visualizador de árboles filogenéticos. Si
+ * desea obtener más información, visite el <a
+ * href="http://freephylotree.blogspot.com/" >blog</a> oficial del
+ * proyecto, y así podrá estar al tanto de las novedades en el
+ * proyecto.
+ *
+ * Esta web contiene información de principal interés para
+ * desarrolladores. El punto de entrada de la aplicación es \c main.cpp,
+ * que ejecuta a la clase principal del juego, \c QFreePhyloTree.\n
+ *
+ * \section sec Instalación de la aplicación
+ *
+ * Para instalar la aplicación, necesitas descargar el código fuente,
+ * disponible <a
+ * href="http://gitorious.org/freephylotree/freephylotree/archive-tarball/master">aquí</a>,
+ * en donde se encuentra la última versión de desarrollo del proyecto
+ * (inestable).
+ *
+ * Una vez descargado, y en consola, ejecuta: "$ cmake .", y luego
+ * "make". Para generar la documentación (que posiblemente esté más
+ * actualizada que ésta), "make doc". La documentación
+ * se encuentra en "doc/html/index.html". Si todas las librerías éstan
+ * correctamente instaladas, se compilará la aplicación exitosamente,
+ * y ésta se podrá ejecutar escribiendo "$ ./FreePhyloTree". En caso
+ * contrario, \a cmake avisará de las librerías no encontradas.
+ *
+ * El software solo funciona con acceso a internet.
+ *
+ * \subsection libs Dependencias y librerías necesarias:
+ * \li <a href="http://flex.sourceforge.net/">Flex</a>
+ * \li <a href="http://qt.nokia.com/">Qt</a>
+ * \li <a href="http://curl.haxx.se/libcurl/">Curl</a>
+ * \li <a href="http://www.mesa3d.org/">mesa</a>
+ * \li <a href="http://gcc.gnu.org/">gcc</a>
+ * \li <a href="http://www.cmake.org/">cmake</a>
+ * \li <a href="http://www.gnu.org/software/make/">make</a>
+ * \li <a href="http://www.stack.nl/~dimitri/doxygen/">Doxygen</a>
+ * (para generar la documentación).
+ *
+ * Todas éstas dependencias/librerías están disponibles en los
+ * respositorios oficiales de \c Ubuntu, y son software libre.
  */
 
 #include <iostream>
@@ -34,12 +69,6 @@
 
 using namespace fpt;
 
-/** \brief
- * Entry point of the program, just boots the application object.
- *   @param  argc Number of terminal arguments
- *   @param  argv Array of terminal arguments
- *   @return Error id, 0 if any error happens.
- */
 int main(int argc, char **argv)
 {
     QFreePhyloTree fpt(argc, argv);

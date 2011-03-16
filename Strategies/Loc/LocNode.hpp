@@ -27,8 +27,26 @@
 
 namespace fpt
 {
+    /*! \typedef Loc
+     *  \brief Tipo \a Location.
+     *
+     *  Cada \c LocNode no contiene una posición, sino un «camino»,
+     *  desde su última posición hasta la siguiente posición especificada.
+     */
     typedef Smooth Loc;
 
+    /*! \class LocNode
+     *  \brief Clase nodo con posición o posicionable (\a Location \a
+     *  node).
+     *
+     *  Cada nodo de un \c LocTree tiene una posición actual y va
+     *  cambiando de posición a medida que va ejecutándose el
+     *  algoritmo \a Spring \a embedder. Para que los cambios de
+     *  posiciones no sean bruscos, el nodo va cambiando de posición
+     *  regido por el comportamiento de una variable \c Smooth, que es
+     *  la que contiene la posición actual y cómo ésta va a cambiar.
+     *
+     */
     class LocNode : virtual public Node, virtual public Strategy
     {
     public:

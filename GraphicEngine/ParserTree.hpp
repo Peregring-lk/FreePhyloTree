@@ -27,6 +27,21 @@ int input(void);
 
 namespace fpt
 {
+    /*! \class ParserTree
+     *  \brief Clase que contruye el árbol.
+     *
+     *  Ésta clase explora en el wiki \c wikispecies el cladograma a
+     *  visualizar, parseando cada uno de los ártilos de wikispecies
+     *  para extraer los subclados de un clado dado.
+     *
+     *  Cada vez que se pide expandir un nodo, el número niveles a
+     *  expandir es controlado mediante parámetros, dado que construir
+     *  el árbol entero es poco tratable, por cuestión de tiempo de
+     *  inicialización y de comodidad/eficiencia en la interacción con
+     *  el árbol. El árbol podría contener miles de nodos, cuando la
+     *  mayoría de ellos al usuario no les interesan.
+     *
+     */
     class ParserTree
     {
     public:

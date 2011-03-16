@@ -24,9 +24,35 @@
 
 namespace fpt
 {
+    /*! \typedef VecColor
+     *  \brief Tipo vector de color.
+     *
+     *  Renombrado del tipo VecXf. Indica una posición dentro del cubo
+     *  cromático.
+     */
     typedef VecXf VecColor;
+
+    /*! \typedef TypeC
+     *  \brief Tipo de color.
+     *
+     *  Sirve para indicar una coordenada de color. Análogo a \c Dim.
+     *
+     *  \note Mejor una enumeración.
+     *
+     *  \sa Dim
+     */
     typedef unsigned TypeC;
 
+    /*! \class CubeColor
+     *  \brief Cubo de color.
+     *
+     *  Sirve para indicar subcubos del cubo cromático. Cada cubo
+     *  cromático es asignado a un \c ColorNode, y cada nodo hijo se
+     *  hace propietaria de una subregión del cubo cromático de su
+     *  padre.
+     *
+     *  \sa ColorTree
+     */
     class CubeColor
     {
     public:

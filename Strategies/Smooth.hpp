@@ -25,6 +25,13 @@
 
 namespace fpt
 {
+    /*! \class Smooth
+     *  \brief Suavizado de movimientos.
+     *
+     *  Ésta clase permite manejar objetos que, partiendo de un punto,
+     *  se dirigen hacia otro punto, de forma suave, es decir,
+     *  recorriendo el camino requerido según un ritmo especificado.
+     */
     class Smooth : public Strategy
     {
     public:

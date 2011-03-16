@@ -25,6 +25,12 @@
 
 namespace fpt
 {
+    /*! \class PhyloNode
+     *  \brief Tipo nodo para \c PhyloTree.
+     *
+     *  \c PhyloNode es, a su vez, un nodo coloreable, \c ColorTree,
+     *  y un nodo posicionable, \c LocTree.
+     */
     class PhyloNode : public LocNode, public ColorNode
     {
     public:

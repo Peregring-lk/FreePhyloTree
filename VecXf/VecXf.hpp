@@ -24,8 +24,26 @@
 
 namespace fpt
 {
+    /*! \typedef Dim
+     *  \brief Dimensión de un vector, usado para especificar
+     *  coordenadas.
+     */
     typedef unsigned Dim;
 
+    /*! \class VecXf
+     *  \brief Tipo vector de la aplicación.
+     *
+     *  Tipo vector, de 3 dimensiones, con sobrecarga de los
+     *  operadores usuales para manejo de vector, y funciones para
+     *  obtener otras propiedades comunes de los vectores, como su norma
+     *  o el vector unitario.
+     *
+     *  \note Llamamos a ésta clase VecXf en vez de Vec3f porque
+     *  originalmente la clase servía como vector abstracto para n
+     *  dimensiones, usando el mecanismo de \c variadic \c templates
+     *  de c++0x en la construcción. Se desechó dicha idea por
+     *  cuestiones de eficiencia, aunque se conserva el nombre.
+     */
     class VecXf
     {
     public:

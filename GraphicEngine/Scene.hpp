@@ -28,6 +28,17 @@
 
 namespace fpt
 {
+    /*! \class Scene
+     *  \brief Clase que renderiza la escena completa.
+     *
+     *  Ésta clase, fundamentalmente, se dedica a renderizar el árbol
+     *  (\c PhyloTree) y a mostrar el texto de los nodos señalados con
+     *  el ratón.
+     *
+     *  \sa Viewing
+     *  \sa Mouse
+     *
+     */
     class Scene : public Strategy
     {
     public:

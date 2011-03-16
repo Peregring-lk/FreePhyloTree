@@ -26,6 +26,14 @@
 
 namespace fpt
 {
+    /*! \class Mouse
+     *  \brief Clase que maneja la posición del ratón.
+     *
+     *  Ésta clase maneja las posiciones, movimientos y información
+     *  necesaria acerca del ratón, así como encontrar a los nodos
+     *  señalados con él.
+     *
+     */
     class Mouse : public Strategy
     {
     public:

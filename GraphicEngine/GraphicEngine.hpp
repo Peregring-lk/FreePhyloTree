@@ -34,6 +34,19 @@
 
 namespace fpt
 {
+    /*! \class GraphicEngine
+     *  \brief Motor gráfico de la aplicación.
+     *
+     *  Clase que controla la parte no-lógica de FreePhyloTree, que no
+     *  es más que un compuesto del resto de objetos del grupo gráfico
+     *  (\c Viewing, \c ParserTree, \c Mouse y \c Scene), delegando en
+     *  ellos las funciones necesarias.
+     *
+     *  Es, a su vez, un \c QGLWidget de \c Qt, ya que el motor gráfico se sienta
+     *  sobre openGL, y contiene un \c QWebKit para visualizar los
+     *  artículos pedidos de wikipedia de forma nativa a la aplicación.
+     *
+     */
     class GraphicEngine : public QGLWidget, public Strategy
     {
 	Q_OBJECT

@@ -28,9 +28,32 @@
 
 namespace fpt
 {
+    /*! \typedef Color
+     *  \brief Tipo color.
+     *
+     *  Cada \c ColorNode no contiene un color, sino un «camino»,
+     *  que lo dirige hasta su color deseado.
+     */
     typedef Smooth Color;
+
+    /*! \typedef Glow
+     *  \brief Tipo «brillo».
+     *
+     *  Al igual que con \c Color o \c Loc, cada \c ColorNode tiene un
+     *  brillo variable.
+     *
+     */
     typedef Smooth Glow;
 
+    /*! \class ColorNode
+     *  \brief Clase nodo con color o coloreable.
+     *
+     *  Cada nodo de un \c ColorTree tiene un color y un brillo que va
+     *  variándo a lo largo de la ejecución, de forma análaga a un \c
+     *  LocTree.
+     *
+     *  \sa LocNode
+     */
     class ColorNode : virtual public Node, virtual public Strategy
     {
     public:

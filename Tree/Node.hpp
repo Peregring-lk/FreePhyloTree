@@ -26,8 +26,26 @@
 namespace fpt
 {
     class Tree;
+
+    /*! \typedef Name
+     *  \brief Tipo nombre.
+     *
+     *  Clase usada para tratar con nombres de clados / árboles.
+     *
+     *  \note Por ahora, un simple string, pero ésto podría cambiar
+     *  para tratar con meta-información del nombre.
+     *
+     */
     typedef std::string Name;
 
+    /*! \class Node
+     *  \brief Clase nodo de un árbol.
+     *
+     *  La clase nodo permite obtener y manipular los nodos de un
+     *  árbol, y obtener propiedades de él, como el grado, el órden o
+     *  el nivel.
+     *
+     */
     class Node
     {
     public:

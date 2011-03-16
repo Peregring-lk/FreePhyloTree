@@ -22,6 +22,16 @@
 
 namespace fpt
 {
+    /*! \class Strategy
+     *  \brief Interfaz para procesos cuyo cálculo consta de una serie
+     *  de pasos.
+     *
+     *  Ésta clase es la base para la mayoría de las clases de la
+     *  aplicación, puesto que la arquitectura del proceso principal
+     *  es una fase de inicialización seguida de una serie de pasos de
+     *  cómputo.
+     *
+     */
     class Strategy
     {
     public:

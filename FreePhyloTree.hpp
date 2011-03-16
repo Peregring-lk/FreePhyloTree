@@ -25,8 +25,17 @@
 
 #include "GraphicEngine/GraphicEngine.hpp"
 
+/*! \namespace fpt
+ *  \brief Espacio de nombres de FreePhyloTree
+ */
 namespace fpt
 {
+    /*! \class QFreePhyloTree
+     *  \brief Clase principal de FreePhyloTree.
+     *
+     *  \c QFreePhyloTree es una \c QApplication, de la librería Qt y se
+     *  encarga de construir y ejecutar la aplicación.
+     */
     class QFreePhyloTree : public QApplication
     {
     public:

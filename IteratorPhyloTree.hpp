@@ -25,6 +25,14 @@
 
 namespace fpt
 {
+    /*! \class IteratorPhyloTree
+     *  \brief Especialización de \c IteratorTree para \c PhyloTree.
+     *
+     *  Ésta clase es un «wrapper» de \c IteratorTree para hacer
+     *  transparente al usuario el tipado dinámico, desde \c Node a \c
+     *  PhyloNode.
+     *
+     */
     class IteratorPhyloTree : public IteratorTree
     {
     public:

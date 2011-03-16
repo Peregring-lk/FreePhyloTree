@@ -27,6 +27,15 @@
 
 namespace fpt
 {
+    /*! \class LocTree
+     *  \brief Clase árbol posicionable (\a Location \c tree).
+     *
+     *  Ésta clase es un tipo \c Tree cuyos nodos son nodos
+     *  posicionables, \c LocNode. Ésta clase se encarga de inicializar a
+     *  cada uno de sus nodos y de calcular sus posiciones haciendo
+     *  uso del algoritmo \a Spring \a embedder.
+     *
+     */
     class LocTree : virtual public Tree, virtual public Strategy
     {
     public:
