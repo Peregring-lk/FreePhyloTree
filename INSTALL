@@ -1,0 +1,51 @@
+Este archivo sirve como ayuda en la compilación de la aplicación.
+
+Contenidos
+========
+
+1. Dependencias
+2. Construcción
+
+1. Dependencias
+===============
+
+FreePhyloTree necesita las siguientes librerías para compilar:
+
+   ☛ Flex (http://flex.sourceforge.net).
+   ☛ Qt4 (http://qt.nokia.com) (hacen falta los módulos adicionales:
+     QtWebKit y QtOpenGL).
+   ☛ Curl (http://curl.haxx.se/libcurl).
+   ☛ Mesa (http://www.mesa3d.org/).
+   ☛ FTGL (http://sourceforge.net/projects/ftgl/develop)
+   ☛ gcc  (http://gcc.gnu.org/)
+   ☛ cmake (http://www.cmake.org/)
+   ☛ make (http://www.gnu.org/software/make/)
+   ☛ Doxygen (http://www.stack.nl/~dimitri/doxygen/) (para generar la
+     documentación).
+
+Todas éstas dependencias/librerías están disponibles en los
+respositorios oficiales de Ubuntu, y son software libre, de
+licencias GPL o compatibles con la GPL.
+
+2. Construcción
+===============
+Para instalar la aplicación, necesitas descargar el código fuente,
+disponible en http://gitorious.org/freephylotree/freephylotree/archive-tarball/master,
+en donde se encuentra la última versión de desarrollo del proyecto
+(inestable).
+
+Una vez descargado, y en consola, ejecuta:
+   $ cmake .
+   $ make
+
+Si todas las librerías éstan correctamente instaladas, se compilará la
+aplicación exitósamente, y ésta se podrá ejecutar escribiendo
+   $ ./FreePhyloTree
+
+En caso contrario, cmake avisará de las librerías no encontradas.
+
+
+Para generar la documentación:
+   $ make doc
+
+La documentación se encontrará en "doc/html/index.html".

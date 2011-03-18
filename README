@@ -1,0 +1,74 @@
+
+                   FreePhyloTree v0.5
+           Visualizador de árboles filogenéticos
+
+          Copyright (C) 2011 Aarón Bueno Villares
+          http://cusl5-freephylo.forja.rediris.es
+
+Contenidos
+========
+
+1. Descripción
+2. Requerimientos
+3. Uso de FreePhyloTree
+4. Errores encontrados
+5. Copyright
+
+1. Descripción
+==============
+FreePhyloTree, proyecto libre, de licencia GPL, llevado a cabo por
+Aarón Bueno Villares <abv150ci@gmail.com>, en colaboración con Pepe
+Cullera. FreePhyloTree es un visualizador de árboles filogenéticos. Si
+desea obtener más información, visite el http://freephylotree.blogspot.com,
+el blog oficial del proyecto, y así podrá estar al tanto de las
+novedades en el proyecto.
+
+2. Requerimientos
+=================
+Hace falta una tarjeta gráfica con aceleración 3D, y conexión a Internet.
+
+3. Uso de FreePhyloTree
+=======================
+La aplicación funciona de la siguiente forma: cuando se lanza, aparece
+un cladograma inicial de 2 niveles, cuya raíz es el clado \a neomura,
+un clado que agrupa tanto a las arqueas (\a archaea), que son un tipo
+de bacterias más emparentadas con nosotros que con el resto de
+bacterias, y a \a eukarya, que son el grupo que agrupa a los
+organismos con núcleo celular (como nosotros). Si se hace doble click
+izquierdo en cualquier nodo del árbol, éste se amplia, mostrando los
+subclados correspondientes. Si el nodo ya está ampliado, entonces se
+contrae.
+
+Haciendo doble click derecho en cualquier nodo, se abre el artículo
+correspondiente del clado/especie en wikipedia. Por  último, con Ctrl
++ doble click izquierdo en un nodo sólo queda en pantalla su subárbol
+correspondiente, desapareciendo el resto del árbol.
+
+4. Errores encontrados
+======================
+Se han encontrado inestabilidades en la ejecución de la aplicación
+sobre máquinas con tarjeta gráfica ATI y SO Ubuntu, en una, las
+páginas de wikipedia no se mostraban correctamente, y en otra daba
+violación de segmento, además, en otras máquinas también existen
+problemas de conexión, con libcurl. Aún no se conocen los motivos ni
+como solucionarlos.
+
+5. Copyright
+============
+Copyright(C) 2011 Aarón Bueno Villares <abv150ci@gmail.com>
+
+This file is part of FreePhyloTree.
+
+FreePhyloTree is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or (at
+your option) any later version.
+
+FreePhyloTree is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with FreePhyloTree.  If not, see
+<http://www.gnu.org/licenses/>.
