@@ -44,14 +44,19 @@ correspondiente del clado/especie en wikipedia. Por  último, con Ctrl
 + doble click izquierdo en un nodo sólo queda en pantalla su subárbol
 correspondiente, desapareciendo el resto del árbol.
 
+La aplicación posee un buscador. Éste buscador aparece y desaparece
+tanto pulsado F4 como Ctrl+F. Si el clado indicado existe, se cargará
+el nuevo árbol, destruyéndose el anterior. En caso contrario, no
+ocurrirá nada.
+
 4. Errores encontrados
 ======================
-Se han encontrado inestabilidades en la ejecución de la aplicación
-sobre máquinas con tarjeta gráfica ATI y SO Ubuntu, en una, las
-páginas de wikipedia no se mostraban correctamente, y en otra daba
-violación de segmento, además, en otras máquinas también existen
-problemas de conexión, con libcurl. Aún no se conocen los motivos ni
-como solucionarlos.
+☛ Si la aplicación da violación de segmento en la ejecución, ejecute
+la aplicación con permisos de superusuario (inestabilidad vista bajo
+algunas arquitecturas de 64 bits).
+
+☛ En algunas plataformas la pantalla se ve completamente en negro. No
+se conocen los motivos ni cómo solucionarlo.
 
 5. Copyright
 ============
