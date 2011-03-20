@@ -23,9 +23,11 @@
 #include <string>
 #include <QLineEdit>
 
+#include "../Strategies/Smooth.hpp"
+
 namespace fpt
 {
-    class Search : public QLineEdit
+    class Search : public QLineEdit, public Strategy
     {
     public:
 	Search(QWidget *parent = NULL);
@@ -37,14 +39,20 @@ namespace fpt
 
 	void reboot();
 	void reactivate();
+	void hide();
 
     protected:
+	void _init();
+	void _step();
+
 	void mousePressEvent(QMouseEvent *event);
 	void keyPressEvent(QKeyEvent *event);
 
     private:
 	bool _first;
 	bool _newSearch;
+
+	Smooth _loc;
 
 	std::string _actualSearch;
 	std::string _actualUrl;

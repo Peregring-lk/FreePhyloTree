@@ -30,7 +30,7 @@ using namespace std;
 using namespace fpt;
 
 GraphicEngine::GraphicEngine(const Name& root)
-    : Strategy(), _webView(this), _search("Search", this),
+    : Strategy(), _webView(this),
       _nameWeb("http://es.wikipedia.org/wiki/")
 {
     _parser = new ParserTree("http://species.wikimedia.org/");
@@ -53,10 +53,7 @@ void GraphicEngine::animate()
 void GraphicEngine::_init()
 {
     setFocus(Qt::MouseFocusReason);
-    _search.setFocus(Qt::MouseFocusReason);
-
     setMouseTracking(true);
-
     resize(600, 480);
 
     _ratioKey = 10;
@@ -68,6 +65,7 @@ void GraphicEngine::_init()
     _viewing = new Viewing(_tree, width(), height());
     _mouse = new Mouse(_tree, _viewing);
     _scene = new Scene(_tree, _mouse);
+    _search = new Search("Search", this);
 
     _tree->init();
     _scene->init();
@@ -76,26 +74,24 @@ void GraphicEngine::_init()
 
     _viewing->init();
     _mouse->init();
+    _search->init();
 
     _webView.hide();
     _resizeWebView();
-
-    _search.move(20, 10);
-    _search.show();
 }
 
 void GraphicEngine::_step()
 {
-    if (_search.newSearch()) {
-	PhyloNode *node = _parser->expand(_search.actualSearch(),
-					  _search.actualUrl());
+    if (_search->newSearch()) {
+	PhyloNode *node = _parser->expand(_search->actualSearch(),
+					  _search->actualUrl());
 
 	if (node != NULL) {
 	    _tree->reboot(node->name(), node);
 	    _tree->init();
 	}
 
-	_search.reboot();
+	_search->reboot();
     }
 
     repaint();
@@ -147,6 +143,7 @@ void GraphicEngine::paintGL()
     _mouse->step();
 
     _scene->step();
+    _search->step();
 }
 
 void GraphicEngine::resizeGL()
@@ -158,10 +155,10 @@ void GraphicEngine::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_F4 ||
 	(_controlKey && event->key() == Qt::Key_F)) {
-	if (_search.isVisible())
-	    _search.hide();
+	if (_search->isVisible())
+	    _search->hide();
 	else
-	    _search.reactivate();
+	    _search->reactivate();
     }
     else if (event->key() == Qt::Key_Escape)
 	QApplication::quit();
@@ -187,7 +184,7 @@ void GraphicEngine::keyReleaseEvent(QKeyEvent *event)
 
 void GraphicEngine::mousePressEvent(QMouseEvent *event)
 {
-    _search.clearFocus();
+    _search->clearFocus();
 
     QGLWidget::mousePressEvent(event);
 }

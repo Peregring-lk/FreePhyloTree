@@ -63,8 +63,39 @@ void Search::reboot()
 void Search::reactivate()
 {
     show();
+
     setFocus();
     selectAll();
+}
+
+void Search::hide()
+{
+    _loc.changeSource(VecXf(1000, 10));
+    move(1000, 10);
+
+    QLineEdit::hide();
+}
+
+void Search::_init()
+{
+    setFocus(Qt::MouseFocusReason);
+
+    _loc.changeSource(VecXf(1000, 10));
+    _loc.changeTarget(VecXf(20, 10));
+    _loc.changeSmooth(0.1);
+
+    _loc.init();
+
+    show();
+}
+
+void Search::_step()
+{
+    if (isVisible()) {
+	_loc.step();
+
+	move(_loc.x(), _loc.y());
+    }
 }
 
 void Search::mousePressEvent(QMouseEvent *event)

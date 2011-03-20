@@ -69,14 +69,13 @@ namespace fpt
 	Viewing *_viewing;
 	Scene *_scene;
 	Mouse *_mouse;
+	Search *_search;
 
 	bool _controlKey;
 
 	QWebView _webView;
 	std::string _nameWeb;
 	float _ratioKey;
-
-	Search _search;
 
 	void initializeGL();
 	void paintGL();
