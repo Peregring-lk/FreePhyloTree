@@ -75,6 +75,8 @@ void Smooth::changeSource(const VecXf& source)
     _dir = _target - _source;
 
     _smooth = _originalSmooth;
+
+    _changed = true;
 }
 
 void Smooth::changeTarget(const VecXf& target)
@@ -84,6 +86,8 @@ void Smooth::changeTarget(const VecXf& target)
     _dir = _target - _source;
 
     _smooth = _originalSmooth;
+
+    _changed = true;
 }
 
 void Smooth::changeSmooth(float smooth)

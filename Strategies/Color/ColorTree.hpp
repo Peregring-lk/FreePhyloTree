@@ -49,7 +49,7 @@ namespace fpt
 
 	IteratorColorTree begin(ColorNode *node = NULL);
 
-	void prepareColor(ColorNode *node);
+	void prepareColor(ColorNode *node = NULL);
 	void clearNode(ColorNode *node);
 
     protected:

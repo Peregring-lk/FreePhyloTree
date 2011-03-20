@@ -79,8 +79,8 @@ void LocTree::prepareLoc(LocNode *node)
 
 	factor += node->degree();
 
-	VecXf rand1(node->locFather(), factor * _c2 / 5);
-	VecXf rand2(node->locFather(), factor * _c2 / 5);
+	VecXf rand1(node->locFather(), 1.5 * (log(factor) + 1) * _c2);
+	VecXf rand2(node->locFather(), log(factor) * _c2);
 
 	rand1.setZ(0);
 	rand2.setZ(0);

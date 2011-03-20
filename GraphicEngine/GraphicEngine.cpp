@@ -156,7 +156,7 @@ void GraphicEngine::resizeGL()
 
 void GraphicEngine::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_F1 ||
+    if (event->key() == Qt::Key_F4 ||
 	(_controlKey && event->key() == Qt::Key_F)) {
 	if (_search.isVisible())
 	    _search.hide();
@@ -198,8 +198,10 @@ void GraphicEngine::mouseDoubleClickEvent(QMouseEvent *event)
 	PhyloNode *node = _mouse->actualNode();
 
 	if (node != NULL) {
-	    if (_controlKey)
+	    if (_controlKey) {
 		_tree->crib(node);
+		_tree->prepareColor(NULL);
+	    }
 	    else if (node->degree() == 0) {
 		_parser->expand(node);
 		_tree->prepareLoc(node);

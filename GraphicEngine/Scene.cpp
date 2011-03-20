@@ -99,7 +99,11 @@ void Scene::_drawTree()
 void Scene::_drawNode(PhyloNode *node)
 {
     _setColor(node);
-    _drawSquare(node, _radiusNode, _textureIDnode);
+
+    if (node->father() == NULL)
+	_drawSquare(node, 1.5 * _radiusNode, _textureIDnode);
+    else
+	_drawSquare(node, _radiusNode, _textureIDnode);
 }
 
 void Scene::_drawGlow(PhyloNode *node)
@@ -112,8 +116,6 @@ void Scene::_drawEdge(PhyloNode *source, PhyloNode *target)
 {
     glBindTexture(GL_TEXTURE_2D, _textureIDedge);
 
-    glColor3f(.5, .5, .5);
-
     VecXf dir = target->loc() - source->loc();
     VecXf weight = VecXf(-dir.y(), dir.x()).unit() * _weightEdge;
 
@@ -121,6 +123,7 @@ void Scene::_drawEdge(PhyloNode *source, PhyloNode *target)
 
     glBegin(GL_QUADS); {
 	point = source->loc() + weight;
+	_setColor(source);
 	glTexCoord2f(1, 0);
 	glVertex2f(point.x(), point.y());
 
@@ -128,6 +131,7 @@ void Scene::_drawEdge(PhyloNode *source, PhyloNode *target)
 	glTexCoord2f(0, 0);
 	glVertex2f(point.x(), point.y());
 
+	_setColor(target);
 	point = target->loc() - weight;
 	glTexCoord2f(0, 0);
 	glVertex2f(point.x(), point.y());

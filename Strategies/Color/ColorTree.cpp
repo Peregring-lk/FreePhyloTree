@@ -45,8 +45,10 @@ void ColorTree::prepareColor(ColorNode *node)
 {
     CubeColor init;
 
-    if (node == NULL)
+    if (node == NULL) {
+	node = root();
 	init = CubeColor(0, 0, 0, 1, 1, 1);
+    }
     else
 	init = node->cubeColor();
 
@@ -58,8 +60,8 @@ void ColorTree::prepareColor(ColorNode *node)
 
 	next->setSourceColor(color.x(), color.y(), color.z());
 
-	next->randSourceGlow(200 * node->order());
-	next->setTargetGlow(20 * node->order());
+	next->randSourceGlow(300 * (next->order() + 1));
+	next->setTargetGlow(50 * (next->order() + 1));
 	next->changeSmoothColor(_smoothColor);
 	next->changeSmoothGlow(_smoothGlow);
 
@@ -79,7 +81,7 @@ void ColorTree::clearNode(ColorNode *node)
 
 void ColorTree::_init()
 {
-    prepareColor(root());
+    prepareColor();
 }
 
 void ColorTree::_step()
