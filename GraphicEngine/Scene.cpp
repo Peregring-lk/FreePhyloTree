@@ -146,7 +146,6 @@ void Scene::_drawSquare(PhyloNode *node, float side, GLuint tex)
     float y = node->y();
 
     glBegin(GL_QUADS); {
-
 	glTexCoord2f(1, 1);
 	glVertex2f(x + side, y + side);
 

@@ -67,7 +67,6 @@ void ColorTree::prepareColor(ColorNode *node)
     }
 
     _changed = true;
-
 }
 
 void ColorTree::clearNode(ColorNode *node)

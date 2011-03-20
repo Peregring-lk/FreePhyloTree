@@ -29,6 +29,7 @@ using namespace std;
 std::string _buffer;
 
 extern vector<string> _clades;
+extern bool _found;
 extern int yylex(void);
 extern int yy_scan_string(const char*);
 
@@ -60,15 +61,28 @@ ParserTree::~ParserTree()
     curl_easy_cleanup(_curl);
 }
 
-void ParserTree::expand(PhyloNode *node)
+PhyloNode* ParserTree::expand(const string& name, const string& url)
+{
+    PhyloNode *node = new PhyloNode(name, url);
+
+    if (expand(node))
+	return node;
+    else {
+	delete node;
+
+	return NULL;
+    }
+}
+
+bool ParserTree::expand(PhyloNode *node)
 {
     _actualNode = node;
 
     if (_curl)
-	_configQuery(node);
+	return _configQuery(node);
 }
 
-void ParserTree::_configQuery(PhyloNode *node)
+bool ParserTree::_configQuery(PhyloNode *node)
 {
     CURLcode res;
 
@@ -83,13 +97,17 @@ void ParserTree::_configQuery(PhyloNode *node)
 
     res = curl_easy_perform(_curl);
 
+    _buffer = "-clade=" + _buffer;
+
     yy_scan_string(_buffer.c_str());
     yylex();
 
     _buffer.clear();
 
-    if (res == CURLE_OK)
+    if (res == CURLE_OK && _found)
 	_subclades(node);
+    else
+	return false;
 }
 
 void ParserTree::_subclades(PhyloNode *node)

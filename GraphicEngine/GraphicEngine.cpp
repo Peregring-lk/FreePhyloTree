@@ -30,21 +30,10 @@ using namespace std;
 using namespace fpt;
 
 GraphicEngine::GraphicEngine(const Name& root)
-    : Strategy(), _webView(this), _nameWeb("http://es.wikipedia.org/wiki/")
+    : Strategy(), _webView(this), _search("Search", this),
+      _nameWeb("http://es.wikipedia.org/wiki/")
 {
     _parser = new ParserTree("http://species.wikimedia.org/");
-
-    PhyloNode *node = new PhyloNode(root, root);
-    _tree = new PhyloTree(root, node, 3, 40, 200, 2);
-
-    _viewing = new Viewing(_tree, width(), height());
-    _mouse = new Mouse(_tree, _viewing);
-    _scene = new Scene(_tree, _mouse);
-
-    setMouseTracking(true);
-    setFocus(Qt::MouseFocusReason);
-
-    _webView.hide();
 }
 
 GraphicEngine::~GraphicEngine()
@@ -63,23 +52,52 @@ void GraphicEngine::animate()
 
 void GraphicEngine::_init()
 {
+    setFocus(Qt::MouseFocusReason);
+    _search.setFocus(Qt::MouseFocusReason);
+
+    setMouseTracking(true);
+
+    resize(600, 480);
+
     _ratioKey = 10;
     _controlKey = false;
 
-    _parser->expand(_tree->root());
+    PhyloNode *node = _parser->expand("Neomura", "Neomura");
+    _tree = new PhyloTree("Neomura", node, 3, 40, 200, 2);
 
-    _loadTextures();
+    _viewing = new Viewing(_tree, width(), height());
+    _mouse = new Mouse(_tree, _viewing);
+    _scene = new Scene(_tree, _mouse);
 
     _tree->init();
     _scene->init();
+
+    _loadTextures();
+
     _viewing->init();
     _mouse->init();
 
+    _webView.hide();
     _resizeWebView();
+
+    _search.move(20, 10);
+    _search.show();
 }
 
 void GraphicEngine::_step()
 {
+    if (_search.newSearch()) {
+	PhyloNode *node = _parser->expand(_search.actualSearch(),
+					  _search.actualUrl());
+
+	if (node != NULL) {
+	    _tree->reboot(node->name(), node);
+	    _tree->init();
+	}
+
+	_search.reboot();
+    }
+
     repaint();
     _resizeWebView();
 }
@@ -138,7 +156,14 @@ void GraphicEngine::resizeGL()
 
 void GraphicEngine::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Escape)
+    if (event->key() == Qt::Key_F1 ||
+	(_controlKey && event->key() == Qt::Key_F)) {
+	if (_search.isVisible())
+	    _search.hide();
+	else
+	    _search.reactivate();
+    }
+    else if (event->key() == Qt::Key_Escape)
 	QApplication::quit();
     else if (event->key() == Qt::Key_Space)
 	_viewing->centering();
@@ -158,6 +183,13 @@ void GraphicEngine::keyReleaseEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Control)
 	_controlKey = false;
+}
+
+void GraphicEngine::mousePressEvent(QMouseEvent *event)
+{
+    _search.clearFocus();
+
+    QGLWidget::mousePressEvent(event);
 }
 
 void GraphicEngine::mouseDoubleClickEvent(QMouseEvent *event)

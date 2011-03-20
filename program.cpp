@@ -47,7 +47,7 @@
  * y ésta se podrá ejecutar escribiendo "$ ./FreePhyloTree". En caso
  * contrario, \a cmake avisará de las librerías no encontradas.
  *
- * El software solo funciona con acceso a internet.
+ * El software solo funciona con acceso a internet y aceleración 3D.
  *
  * \subsection libs Dependencias y librerías necesarias:
  * \li <a href="http://flex.sourceforge.net/">Flex</a>
@@ -73,7 +73,7 @@
  * otra daba violación de segmento. Aún no se conocen los motivos ni
  * como solucionarlos.
  *
- * \section Uso de la aplicación
+ * \section uso Uso de la aplicación
  * La aplicación funciona de la siguiente forma: cuando se lanza,
  * aparece un cladograma inicial de 2 niveles, cuya raíz es el clado
  * \a neomura, un clado que agrupa tanto a las arqueas (\a archaea),

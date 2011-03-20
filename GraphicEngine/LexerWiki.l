@@ -3,9 +3,11 @@
 #include <vector>
 #include <string>
 
+bool _found;
 std::vector<std::string> _clades;
 %}
 
+%x clade
 %x subclades
 %option noyywrap
 
@@ -26,13 +28,28 @@ void reboot()
 
 %%
 
+^"-clade="            {
+                         _clades.clear();
+                         _found = true;
+                         BEGIN(clade);
+                      }
 
+<clade>
+{
+"missing="             {
+                         _clades.clear();
+                         _found = false;
+
+                          BEGIN(INITIAL);
+                          yyterminate();
+                       }
 ^{clade}:.*$           _clades.push_back(yytext);
 "</html>"              {
                           reboot();
                           BEGIN(subclades);
                        }
 \n|.                   ;
+}
 
 <subclades>
 {

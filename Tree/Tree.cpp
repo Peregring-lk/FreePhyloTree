@@ -69,3 +69,11 @@ void Tree::crib(Node *node)
 	_root = node;
     }
 }
+
+void Tree::reboot(const Name& name, Node *root)
+{
+    delete _root;
+
+    _name = name;
+    _root = root;
+}

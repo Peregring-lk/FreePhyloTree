@@ -31,6 +31,7 @@
 #include "Scene.hpp"
 #include "Viewing.hpp"
 #include "Mouse.hpp"
+#include "Search.hpp"
 
 namespace fpt
 {
@@ -75,12 +76,15 @@ namespace fpt
 	std::string _nameWeb;
 	float _ratioKey;
 
+	Search _search;
+
 	void initializeGL();
 	void paintGL();
 	void resizeGL();
 
 	void keyPressEvent(QKeyEvent *event);
 	void keyReleaseEvent(QKeyEvent *event);
+	void mousePressEvent(QMouseEvent *event);
 	void mouseDoubleClickEvent(QMouseEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);
 	void resizeGL(int width, int height);

@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2010 Aarón Bueno Villares <abv150ci@gmail.com>
+  Copyright (C) 2011 Aarón Bueno Villares <abv150ci@gmail.com>
 
   This file is part of FreePhyloTree.
 
@@ -17,42 +17,39 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _FPT_TREE_
-#define _FPT_TREE_
+#ifndef _FPT_SEARCH_
+#define _FPT_SEARHC_
 
-#include "Node.hpp"
-#include "IteratorTree.hpp"
+#include <string>
+#include <QLineEdit>
 
 namespace fpt
 {
-    /*! \class Tree
-     *  \brief Tipo árbol
-     *
-     *  La clase \c Tree es una clase sencilla para manejar árboles y
-     *  obtener algunas propiedades básicas del mismo árbol. Es
-     *  identificado por un nombre.
-     *
-     *  \sa IteratorTree
-     *
-     */
-    class Tree
+    class Search : public QLineEdit
     {
     public:
-	Tree(const Name& name, Node *root);
-	~Tree();
+	Search(QWidget *parent = NULL);
+	Search(const QString& contents, QWidget *parent = NULL);
 
-	Name name() const;
-	unsigned order() const;
+	bool newSearch() const;
+	std::string actualSearch() const;
+	std::string actualUrl() const;
 
-	virtual Node* root() const;
-
-	IteratorTree begin(Node *node = NULL) const;
-	void crib(Node *node);
-	void reboot(const Name& _name, Node *root);
+	void reboot();
+	void reactivate();
 
     protected:
-	Name _name;
-	Node *_root;
+	void mousePressEvent(QMouseEvent *event);
+	void keyPressEvent(QKeyEvent *event);
+
+    private:
+	bool _first;
+	bool _newSearch;
+
+	std::string _actualSearch;
+	std::string _actualUrl;
+
+	void _toUrl();
     };
 }
 

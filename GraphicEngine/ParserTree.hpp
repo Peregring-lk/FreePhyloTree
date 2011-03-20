@@ -49,7 +49,9 @@ namespace fpt
 		   unsigned levelsStep = 2, unsigned maxSons = 20);
 	~ParserTree();
 
-	void expand(PhyloNode *node);
+	PhyloNode* expand(const std::string& name,
+			  const std::string& url);
+	bool expand(PhyloNode *node);
 
     private:
 	CURL *_curl;
@@ -63,7 +65,7 @@ namespace fpt
 	std::string _query;
 	std::string _rootClade;
 
-	void _configQuery(PhyloNode *node);
+	bool _configQuery(PhyloNode *node);
 	void _subclades(PhyloNode *node);
 	std::string _fix(std::string& name);
 	std::string _fixLink(std::string& name);
