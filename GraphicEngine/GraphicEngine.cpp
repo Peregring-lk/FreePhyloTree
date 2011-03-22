@@ -174,6 +174,10 @@ void GraphicEngine::keyPressEvent(QKeyEvent *event)
 	_viewing->moveCamera(VecXf(-_ratioKey, 0));
     else if (event->key() == Qt::Key_Control)
 	_controlKey = true;
+    else if (event->key() == Qt::Key_S && _controlKey)
+	grabFrameBuffer().save("capture.png");
+    else if (event->key() == Qt::Key_A && _controlKey)
+	_scene->describeAllNodes(!_scene->describedNodes());
 }
 
 void GraphicEngine::keyReleaseEvent(QKeyEvent *event)

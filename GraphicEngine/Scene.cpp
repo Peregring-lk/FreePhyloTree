@@ -40,6 +40,11 @@ bool Scene::changed() const
     return _tree->changed();
 }
 
+bool Scene::describedNodes() const
+{
+    return _describeNodes;
+}
+
 void Scene::setTextureNode(GLuint id)
 {
     _textureIDnode = id;
@@ -58,8 +63,15 @@ void Scene::setTextureEdge(GLuint id)
     _initTexEdge = true;
 }
 
+void Scene::describeAllNodes(bool describe)
+{
+    _describeNodes = describe;
+}
+
 void Scene::_init()
 {
+    _describeNodes = false;
+
     glEnable(GL_TEXTURE_2D);
 
     glEnable(GL_BLEND);
@@ -75,7 +87,13 @@ void Scene::_step()
 
 	glPushMatrix();
 	_drawTree();
-	_drawText();
+
+	if (describedNodes())
+	    for (auto i = _tree->begin(); !i.end(); i.next())
+		_drawText(i.node());
+	else if (_mouse->changedActualNode())
+	    _drawText(_mouse->actualNode());
+
 	glPopMatrix();
     }
 }
@@ -170,26 +188,22 @@ void Scene::_setColor(PhyloNode *node)
     glColor3f(node->r(), node->g(), node->b());
 }
 
-void Scene::_drawText()
+void Scene::_drawText(PhyloNode *node)
 {
-    if (_mouse->changedActualNode()) {
-	PhyloNode *node = _mouse->actualNode();
+    if (node != NULL) {
+	FTBBox box = _font->BBox(node->name().c_str());
+	float heightBox = box.Upper().Y() - box.Lower().Y();
 
-	if (node != NULL) {
-	    FTBBox box = _font->BBox(node->name().c_str());
-	    float heightBox = box.Upper().Y() - box.Lower().Y();
+	VecXf pos = node->loc() + VecXf(7.0f, - heightBox / 2);
 
-	    VecXf pos = node->loc() + VecXf(7.0f, - heightBox / 2);
+	glColor3f(1, 1, 0);
 
-	    glColor3f(1, 1, 0);
+	//_setColor(_nodeMouse);
 
-	    //_setColor(_nodeMouse);
+	glTranslatef(pos.x(), pos.y(), 0);
 
-	    glTranslatef(pos.x(), pos.y(), 0);
+	_font->Render(node->name().c_str());
 
-	    _font->Render(node->name().c_str());
-
-	    glTranslatef(-pos.x(), -pos.y(), 0);
-	}
+	glTranslatef(-pos.x(), -pos.y(), 0);
     }
 }

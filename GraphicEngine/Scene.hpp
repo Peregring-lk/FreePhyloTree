@@ -45,10 +45,14 @@ namespace fpt
 	Scene(PhyloTree *tree, Mouse *_mouse);
 
 	bool changed() const;
+	bool describedNodes() const;
 
 	void setTextureNode(GLuint id);
 	void setTextureGlow(GLuint id);
 	void setTextureEdge(GLuint id);
+
+
+	void describeAllNodes(bool describe = true);
 
     protected:
 	void _init();
@@ -71,6 +75,8 @@ namespace fpt
 	float _radiusNode;
 	float _weightEdge;
 
+	bool _describeNodes;
+
 	void _drawTree();
 	void _drawNode(PhyloNode *node);
 	void _drawGlow(PhyloNode *node);
@@ -79,7 +85,7 @@ namespace fpt
 	void _drawSquare(PhyloNode *node, float side, GLuint tex);
 	void _setColor(PhyloNode *node);
 
-	void _drawText();
+	void _drawText(PhyloNode *node);
     };
 }
 
