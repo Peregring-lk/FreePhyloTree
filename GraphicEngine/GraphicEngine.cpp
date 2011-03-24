@@ -153,13 +153,24 @@ void GraphicEngine::resizeGL()
 
 void GraphicEngine::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_F4 ||
-	(_controlKey && event->key() == Qt::Key_F)) {
+    if (_controlKey) {
+	if (event->key() == Qt::Key_F)
+	    if (_search->isVisible()) {
+		_search->setFocus();
+		_search->selectAll();
+	    }
+	    else
+		_search->reactivate();
+	else if (event->key() == Qt::Key_S)
+	    grabFrameBuffer().save("capture.png");
+	else if (event->key() == Qt::Key_A)
+	    _scene->describeAllNodes(!_scene->describedNodes());
+    }
+    else if (event->key() == Qt::Key_F4)
 	if (_search->isVisible())
 	    _search->hide();
 	else
 	    _search->reactivate();
-    }
     else if (event->key() == Qt::Key_Escape)
 	QApplication::quit();
     else if (event->key() == Qt::Key_Space)
@@ -174,10 +185,6 @@ void GraphicEngine::keyPressEvent(QKeyEvent *event)
 	_viewing->moveCamera(VecXf(-_ratioKey, 0));
     else if (event->key() == Qt::Key_Control)
 	_controlKey = true;
-    else if (event->key() == Qt::Key_S && _controlKey)
-	grabFrameBuffer().save("capture.png");
-    else if (event->key() == Qt::Key_A && _controlKey)
-	_scene->describeAllNodes(!_scene->describedNodes());
 }
 
 void GraphicEngine::keyReleaseEvent(QKeyEvent *event)
