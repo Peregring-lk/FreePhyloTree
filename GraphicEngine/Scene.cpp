@@ -35,6 +35,11 @@ Scene::Scene(PhyloTree *tree, Mouse *mouse)
     _font->FaceSize(12);
 }
 
+Scene::~Scene()
+{
+    delete _font;
+}
+
 bool Scene::changed() const
 {
     return _tree->changed();
@@ -43,6 +48,21 @@ bool Scene::changed() const
 bool Scene::describedNodes() const
 {
     return _describeNodes;
+}
+
+GLuint Scene::textureNode() const
+{
+    return _textureIDnode;
+}
+
+GLuint Scene::textureGlow() const
+{
+    return _textureIDglow;
+}
+
+GLuint Scene::textureEdge() const
+{
+    return _textureIDedge;
 }
 
 void Scene::setTextureNode(GLuint id)
@@ -80,12 +100,12 @@ void Scene::_init()
 
 void Scene::_step()
 {
-    bool init = _initTexNode && _initTexGlow && _initTexEdge;
+    bool init = _initTexNode && _initTexGlow &&
+	_initTexEdge;
 
     if (init) {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	glPushMatrix();
 	_drawTree();
 
 	if (describedNodes())
@@ -93,8 +113,6 @@ void Scene::_step()
 		_drawText(i.node());
 	else if (_mouse->changedActualNode())
 	    _drawText(_mouse->actualNode());
-
-	glPopMatrix();
     }
 }
 

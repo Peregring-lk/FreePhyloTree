@@ -32,6 +32,7 @@
 #include "Viewing.hpp"
 #include "Mouse.hpp"
 #include "Search.hpp"
+#include "HelpDialog.hpp"
 
 namespace fpt
 {
@@ -70,6 +71,7 @@ namespace fpt
 	Scene *_scene;
 	Mouse *_mouse;
 	Search *_search;
+	HelpDialog *_helpDialog;
 
 	bool _controlKey;
 

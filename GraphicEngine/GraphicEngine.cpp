@@ -30,19 +30,24 @@ using namespace std;
 using namespace fpt;
 
 GraphicEngine::GraphicEngine(const Name& root)
-    : Strategy(), _webView(this),
-      _nameWeb("http://es.wikipedia.org/wiki/")
+    : _webView(this), _nameWeb("http://es.wikipedia.org/wiki/")
 {
     _parser = new ParserTree("http://species.wikimedia.org/");
 }
 
 GraphicEngine::~GraphicEngine()
 {
+    deleteTexture(_scene->textureNode());
+    deleteTexture(_scene->textureGlow());
+    deleteTexture(_scene->textureEdge());
+//    deleteTexture(_helpDialog->texture());
+
     delete _viewing;
     delete _scene;
     delete _mouse;
     delete _parser;
     delete _tree;
+    delete _helpDialog;
 }
 
 void GraphicEngine::animate()
@@ -60,6 +65,7 @@ void GraphicEngine::_init()
     _controlKey = false;
 
     PhyloNode *node = _parser->expand("Neomura", "Neomura");
+
     _tree = new PhyloTree("Neomura", node, 3, 40, 200, 2);
 
     _viewing = new Viewing(_tree, width(), height());
@@ -67,14 +73,17 @@ void GraphicEngine::_init()
     _scene = new Scene(_tree, _mouse);
     _search = new Search("Search", this);
 
-    _tree->init();
-    _scene->init();
+    _helpDialog = new HelpDialog(_viewing);
 
     _loadTextures();
+
+    _tree->init();
+    _scene->init();
 
     _viewing->init();
     _mouse->init();
     _search->init();
+    _helpDialog->init();
 
     _webView.hide();
     _resizeWebView();
@@ -144,6 +153,8 @@ void GraphicEngine::paintGL()
 
     _scene->step();
     _search->step();
+
+    _helpDialog->step();
 }
 
 void GraphicEngine::resizeGL()
@@ -171,6 +182,8 @@ void GraphicEngine::keyPressEvent(QKeyEvent *event)
 	    _search->hide();
 	else
 	    _search->reactivate();
+    else if (event->key() == Qt::Key_F1)
+	_helpDialog->setShow(!_helpDialog->isVisible());
     else if (event->key() == Qt::Key_Escape)
 	QApplication::quit();
     else if (event->key() == Qt::Key_Space)
@@ -243,6 +256,7 @@ void GraphicEngine::_loadTextures()
     QImage textureNode("Resources/file.png");
     QImage textureGlow("Resources/bloom.png");
     QImage textureEdge("Resources/beam.png");
+    QImage textureHelp("Resources/help.png");
 
     _scene->setTextureNode(bindTexture(textureNode, GL_TEXTURE_2D,
 				       QGLContext::MipmapBindOption));
@@ -250,4 +264,6 @@ void GraphicEngine::_loadTextures()
 				       QGLContext::MipmapBindOption));
     _scene->setTextureEdge(bindTexture(textureEdge, GL_TEXTURE_2D,
 				       QGLContext::MipmapBindOption));
+    _helpDialog->setTexture(bindTexture(textureHelp, GL_TEXTURE_2D,
+					QGLContext::MipmapBindOption));
 }

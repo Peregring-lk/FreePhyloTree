@@ -43,6 +43,9 @@ namespace fpt
 		float minRatio = 10.0f / 7,
 		float maxRatio = 10.0f / 12);
 
+	VecXf center() const;
+	VecXf distance() const;
+
 	bool changed() const;
 
 	void sizeViewport(GLsizei width, GLsizei height);

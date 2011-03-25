@@ -32,6 +32,16 @@ Viewing::Viewing(PhyloTree *tree, GLsizei width, GLsizei height,
     _border = 1.2;
 }
 
+VecXf Viewing::center() const
+{
+    return _center.source();
+}
+
+VecXf Viewing::distance() const
+{
+    return _distance.source();
+}
+
 bool Viewing::changed() const
 {
     return _center.changed() || _distance.changed();
