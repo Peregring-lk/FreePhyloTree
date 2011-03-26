@@ -25,12 +25,13 @@
 
 #include "Viewing.hpp"
 #include "../Strategies/Strategy.hpp"
+#include "../Strategies/Smooth.hpp"
 
 namespace fpt
 {
     class HelpDialog : public Strategy {
     public:
-	HelpDialog(Viewing *viewing);
+	HelpDialog(Viewing *viewing, float factor);
 
 	GLuint texture() const;
 	bool isVisible() const;
@@ -39,13 +40,17 @@ namespace fpt
 	void setShow(bool show = true);
 
     protected:
+	void _init();
 	void _step();
 
     private:
 	Viewing *_viewing;
-	bool _show;
+	Smooth _loc;
 
 	GLuint _texture;
+	float _factor;
+
+	bool _show;
     };
 }
 

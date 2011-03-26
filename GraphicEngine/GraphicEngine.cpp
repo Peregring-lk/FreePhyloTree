@@ -73,7 +73,7 @@ void GraphicEngine::_init()
     _scene = new Scene(_tree, _mouse);
     _search = new Search("Search", this);
 
-    _helpDialog = new HelpDialog(_viewing);
+    _helpDialog = new HelpDialog(_viewing, 0.6f);
 
     _loadTextures();
 

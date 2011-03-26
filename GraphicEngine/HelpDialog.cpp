@@ -21,7 +21,8 @@
 
 using namespace fpt;
 
-HelpDialog::HelpDialog(Viewing *viewing) : _viewing(viewing)
+HelpDialog::HelpDialog(Viewing *viewing, float factor)
+    : _viewing(viewing), _factor(factor)
 {
     _show = false;
 }
@@ -43,23 +44,51 @@ void HelpDialog::setTexture(GLuint texture)
 
 void HelpDialog::setShow(bool show)
 {
+    if (show == false && _show == true) {
+	VecXf source = _loc.target();
+	source.setX(700);
+
+	_loc.changeSource(source);
+    }
+
     _show = show;
+}
+
+void HelpDialog::_init()
+{
+    VecXf center = _viewing->center();
+    VecXf distance = _viewing->distance();
+
+    VecXf source = center;
+    VecXf target = center;
+
+    source.setX(700);
+    center.setX(center.x() - distance.x() + 2);
+
+    _loc.changeSource(source);
+    _loc.changeTarget(target);
+    _loc.changeSmooth(0.1);
+
+    _loc.init();
 }
 
 void HelpDialog::_step()
 {
     if (isVisible()) {
-	VecXf center = _viewing->center();
-	VecXf distance = _viewing->distance();
+	if (_viewing->changed()) {
+	    VecXf center = _viewing->center();
+	    VecXf distance = _viewing->distance();
 
-	center.setX(center.x() - distance.x());
+	    center.setX(center.x() - distance.x() + 2);
 
-	float x = center.x() + 2;
-	float y = center.y();
+	    _loc.changeTarget(center);
+	}
 
-	float factor = 0.6;
-	float dx = 200 * 0.6;
-	float dy = 120 * 0.6;
+	float x = _loc.x() + 2;
+	float y = _loc.y();
+
+	float dx = 200 * _factor;
+	float dy = 120 * _factor;
 
 	glBindTexture(GL_TEXTURE_2D, _texture);
 
@@ -76,5 +105,7 @@ void HelpDialog::_step()
 	    glTexCoord2f(0, 1);
 	    glVertex2f(x, y + dy);
 	} glEnd();
+
+	_loc.step();
     }
 }

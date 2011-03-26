@@ -79,7 +79,6 @@ void Search::hide()
 void Search::_init()
 {
     setFocus(Qt::MouseFocusReason);
-    this->setAttribute(Qt::WA_TranslucentBackground, true);
 
     _loc.changeSource(VecXf(1000, 10));
     _loc.changeTarget(VecXf(20, 10));
