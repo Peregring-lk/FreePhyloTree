@@ -87,11 +87,12 @@ void HelpDialog::_step()
 	float x = _loc.x() + 2;
 	float y = _loc.y();
 
-	float dx = 200 * _factor;
-	float dy = 120 * _factor;
+	float dx = 230 * _factor;
+	float dy = 230 * _factor;
 
 	glBindTexture(GL_TEXTURE_2D, _texture);
 
+	glColor3f(1, 1, 0);
 	glBegin(GL_QUADS); {
 	    glTexCoord2f(1, 1);
 	    glVertex2f(x + dx, y + dy);
