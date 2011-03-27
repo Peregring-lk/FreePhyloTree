@@ -30,33 +30,52 @@ Hace falta una tarjeta gráfica con aceleración 3D, y conexión a Internet.
 3. Uso de FreePhyloTree
 =======================
 La aplicación funciona de la siguiente forma: cuando se lanza, aparece
-un cladograma inicial de 2 niveles, cuya raíz es el clado \a neomura,
-un clado que agrupa tanto a las arqueas (\a archaea), que son un tipo
-de bacterias más emparentadas con nosotros que con el resto de
-bacterias, y a \a eukarya, que son el grupo que agrupa a los
-organismos con núcleo celular (como nosotros). Si se hace doble click
-izquierdo en cualquier nodo del árbol, éste se amplia, mostrando los
-subclados correspondientes. Si el nodo ya está ampliado, entonces se
-contrae.
+un cladograma inicial de 2 niveles, cuya raíz es el clado neomura, un
+clado que agrupa tanto a las arqueas (archaea), que son un tipo de
+bacterias más emparentadas con nosotros que con el resto de bacterias,
+y a eukarya, que son el grupo que agrupa a los organismos con núcleo
+celular (como nosotros). Si se hace doble click izquierdo en cualquier
+nodo del árbol, éste se amplia, mostrando los subclados
+correspondientes. Si el nodo ya está ampliado, entonces se
+contrae. Pulsando el botón F1 se muestra una pantalla de ayuda con
+todos los controles de la aplicación.
 
 Haciendo doble click derecho en cualquier nodo, se abre el artículo
-correspondiente del clado/especie en wikipedia. Por  último, con Ctrl
-+ doble click izquierdo en un nodo sólo queda en pantalla su subárbol
-correspondiente, desapareciendo el resto del árbol.
+correspondiente del clado/especie en wikipedia. Para cerrarlo, puedes
+pulsar la tecla ESC o hacer de nuevo doble click derecho fuera del
+explorador (pero dentro de la aplicación).
 
-La aplicación posee un buscador. Éste buscador aparece y desaparece
-tanto pulsado F4 como Ctrl+F. Si el clado indicado existe, se cargará
-el nuevo árbol, destruyéndose el anterior. En caso contrario, no
-ocurrirá nada.
+Con Ctrl + doble click izquierdo en un nodo sólo queda en pantalla su
+subárbol correspondiente, desapareciendo el resto del árbol (podado
+del árbol).
+
+Para realizar cualquier búsqueda, puedes pulsar Ctrl + F, y a
+continuación escribir el nombre del clado a buscar. Pulsando F4 se
+oculta el buscador. Con Ctrl + S se puede tomar una captura del árbol
+actual, incluido el menú de ayuda si éste está abierto. Se recomienda
+ocultar éste menú de ayuda con F1 para tomar una captura solamente del
+árbol.
+
+Con Ctrl + A se muestran los nombres de todos los clados.
 
 4. Errores encontrados
 ======================
-☛ Si la aplicación da violación de segmento en la ejecución, ejecute
-la aplicación con permisos de superusuario (inestabilidad vista bajo
-algunas arquitecturas de 64 bits).
+☛ Violación de segmento en el arranque: Ésto, hasta ahora, pasa en
+todas las arquitecturas de 64 bits probadas. Se soluciona ejecutando
+la aplicación con sudo ($sudo ./FreePhyloTree). Igualmente, sigue
+ocurriendo una violación de segmento en cuanto se haga click, tanto en
+el buscador como en el explorador integrado —específicamente, al
+soltar el ratón después de hacer click en cualquier widget integrado,
+que por ahora son el buscador y el explorador.
 
-☛ En algunas plataformas la pantalla se ve completamente en negro. No
-se conocen los motivos ni cómo solucionarlo.
+☛ En algunas arquitecturas el árbol no se muestra, aunque internamente
+está cargado y la aplicación corre normalmente. No se conoce el motivo
+de ésta inestabilidad, pero parece ser que, de alguna forma, las
+órdenes openGL dadas, se ejecutan, pero no se envían correctamente a
+Qt, y por tanto no se renderizan en el widget openGL. Para aquellos
+que le sucedan tal cosa, que me envíen por correo (véase al principio
+de ésta página) datos sobre la distribución, arquitectura y versión
+instalada de los paquetes requeridos por la aplicación (véase arriba).
 
 5. Copyright
 ============

@@ -11,17 +11,23 @@ Contenidos
 
 FreePhyloTree necesita las siguientes librerías para compilar:
 
-   ☛ Flex (http://flex.sourceforge.net).
-   ☛ Qt4 (http://qt.nokia.com) (hacen falta los módulos adicionales:
-     QtWebKit y QtOpenGL).
-   ☛ Curl (http://curl.haxx.se/libcurl).
-   ☛ Mesa (http://www.mesa3d.org/).
-   ☛ FTGL (http://sourceforge.net/projects/ftgl/develop)
-   ☛ gcc  (http://gcc.gnu.org/)
-   ☛ cmake (http://www.cmake.org/)
-   ☛ make (http://www.gnu.org/software/make/)
-   ☛ Doxygen (http://www.stack.nl/~dimitri/doxygen/) (para generar la
-     documentación).
+Dependencias de construcción:
+
+   ☛ cmake (http://www.cmake.org/), paquetes cmake, cmake-data (versión 2.8.0-5).
+   ☛ make (http://www.gnu.org/software/make/), paquete make (versión 3.81-7).
+   ☛ gcc (http://gcc.gnu.org/), paquete gcc (versión 4.4.3-4).
+
+Dependencias de compilación:
+
+   ☛ Qt4 (http://qt.nokia.com), paquetes libqt4-dev, libqt4-opengl-dev, libqt4-webkit (versión 4.6.2-0).
+   ☛ Mesa (http://www.mesa3d.org/), se instalata automáticamente con el paquete opengl de Qt.
+   ☛ FTGL (http://sourceforge.net/projects/ftgl/develop), paquete libftgl-dev (versión 2.1.3~rc5-3).
+   ☛ Curl (http://curl.haxx.se/libcurl)., paquete libcurl4-gnutls-dev (versión 7.19.7-1).
+   ☛ Flex (http://flex.sourceforge.net), paquete flex (versión 2.5.35-9).
+
+Dependencias de documentación.
+
+   ☛ Doxygen (http://www.stack.nl/~dimitri/doxygen/), paquete doxygen (versión 1.6.3-1).
 
 Todas éstas dependencias/librerías están disponibles en los
 respositorios oficiales de Ubuntu, y son software libre, de
@@ -36,16 +42,16 @@ en donde se encuentra la última versión de desarrollo del proyecto
 
 Una vez descargado, y en consola, ejecuta:
    $ cmake .
+
+Si no hay ningún aviso de error, y todas las librerías se han
+encontrado exitosamente, ejecuta:
+
    $ make
 
-Si todas las librerías éstan correctamente instaladas, se compilará la
-aplicación exitósamente, y ésta se podrá ejecutar escribiendo
+Se habrá compilará la aplicación exitósamente, y ésta se podrá ejecutar escribiendo:
    $ ./FreePhyloTree
-
-En caso contrario, cmake avisará de las librerías no encontradas.
-
 
 Para generar la documentación:
    $ make doc
 
-La documentación se encontrará en "doc/html/index.html".
+La documentación se encontrará en «doc/html/index.html».
