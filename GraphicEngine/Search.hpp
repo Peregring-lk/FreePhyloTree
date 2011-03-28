@@ -18,7 +18,7 @@
 */
 
 #ifndef _FPT_SEARCH_
-#define _FPT_SEARHC_
+#define _FPT_SEARCH_
 
 #include <string>
 #include <QLineEdit>

@@ -80,52 +80,59 @@ bool ParserTree::expand(PhyloNode *node)
 
     if (_curl)
 	return _configQuery(node);
-}
-
-bool ParserTree::_configQuery(PhyloNode *node)
-{
-    CURLcode res;
-
-    string query = _query + node->url();
-
-    _buffer.clear();
-
-    curl_easy_reset(_curl);
-    curl_easy_setopt(_curl, CURLOPT_URL, query.c_str());
-    curl_easy_setopt(_curl, CURLOPT_USERAGENT, _headerlist);
-    curl_easy_setopt(_curl, CURLOPT_WRITEFUNCTION, _setBuffer);
-
-    res = curl_easy_perform(_curl);
-
-    _buffer = "-clade=" + _buffer;
-
-    yy_scan_string(_buffer.c_str());
-    yylex();
-
-    _buffer.clear();
-
-    if (res == CURLE_OK && _found)
-	_subclades(node);
     else
 	return false;
 }
 
-void ParserTree::_subclades(PhyloNode *node)
+bool ParserTree::_configQuery(PhyloNode *node)
 {
-    /*
-     *
-     *  Extraemos clados.
-     *
-     */
-    for (unsigned i = 0; i < _clades.size(); ++i) {
-	string clade = _clades[i];
-	string url = _fix(clade);
+    if (node->degree() == 0) {
+	CURLcode res;
 
-	node->addChild(new PhyloNode(clade, url, node));
+	string query = _query + node->url();
+
+	_buffer.clear();
+
+	curl_easy_reset(_curl);
+	curl_easy_setopt(_curl, CURLOPT_URL, query.c_str());
+	curl_easy_setopt(_curl, CURLOPT_USERAGENT, _headerlist);
+	curl_easy_setopt(_curl, CURLOPT_WRITEFUNCTION, _setBuffer);
+
+	res = curl_easy_perform(_curl);
+
+	_buffer = "-clade=" + _buffer;
+
+	yy_scan_string(_buffer.c_str());
+	yylex();
+
+	_buffer.clear();
+
+	if (res == CURLE_OK && _found) {
+	    /*
+	     *
+	     *  Extraemos clados.
+	     *
+	     */
+	    for (unsigned i = 0; i < _clades.size(); ++i) {
+		string clade = _clades[i];
+		string url = _fix(clade);
+
+		node->addChild(new PhyloNode(clade, url, node));
+	    }
+
+	    _clades.clear();
+	}
+	else
+	    return false;
     }
 
-    _clades.clear();
+    _subclades(node);
 
+    return true;
+}
+
+void ParserTree::_subclades(PhyloNode *node)
+{
     if ((node->level() - _actualNode->level()) < _levelsStep - 1)
 	if (node->degree() < _maxSons)
 	    for (int i = 0; i < node->degree(); ++i)

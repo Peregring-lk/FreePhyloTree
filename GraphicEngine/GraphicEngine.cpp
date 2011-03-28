@@ -21,6 +21,7 @@
 #include <QApplication>
 #include <QWebFrame>
 
+#include <unordered_map>
 #include "GraphicEngine.hpp"
 
 #include "Scene.hpp"
@@ -63,10 +64,13 @@ void GraphicEngine::_init()
 
     _ratioKey = 10;
     _controlKey = false;
+    _shiftKey = false;
 
     PhyloNode *node = _parser->expand("Neomura", "Neomura");
 
     _tree = new PhyloTree("Neomura", node, 3, 40, 200, 2);
+
+    node->showName(true);
 
     _viewing = new Viewing(_tree, width(), height());
     _mouse = new Mouse(_tree, _viewing);
@@ -92,13 +96,20 @@ void GraphicEngine::_init()
 void GraphicEngine::_step()
 {
     if (_search->newSearch()) {
-	PhyloNode *node = _parser->expand(_search->actualSearch(),
-					  _search->actualUrl());
+	PhyloNode *node = _tree->phyloNode(_search->actualSearch());
 
-	if (node != NULL) {
-	    _tree->reboot(node->name(), node);
-	    _tree->init();
+	if (node == NULL) {
+	    node = _parser->expand(_search->actualSearch(),
+				   _search->actualUrl());
+
+	    if (node != NULL) {
+		_tree->reboot(node->name(), node);
+		_tree->init();
+	    }
 	}
+
+	if (node != NULL)
+	    node->showName(true);
 
 	_search->reboot();
     }
@@ -113,8 +124,12 @@ void GraphicEngine::_viewPage(PhyloNode *node)
 	string url = _nameWeb + node->url();
 	_webView.load(QUrl(url.c_str()));
 
-	if (_webView.isHidden())
+	if (_webView.isHidden()) {
+	    if (_helpDialog->isVisible())
+		_helpDialog->setShow(false);
+
 	    _webView.show();
+	}
     }
     else if (_webView.isVisible()) {
 	_webView.hide();
@@ -184,8 +199,12 @@ void GraphicEngine::keyPressEvent(QKeyEvent *event)
 	    _search->reactivate();
     else if (event->key() == Qt::Key_F1)
 	_helpDialog->setShow(!_helpDialog->isVisible());
-    else if (event->key() == Qt::Key_Escape)
-	QApplication::quit();
+    else if (event->key() == Qt::Key_Escape) {
+	if (_webView.isVisible())
+	    _webView.hide();
+	else
+	    QApplication::quit();
+    }
     else if (event->key() == Qt::Key_Space)
 	_viewing->centering();
     else if (event->key() == Qt::Key_Up)
@@ -198,19 +217,30 @@ void GraphicEngine::keyPressEvent(QKeyEvent *event)
 	_viewing->moveCamera(VecXf(-_ratioKey, 0));
     else if (event->key() == Qt::Key_Control)
 	_controlKey = true;
+    else if (event->key() == Qt::Key_Shift)
+	_shiftKey = true;
 }
 
 void GraphicEngine::keyReleaseEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Control)
 	_controlKey = false;
+    else if (event->key() == Qt::Key_Shift)
+	_shiftKey = false;
 }
 
 void GraphicEngine::mousePressEvent(QMouseEvent *event)
 {
     _search->clearFocus();
 
-    QGLWidget::mousePressEvent(event);
+    PhyloNode *node = _mouse->actualNode();
+
+    if (node != NULL && _controlKey) {
+	node->showName(!node->showedName());
+
+	if (!node->showedName())
+	    _mouse->clean();
+    }
 }
 
 void GraphicEngine::mouseDoubleClickEvent(QMouseEvent *event)
@@ -222,15 +252,19 @@ void GraphicEngine::mouseDoubleClickEvent(QMouseEvent *event)
 	    if (_controlKey) {
 		_tree->crib(node);
 		_tree->prepareColor(NULL);
+
+		node->showName(true);
 	    }
-	    else if (node->degree() == 0) {
+	    else if (_shiftKey) {
+		node->clear();
+		_tree->clearNode(node);
+		node->showName(false);
+	    }
+	    else {
 		_parser->expand(node);
 		_tree->prepareLoc(node);
 		_tree->prepareColor(node);
-	    }
-	    else {
-		node->clear();
-		_tree->clearNode(node);
+		node->showName(true);
 	    }
 	}
     }

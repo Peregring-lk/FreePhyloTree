@@ -44,11 +44,13 @@ namespace fpt
 
 	bool leftClick() const;
 	bool changedActualNode() const;
-	PhyloNode* actualNode();
+	PhyloNode* actualNode() const;
 
 	void setLeftClick(bool click);
 	void setPos(VecXf pos);
 	void move(VecXf delta);
+
+	void clean();
 
     protected:
 	void _init();
@@ -59,6 +61,7 @@ namespace fpt
 	PhyloTree *_tree;
 
 	bool _leftClick;
+	bool _clean;
 	VecXf _pos;
 	VecXf _mov;
 

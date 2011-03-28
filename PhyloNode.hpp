@@ -38,6 +38,7 @@ namespace fpt
 		  PhyloNode *father = NULL);
 
 	const Name& url() const;
+	bool showedName() const;
 
 	PhyloNode* father() const;
 	PhyloNode* child(unsigned i) const;
@@ -50,6 +51,7 @@ namespace fpt
 
 	void setProj(VecXf proj);
 	void setUrl(const Name& url);
+	void showName(bool show = true);
 
     protected:
 	void _init();
@@ -58,6 +60,8 @@ namespace fpt
     private:
 	Name _url;
 	VecXf _proj;
+
+	bool _showedName;
 
 	void _uploadProj();
     };

@@ -67,9 +67,11 @@ void HelpDialog::_init()
 
     _loc.changeSource(source);
     _loc.changeTarget(target);
-    _loc.changeSmooth(0.1);
+    _loc.changeSmooth(0.2);
 
     _loc.init();
+
+    _show = true;
 }
 
 void HelpDialog::_step()
@@ -87,8 +89,8 @@ void HelpDialog::_step()
 	float x = _loc.x() + 2;
 	float y = _loc.y();
 
-	float dx = 230 * _factor;
-	float dy = 230 * _factor;
+	float dx = 280 * _factor;
+	float dy = 280 * _factor;
 
 	glBindTexture(GL_TEXTURE_2D, _texture);
 

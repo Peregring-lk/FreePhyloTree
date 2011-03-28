@@ -36,12 +36,24 @@ PhyloNode* PhyloTree::root() const
     return dynamic_cast<PhyloNode*>(Tree::root());
 }
 
+PhyloNode* PhyloTree::phyloNode(const Name& name) const
+{
+    for (auto i = begin(); !i.end(); i.next()) {
+	PhyloNode *node = i.node();
+
+	if (node->name() == name)
+	    return node;
+    }
+
+    return NULL;
+}
+
 bool PhyloTree::changed() const
 {
     return ColorTree::changed() || LocTree::changed();
 }
 
-IteratorPhyloTree PhyloTree::begin(PhyloNode *node)
+IteratorPhyloTree PhyloTree::begin(PhyloNode *node) const
 {
     if (node == NULL)
 	node = root();

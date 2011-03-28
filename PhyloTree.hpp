@@ -39,10 +39,12 @@ namespace fpt
 		  float c1, float c2, float c3, float c4);
 
 	PhyloNode* root() const;
+	PhyloNode* phyloNode(const Name& name) const;
 
 	bool changed() const;
 
-	IteratorPhyloTree begin(PhyloNode *node = NULL);
+	IteratorPhyloTree begin(PhyloNode *node = NULL) const;
+
 	void clearNode(PhyloNode *node);
 
     protected:

@@ -45,7 +45,7 @@ bool Mouse::changedActualNode() const
     return _changedActual;
 }
 
-PhyloNode* Mouse::actualNode()
+PhyloNode* Mouse::actualNode() const
 {
     return _actual;
 }
@@ -62,6 +62,7 @@ void Mouse::setPos(VecXf pos)
     _pos = pos;
 
     _changed = true;
+    _clean = false;
 }
 
 void Mouse::move(VecXf delta)
@@ -70,6 +71,15 @@ void Mouse::move(VecXf delta)
     _pos += delta;
 
     _changed = true;
+    _clean = false;
+}
+
+void Mouse::clean()
+{
+    _actual = NULL;
+    _changedActual = false;
+    _changed = true;
+    _clean = true;
 }
 
 void Mouse::_init()
@@ -78,27 +88,30 @@ void Mouse::_init()
     _changedActual = false;
     _changed = false;
     _leftClick = false;
+    _clean = false;
 }
 
 void Mouse::_step()
 {
-    PhyloNode *actual = NULL;
+    if (!_clean) {
+	PhyloNode *actual = NULL;
 
-    if (_tree->changed() || _viewing->changed() || _changed)
-	for (auto i = _tree->begin(); !i.end(); i.next()) {
-	    PhyloNode *node = i.node();
+	if (_tree->changed() || _viewing->changed() || _changed)
+	    for (auto i = _tree->begin(); !i.end(); i.next()) {
+		PhyloNode *node = i.node();
 
-	    if ((node->proj() - _pos).norm() < 10) {
-		actual = node;
-		break;
+		if ((node->proj() - _pos).norm() < 10) {
+		    actual = node;
+		    break;
+		}
 	    }
+
+	if (actual != _actual) {
+	    _changedActual = true;
+	    _actual = actual;
 	}
 
-    if (actual != _actual) {
-	_changedActual = true;
-	_actual = actual;
+	_changed = false;
+	_mov = VecXf(0.0f, 0.0f);
     }
-
-    _changed = false;
-    _mov = VecXf(0.0f, 0.0f);
 }

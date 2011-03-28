@@ -20,6 +20,7 @@
 #ifndef _FPT_SCENE_
 #define _FPT_SCENE_
 
+#include <vector>
 #include <GL/gl.h>
 #include <FTGL/ftgl.h>
 
@@ -63,6 +64,8 @@ namespace fpt
 	void _step();
 
     private:
+	std::vector<PhyloNode*> _seenNodes;
+
 	PhyloTree *_tree;
 	Mouse *_mouse;
 

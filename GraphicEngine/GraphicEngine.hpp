@@ -74,6 +74,7 @@ namespace fpt
 	HelpDialog *_helpDialog;
 
 	bool _controlKey;
+	bool _shiftKey;
 
 	QWebView _webView;
 	std::string _nameWeb;

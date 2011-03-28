@@ -17,9 +17,12 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <vector>
+
 #include "Scene.hpp"
 
 using namespace fpt;
+using namespace std;
 
 Scene::Scene(PhyloTree *tree, Mouse *mouse)
     : _tree(tree), _mouse(mouse)
@@ -107,17 +110,13 @@ void Scene::_step()
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	_drawTree();
-
-	if (describedNodes())
-	    for (auto i = _tree->begin(); !i.end(); i.next())
-		_drawText(i.node());
-	else if (_mouse->changedActualNode())
-	    _drawText(_mouse->actualNode());
     }
 }
 
 void Scene::_drawTree()
 {
+    vector<PhyloNode*> showedNames;
+
     for (auto i = _tree->begin(); !i.end(); i.next())
 	_drawGlow(i.node());
 
@@ -128,8 +127,27 @@ void Scene::_drawTree()
 	    _drawEdge(source, source->child(i));
     }
 
-    for (auto i = _tree->begin(); !i.end(); i.next())
-	_drawNode(i.node());
+    for (auto i = _tree->begin(); !i.end(); i.next()) {
+	PhyloNode *node = i.node();
+
+	_drawNode(node);
+
+	if (!describedNodes() && node->showedName())
+	    showedNames.push_back(node);
+    }
+
+    if (describedNodes())
+	for (auto i = _tree->begin(); !i.end(); i.next())
+	    _drawText(i.node());
+    else {
+	PhyloNode *node = _mouse->actualNode();
+
+	if (node != NULL && !node->showedName())
+	    showedNames.push_back(node);
+
+	for (int i = 0; i < showedNames.size(); ++i)
+	    _drawText(showedNames[i]);
+    }
 }
 
 void Scene::_drawNode(PhyloNode *node)
