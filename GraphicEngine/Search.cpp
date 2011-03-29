@@ -76,6 +76,12 @@ void Search::hide()
     QLineEdit::hide();
 }
 
+void Search::check(bool bcheck)
+{
+    _showCheck = true;
+    _check = bcheck;
+}
+
 void Search::_init()
 {
     setFocus(Qt::MouseFocusReason);
@@ -87,6 +93,11 @@ void Search::_init()
     _loc.init();
 
     show();
+
+    _showCheck = false;
+    _check = true;
+
+//    setPlaceholderText("Search");
 }
 
 void Search::_step()
@@ -95,6 +106,20 @@ void Search::_step()
 	_loc.step();
 
 	move(_loc.x(), _loc.y());
+
+
+	if (_showCheck) {
+	    if (_check) {
+		insert(QString::fromUtf8("  ✓"));
+		selectAll();
+	    }
+	    else {
+		insert(QString::fromUtf8(" ✗"));
+		selectAll();
+	    }
+
+	    _showCheck = false;
+	}
     }
 }
 

@@ -23,6 +23,8 @@
 #include <string>
 #include <QLineEdit>
 
+#include <GL/gl.h>
+
 #include "../Strategies/Smooth.hpp"
 
 namespace fpt
@@ -41,6 +43,8 @@ namespace fpt
 	void reactivate();
 	void hide();
 
+	void check(bool bcheck = true);
+
     protected:
 	void _init();
 	void _step();
@@ -52,12 +56,16 @@ namespace fpt
 	bool _first;
 	bool _newSearch;
 
+	bool _showCheck;
+	bool _check;
+
 	Smooth _loc;
 
 	std::string _actualSearch;
 	std::string _actualUrl;
 
 	void _toUrl();
+	void _renderCheck();
     };
 }
 

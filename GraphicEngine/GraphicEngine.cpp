@@ -21,7 +21,6 @@
 #include <QApplication>
 #include <QWebFrame>
 
-#include <unordered_map>
 #include "GraphicEngine.hpp"
 
 #include "Scene.hpp"
@@ -105,7 +104,10 @@ void GraphicEngine::_step()
 	    if (node != NULL) {
 		_tree->reboot(node->name(), node);
 		_tree->init();
+		_search->check(true);
 	    }
+	    else
+		_search->check(false);
 	}
 
 	if (node != NULL)
