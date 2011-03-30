@@ -60,6 +60,8 @@ namespace fpt
 	float z() const;
 
 	VecXf loc() const;
+	VecXf dir() const;
+
 	VecXf locFather() const;
 	const Loc& smoothLoc() const;
 

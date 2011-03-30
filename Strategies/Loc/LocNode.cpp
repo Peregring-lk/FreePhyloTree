@@ -55,6 +55,11 @@ VecXf LocNode::loc() const
     return _loc.source();
 }
 
+VecXf LocNode::dir() const
+{
+    return _loc.source();
+}
+
 VecXf LocNode::locFather() const
 {
     LocNode *father = this->father();

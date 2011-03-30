@@ -46,6 +46,7 @@ namespace fpt
 
 	VecXf source() const;
 	VecXf target() const;
+	VecXf dir() const;
 
 	float originalSmooth() const;
 	float actualSmooth() const;

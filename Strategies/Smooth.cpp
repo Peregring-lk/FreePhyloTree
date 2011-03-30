@@ -63,6 +63,11 @@ VecXf Smooth::target() const
     return _target;
 }
 
+VecXf Smooth::dir() const
+{
+    return _dir.unit();
+}
+
 float Smooth::originalSmooth() const
 {
     return _originalSmooth;
