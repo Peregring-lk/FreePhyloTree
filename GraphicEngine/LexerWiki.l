@@ -12,9 +12,9 @@ std::vector<std::string> _clades;
 %option noyywrap
 
 clade [a-zA-Z]+
-valid [a-zA-Z\| \(\)]
+valid [a-zA-Z\| \(\).]
 linkclade "[["{valid}+"]]"
-tempclade "{{"("sp"|"splast")\|{valid}+"}}"
+tempclade "{{"("sp"|"splast"|"g"|"glast")\|{valid}+"}}"
 
 %{
 void reboot()
@@ -43,7 +43,7 @@ void reboot()
                           BEGIN(INITIAL);
                           yyterminate();
                        }
-^{clade}:.*$           _clades.push_back(yytext);
+^{clade}:\n?(.|"-\n")*$   _clades.push_back(yytext);
 "</html>"              {
                           reboot();
                           BEGIN(subclades);

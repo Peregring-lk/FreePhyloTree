@@ -105,6 +105,8 @@ bool ParserTree::_configQuery(PhyloNode *node)
 	yy_scan_string(_buffer.c_str());
 	yylex();
 
+	std::cout << _buffer << std::endl;
+
 	_buffer.clear();
 
 	if (res == CURLE_OK && _found) {
@@ -117,7 +119,8 @@ bool ParserTree::_configQuery(PhyloNode *node)
 		string clade = _clades[i];
 		string url = _fix(clade);
 
-		node->addChild(new PhyloNode(clade, url, node));
+		if (clade != node->name())
+		    node->addChild(new PhyloNode(clade, url, node));
 	    }
 
 	    _clades.clear();
@@ -152,7 +155,7 @@ string ParserTree::_fixLink(string& name)
     string url;
 
     name.erase(0, 2);
-    name.erase(name.size() -2, 2);
+    name.erase(name.size() - 2, 2);
 
     string::size_type index = name.find('|');
 
@@ -178,13 +181,17 @@ string ParserTree::_fixTemplate(string& name)
     string::size_type index = name.find('|');
     name.erase(0, index + 1);
 
-    index = name.find('|');
-    name.erase(index, 1);
-    url = name;
+    if (index != 7 && index != 3) {
+	index = name.find('|');
+	name.erase(index, 1);
+	url = name;
 
-    index = name.find('|');
-    name[index] = ' ';
-    url[index] = ' ';
+	index = name.find('|');
+	name[index] = ' ';
+	url[index] = ' ';
+    }
+    else
+	url = name;
 
     return url;
 }

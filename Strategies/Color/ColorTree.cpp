@@ -63,9 +63,9 @@ void ColorTree::prepareColor(ColorNode *node)
 	ColorNode *next = i.node();
 	VecXf color(next->fatherCubeColor().center(), 0.5f);
 
-	next->setSourceColor(color.x(), color.y(), color.z());
+	next->setSourceColor(1, 1, 1);
 
-	next->randSourceGlow(300 * (next->order() + 1));
+	next->randSourceGlow(200 * (next->order() + 1));
 	next->setTargetGlow(50 * (next->order() + 1));
 	next->changeSmoothColor(_smoothColor);
 	next->changeSmoothGlow(_smoothGlow);

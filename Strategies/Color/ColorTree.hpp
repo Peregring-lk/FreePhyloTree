@@ -43,7 +43,7 @@ namespace fpt
     {
     public:
 	ColorTree(const Name& name, ColorNode *root,
-		  float smoothColor = 0.01, float smoothGlow = 0.1);
+		  float smoothColor = 0.01, float smoothGlow = 0.005);
 
 	ColorNode* root() const;
 	bool changed() const;
