@@ -21,7 +21,7 @@
 
 using namespace fpt;
 
-Strategy::Strategy() : _initialized(false), _changed(false)
+Strategy::Strategy() : _initialized(false)
 {}
 
 Strategy::~Strategy()
@@ -34,7 +34,7 @@ bool Strategy::initialized() const
 
 bool Strategy::changed() const
 {
-    return _changed;
+    return false;
 }
 
 void Strategy::init()

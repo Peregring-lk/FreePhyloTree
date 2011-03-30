@@ -50,6 +50,11 @@ PhyloNode* Mouse::actualNode() const
     return _actual;
 }
 
+bool Mouse::changed() const
+{
+    return _changed;
+}
+
 void Mouse::setLeftClick(bool click)
 {
     _leftClick = click;

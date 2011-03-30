@@ -135,6 +135,8 @@ void ColorNode::_init()
 {
     _color.init();
     _glow.init();
+
+    _glow.changeGap(2);
 }
 
 void ColorNode::_step()

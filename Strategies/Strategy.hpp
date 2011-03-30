@@ -48,8 +48,6 @@ namespace fpt
 	virtual void _init();
 	virtual void _step();
 
-	mutable bool _changed;
-
     private:
 	bool _initialized;
     };

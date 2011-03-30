@@ -47,7 +47,7 @@ SET(TREES ${VEC} ${TREE} ${STRGY} ${COLOR} ${LOC} ${PHYLOTREE})
 SET(SRC ${TREES} ${GRAPHIC} ${FLEX_Scanner_OUTPUTS} FreePhyloTree program)
 
 IF(CMAKE_COMPILER_IS_GNUCXX)
-    SET(CMAKE_CXX_FLAGS "-std=c++0x")        ## c++0x
+    SET(CMAKE_CXX_FLAGS "-std=c++0x -O3")        ## c++0x
 ENDIF()
 
 ADD_EXECUTABLE(FreePhyloTree ${SRC} ${MOC_HEADERS})

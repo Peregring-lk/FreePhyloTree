@@ -33,6 +33,11 @@ ColorNode* ColorTree::root() const
     return dynamic_cast<ColorNode*>(Tree::root());
 }
 
+bool ColorTree::changed() const
+{
+    return _changed;
+}
+
 IteratorColorTree ColorTree::begin(ColorNode *node)
 {
     if (node == NULL)
@@ -89,7 +94,7 @@ void ColorTree::_step()
     for (auto i = begin(); !i.end(); i.next()) {
 	i.node()->step();
 
-	if (i.node()->changed())
+	if (i.node()->ColorNode::changed())
 	    _changed = true;
     }
 }

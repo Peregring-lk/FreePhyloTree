@@ -46,6 +46,8 @@ namespace fpt
 	bool changedActualNode() const;
 	PhyloNode* actualNode() const;
 
+	bool changed() const;
+
 	void setLeftClick(bool click);
 	void setPos(VecXf pos);
 	void move(VecXf delta);
@@ -64,6 +66,8 @@ namespace fpt
 	bool _clean;
 	VecXf _pos;
 	VecXf _mov;
+
+	bool _changed;
 
 	PhyloNode *_actual;
 	bool _changedActual;

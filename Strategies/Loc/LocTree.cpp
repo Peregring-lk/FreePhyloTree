@@ -58,6 +58,11 @@ float LocTree::radius() const
     return _radius;
 }
 
+bool LocTree::changed() const
+{
+    return _changed;
+}
+
 IteratorLocTree LocTree::begin(LocNode *node)
 {
     if (node == NULL)
@@ -136,12 +141,12 @@ void LocTree::_step()
 	for (auto i = begin(); !i.end(); i.next()) {
 	    i.node()->step();
 
-	    if (i.node()->changed())
+	    if (i.node()->LocNode::changed())
 		_changed = true;
 	}
     }
 
-    if (changed())
+    if (_changed)
 	_calcConvexSphere();
 }
 
@@ -165,6 +170,9 @@ void LocTree::_calcConvexSphere()
 {
     VecXf inf, sup;
 
+    inf = root()->loc();
+    sup = root()->loc();
+
     for (auto i = begin(); !i.end(); i.next()) {
 	LocNode *node = i.node();
 
@@ -176,7 +184,7 @@ void LocTree::_calcConvexSphere()
     }
 
     _center = (inf + sup) / 2;
-    _radius = (_center - inf).norm();
+    _radius = (_center - inf).norm() + 1;
 }
 
 float LocTree::_min(float a, float b)

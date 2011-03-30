@@ -147,8 +147,6 @@ void Viewing::_calcOrtho()
 
     _center.changeTarget(center);
     _distance.changeTarget(distance);
-
-    _changed = true;
 }
 
 void Viewing::_project()

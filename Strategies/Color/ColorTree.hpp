@@ -46,6 +46,7 @@ namespace fpt
 		  float smoothColor = 0.01, float smoothGlow = 0.1);
 
 	ColorNode* root() const;
+	bool changed() const;
 
 	IteratorColorTree begin(ColorNode *node = NULL);
 
@@ -59,6 +60,8 @@ namespace fpt
 	void _initCubes(ColorNode *node, CubeColor& cube, TypeC t);
 
     private:
+	bool _changed;
+
 	float _smoothColor;
 	float _smoothGlow;
     };

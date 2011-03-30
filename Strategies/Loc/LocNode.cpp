@@ -97,6 +97,8 @@ void LocNode::changeSmooth(float smooth)
 
 void LocNode::_init()
 {
+    _loc.changeGap(1.5);
+
     _loc.init();
 }
 

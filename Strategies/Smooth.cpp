@@ -23,11 +23,11 @@ using namespace fpt;
 
 Smooth::Smooth() : Strategy()
 {
-    *this = Smooth(1);
+    *this = Smooth(0.1, 1);
 }
 
-Smooth::Smooth(float smooth, float ssmooth)
-    : _smooth(smooth), _ssmooth(ssmooth)
+Smooth::Smooth(float gap, float smooth, float ssmooth)
+    : _gap(gap), _smooth(smooth), _ssmooth(ssmooth)
 {
     _originalSmooth = _smooth;
     _changed = false;
@@ -46,6 +46,11 @@ float Smooth::y() const
 float Smooth::z() const
 {
     return _source.z();
+}
+
+float Smooth::gap() const
+{
+    return _gap;
 }
 
 VecXf Smooth::source() const
@@ -68,6 +73,11 @@ float Smooth::actualSmooth() const
     return _smooth;
 }
 
+bool Smooth::changed() const
+{
+    return _changed;
+}
+
 void Smooth::changeSource(const VecXf& source)
 {
     _source = source;
@@ -75,8 +85,6 @@ void Smooth::changeSource(const VecXf& source)
     _dir = _target - _source;
 
     _smooth = _originalSmooth;
-
-    _changed = true;
 }
 
 void Smooth::changeTarget(const VecXf& target)
@@ -86,8 +94,6 @@ void Smooth::changeTarget(const VecXf& target)
     _dir = _target - _source;
 
     _smooth = _originalSmooth;
-
-    _changed = true;
 }
 
 void Smooth::changeSmooth(float smooth)
@@ -96,11 +102,16 @@ void Smooth::changeSmooth(float smooth)
     _smooth = _originalSmooth;
 }
 
+float Smooth::changeGap(float gap)
+{
+    _gap = gap;
+}
+
 void Smooth::_step()
 {
     _changed = false;
 
-    if (_dir.norm() > 0.05) {
+    if (_dir.norm() > _gap) {
 	_source += _dir.unit() * _dir.norm() * _smooth;
 
 	_dir = _target - _source;

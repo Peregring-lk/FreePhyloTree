@@ -49,6 +49,8 @@ namespace fpt
 	VecXf center() const;
 	float radius() const;
 
+	bool changed() const;
+
 	IteratorLocTree begin(LocNode *node = NULL);
 
 	void prepareLoc(LocNode *node = NULL);
@@ -66,9 +68,10 @@ namespace fpt
 	float _c3;
 	float _c4;
 
-	bool _changed;
 	VecXf _center;
 	float _radius;
+
+	bool _changed;
 
 	typedef std::vector<VecXf> _Moves;
 

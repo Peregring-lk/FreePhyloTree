@@ -36,11 +36,13 @@ namespace fpt
     {
     public:
 	Smooth();
-	Smooth(float smooth, float ssmoth = 1);
+	Smooth(float gap, float smooth, float ssmoth = 1);
 
 	float x() const;
 	float y() const;
 	float z() const;
+
+	float gap() const;
 
 	VecXf source() const;
 	VecXf target() const;
@@ -48,9 +50,13 @@ namespace fpt
 	float originalSmooth() const;
 	float actualSmooth() const;
 
+	bool changed() const;
+
 	void changeSource(const VecXf& source);
 	void changeTarget(const VecXf& target);
 	void changeSmooth(float smooth);
+
+	float changeGap(float gap);
 
     protected:
 	void _step();
@@ -60,10 +66,13 @@ namespace fpt
 	VecXf _target;
 
 	VecXf _dir;
+	float _gap;
 
 	float _originalSmooth;
 	float _smooth;
 	float _ssmooth;
+
+	bool _changed;
     };
 }
 
