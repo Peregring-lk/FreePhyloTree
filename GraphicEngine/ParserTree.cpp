@@ -105,8 +105,6 @@ bool ParserTree::_configQuery(PhyloNode *node)
 	yy_scan_string(_buffer.c_str());
 	yylex();
 
-	std::cout << _buffer << std::endl;
-
 	_buffer.clear();
 
 	if (res == CURLE_OK && _found) {

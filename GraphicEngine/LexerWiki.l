@@ -11,7 +11,7 @@ std::vector<std::string> _clades;
 %x subclades
 %option noyywrap
 
-clade [a-zA-Z]+
+clade [a-zA-Z]+(" ("[a-zA-Z]+")")?
 valid [a-zA-Z\| \(\).]
 linkclade "[["{valid}+"]]"
 tempclade "{{"("sp"|"splast"|"g"|"glast")\|{valid}+"}}"
@@ -43,7 +43,9 @@ void reboot()
                           BEGIN(INITIAL);
                           yyterminate();
                        }
-^{clade}:\n?(.|"-\n")*$   _clades.push_back(yytext);
+
+^{clade}:(" ")?\n?(.|"-\n"|"}}\n"|"\n{{")*$   _clades.push_back(yytext);
+
 "</html>"              {
                           reboot();
                           BEGIN(subclades);
