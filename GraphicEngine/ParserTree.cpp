@@ -186,7 +186,7 @@ string ParserTree::_fixTemplate(string& name)
 
 	index = name.find('|');
 	name[index] = ' ';
-	url[index] = ' ';
+	url[index] = '_';
     }
     else
 	url = name;
