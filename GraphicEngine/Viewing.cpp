@@ -17,6 +17,15 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/*! \file Viewing.cpp
+ *  \brief Fichero que implementa la clase fpt::Viewing.
+ *
+ *  \author Aarón Bueno Villares, <abv150ci@gmail.com>
+ *  \date 04/2011
+ *  \version 0.7
+ *  \since 0.7
+ */
+
 #include <iostream>
 #include <GL/glu.h>
 
@@ -26,10 +35,9 @@ using namespace fpt;
 
 Viewing::Viewing(PhyloTree *tree, GLsizei width, GLsizei height,
 		 float minRatio, float maxRatio)
-    : _tree(tree), _minRatio(maxRatio), _maxRatio(maxRatio)
+    : _tree(tree), _minRatio(maxRatio), _maxRatio(maxRatio), _border(1.2)
 {
     sizeViewport(width, height);
-    _border = 1.2;
 }
 
 VecXf Viewing::center() const

@@ -17,6 +17,15 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/*! \file FreePhyloTree.cpp
+ *  \brief Implementación de la clase \c fpt::QFreePhyloTree.
+ *
+ *  \author Aarón Bueno Villares, <abv150ci@gmail.com>
+ *  \date 04/2011
+ *  \version 0.7
+ *  \since 0.7
+ */
+
 #include "FreePhyloTree.hpp"
 
 using namespace fpt;
@@ -32,7 +41,7 @@ QFreePhyloTree::~QFreePhyloTree()
     delete _glEngine;
 }
 
-void QFreePhyloTree::run()
+void QFreePhyloTree::init()
 {
     connect(&_qTimer, SIGNAL(timeout()), _glEngine, SLOT(animate()));
     _qTimer.start(40);

@@ -17,6 +17,15 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/*! \file Scene.cpp
+ *  \brief Fichero que implementa a la clase \c fpt::Scene.
+ *
+ *  \author Aarón Bueno Villares, <abv150ci@gmail.com>
+ *  \date 04/2011
+ *  \version 0.7
+ *  \since 0.7
+ */
+
 #include <vector>
 
 #include "Scene.hpp"

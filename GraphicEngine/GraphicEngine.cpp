@@ -17,11 +17,18 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/*! \file GraphicEngine.cpp
+ *  \brief Archivo que implementa a la clase \c fpt::GraphicEngine.
+ *
+ *  \author Aarón Bueno Villares, <abv150ci@gmail.com>
+ *  \date 04/2011
+ *  \version 0.7
+ *  \since 0.7
+ */
+
 #include <iostream>
 #include <QApplication>
 #include <QWebFrame>
-
-// #include <sys/time.h>
 
 #include "GraphicEngine.hpp"
 
@@ -30,8 +37,6 @@
 
 using namespace std;
 using namespace fpt;
-
-// timespec absolute;
 
 GraphicEngine::GraphicEngine(const Name& root)
     : _webView(this), _nameWeb("http://es.wikipedia.org/wiki/")
@@ -161,15 +166,7 @@ void GraphicEngine::initializeGL()
 
 void GraphicEngine::paintGL()
 {
-/*
-    timespec t1, t2, t3, t4;
-
-    clock_gettime(CLOCK_REALTIME, &t1);
-*/
-
     _tree->step();
-
-//    clock_gettime(CLOCK_REALTIME, &t2);
 
     if (_mouse->leftClick()) {
 	VecXf move = _mouse->mov();
@@ -181,26 +178,9 @@ void GraphicEngine::paintGL()
     _viewing->step();
     _mouse->step();
 
-//    clock_gettime(CLOCK_REALTIME, &t3);
-
     _scene->step();
     _search->step();
     _helpDialog->step();
-
-/*
-    clock_gettime(CLOCK_REALTIME, &t4);
-
-    float dif1 = (t2.tv_nsec - t1.tv_nsec) / 1000.0f;
-    float dif2 = (t3.tv_nsec - t2.tv_nsec) / 1000.0f;
-    float dif3 = (t4.tv_nsec - t3.tv_nsec) / 1000.0f;
-    float dif4 = (t4.tv_nsec - absolute.tv_nsec) / 1000.0f;
-
-//    dif4 -= 40.000;
-
-    absolute = t4;
-
-    cout << dif1 << " " << dif2 << " " << dif3 << " " << dif4 << endl;
-*/
 }
 
 void GraphicEngine::resizeGL()

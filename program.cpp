@@ -30,8 +30,9 @@
  * Esta web contiene información de principal interés para
  * desarrolladores, aunque ésta página de inicio es de interés para
  * todo aquel que quiera instalar y usar la aplicación. El punto de
- * entrada de la aplicación es \c main.cpp, que ejecuta a la clase
- * principal del juego, \c QFreePhyloTree.\n
+ * entrada de la aplicación es la funcion \c main(), implementada en
+ * el fichero \c program.cpp, que crea, inicializa y ejecuta a la clase
+ * principal del juego, \c fpt::QFreePhyloTree.\n
  *
  * \section sec Instalación y ejecución de la aplicación
  *
@@ -136,16 +137,53 @@
  * requeridos por la aplicación (véase arriba).
  */
 
-#include <iostream>
+/*! \file program.cpp
+ *  \brief Archivo que contiene a la función \c main().
+ *
+ *  \author Aarón Bueno Villares, <abv150ci@gmail.com>
+ *  \date 04/2011
+ *  \version 0.7
+ *  \since 0.7
+ */
+
 #include "FreePhyloTree.hpp"
 
 using namespace fpt;
 
+/*! \fn int main(int argc, char **argv)
+ *  \brief Función principal de la aplicación.
+ *
+ *  \param argc Número de argumentos.
+ *  \param argv Lista de argumentos.
+ *
+ *  Crea a un objeto \c fpt::QFreePhyloTree, lo inicializa con la función
+ *  \c fpt::QFreePhyloTree::init —que recursivamente inicializa a toda
+ *  la aplicación— y luego ejecuta el bucle principal de la
+ *  aplicación, con \c exec.
+ *
+ *  La clase \c QFreePhyloTree hereda de \c Qt::QApplication, siendo ésta
+ *  una clase de Qt que maneja el GUI de la aplicación, los eventos,
+ *  etcétera. La función \c init no pertenece a \c QApplication, solo
+ *  a \c QFreePhyloTree. La funcion \c exec pertenece a \c
+ *  QApplication y no ha sido sobrecargada. La función \c exec se
+ *  encarga de procesar todos los eventos y envíarselos al widget
+ *  adecuado.
+ *
+ *  \note Los argumentos \c argc y \c argv son requeridos por el
+ *  constructor de \c QApplication, ya que Qt ofrece ciertas opciones
+ *  de ejecución de la aplicación, y deben ser envíados a QApplication
+ *  para que los procese.
+ *
+ *  \author Aarón Bueno Villares, <abv150ci@gmail.com>
+ *  \date 04/2011
+ *  \version 0.7
+ *  \since 0.7
+ */
 int main(int argc, char **argv)
 {
     QFreePhyloTree fpt(argc, argv);
 
-    fpt.run();
+    fpt.init();
 
     return fpt.exec();
 }

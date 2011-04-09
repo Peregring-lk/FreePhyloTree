@@ -17,6 +17,15 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/*! \file IteratorTree.cpp
+ *  \brief Fichero que implementa a la clase \c fpt::IteratorTree.
+ *
+ *  \author Aarón Bueno Villares, <abv150ci@gmail.com>
+ *  \date 04/2011
+ *  \version 0.7
+ *  \since 0.7
+ */
+
 #include <iostream>
 #include "IteratorTree.hpp"
 
