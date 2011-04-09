@@ -17,6 +17,32 @@
   along with FreePhyloTree.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/*! \file LexerWiki.l
+ *  \brief Analizador léxico de las consultas al \c WikiMedia-API de
+ *  \a wikispecies.
+ *
+ *  La respuesta de las consultas al \c WikiMedia-API de \a
+ *  wikispecies es, en general, una salida compleja. Hay que buscar
+ *  dentro de dicha consulta donde se encuentran los subtaxones y para
+ *  ello se hace uso de éste analizador léxico.
+ *
+ *  \author Aarón Bueno Villares, <abv150ci@gmail.com>
+ *  \date 04/2011
+ *  \version 0.7
+ *  \since 0.7
+ */
+
+/*! \file ParserTree.cpp
+ *  \brief Fichero que implementa a la clase \c fpt::ParserTree.
+ *
+ *  Para procesar el resultado de las consultas a \a wikispecies, se
+ *  hace uso de \c flex. Véase \c LexerWiki.l.
+ *
+ *  \author Aarón Bueno Villares, <abv150ci@gmail.com>
+ *  \date 04/2011
+ *  \version 0.7
+ *  \since 0.7
+ */
 #include <cstring>
 #include <cstdio>
 #include <vector>
